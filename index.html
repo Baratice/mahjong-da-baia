@@ -120,6 +120,16 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 .shimg{width:100%; border-radius:12px; margin-top:8px; box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .ckrow{display:flex; align-items:center; gap:10px; text-align:left; margin:10px 0; font-size:16px} .ckrow input{width:24px; height:24px}
 .nickin{width:100%; min-height:50px; border-radius:12px; border:2px solid rgba(0,0,0,.15); padding:0 12px; font-size:18px; background:var(--panel); color:var(--ink)}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:6px 0}
+.gc{border:2px solid rgba(0,0,0,.1); border-radius:14px; padding:10px 8px; text-align:center; display:flex; flex-direction:column; background:var(--panel)}
+.gc.new{border-color:var(--accent2); background:rgba(242,177,52,.08)}
+.gc .em{font-size:22px; letter-spacing:2px; line-height:1.3}
+.gc b{display:block; font-size:15px; margin:4px 0 2px; line-height:1.2}
+.gc small{display:block; color:var(--muted); font-size:12px; flex:1}
+.gc .pr{font-weight:800; margin-top:4px}
+.gc button{min-height:44px; width:100%; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; margin-top:6px}
+.gc button.owned{background:#9fb3bf}
+.gc .tag{margin:0 0 4px; align-self:center}
 .themes{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px}
 .themes button{min-height:52px; border-radius:12px; background:var(--panel); border:2px solid rgba(0,0,0,.12); font-weight:700; font-size:16px}
 .themes button.cur{border-color:var(--accent)}
@@ -146,13 +156,14 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 <button class="sec" id="bDaily">Desafio do dia</button>
 <button class="sec" id="bRank">🏆 Ranking</button>
 <div class="row">
+<button class="sec" id="bCols">🗂️ Coleções</button>
 <button class="sec" id="bAlbum">📮 Álbum</button>
-<button class="sec" id="bStore">⭐ Loja</button>
 </div>
 <div class="row">
+<button class="sec" id="bStore">⭐ Loja</button>
 <button class="sec" id="bSettings">⚙️ Ajustes</button>
-<button class="sec" id="bLang">🇧🇷 / 🇺🇸</button>
 </div>
+<button class="sec" id="bLang">🇧🇷 / 🇺🇸</button>
 <div class="proto" id="tProto"></div>
 </div>
 <div id="game" class="screen">
@@ -191,8 +202,9 @@ year:"Anual",yearS:"7 dias grátis, depois",month:"Mensal",monthS:"Renova todo m
 tryFree:"Testar grátis",subscribe:"Assinar",buy:"Comprar",owned:"Comprado",active:"Passe ativo ✓",
 offersT:"Ofertas",welcome:"Pacote de boas-vindas",welcomeS:"20 dicas, 10 embaralhamentos e o conjunto Frutas. Uma vez só, na primeira semana.",
 helpT:"Ajuda avulsa",h10:"10 dicas + 5 embaralhamentos",h50:"50 dicas + 25 embaralhamentos",
-colT:"Coleções (30 fases cada)",col_verao:"Coleção do Mês: Verão na Baía",col_carnaval:"Coleção Carnaval",col_mar:"Coleção Fundo do Mar",colS:"30 fases temáticas com figuras próprias",colMonthS:"Nova em novembro. Incluída no Passe.",newTag:"novo",playCol:"Jogar",
-tsT:"Conjuntos de peças",ts_baia:"Baía",ts_frutas:"Frutas",ts_bichos:"Bichos",tsS:"Desenhos novos em todas as peças",use:"Usar",inUse:"Em uso",tilesL:"Conjunto de peças",tsLocked:"Conjunto da loja.",
+colT:"Coleções (30 fases cada)",col_verao:"Coleção do Mês: Verão na Baía",col_carnaval:"Carnaval",col_mar:"Fundo do Mar",col_fazenda:"Fazendinha",col_pomar:"Frutas Tropicais",col_flores:"Jardim das Flores",col_doces:"Doceria da Vó",col_mundo:"Volta ao Mundo",col_espaco:"Viagem ao Espaço",col_natal:"Natal na Baía",
+colsT:"Coleções",colsP:"Cada coleção tem 30 fases novas com peças próprias. Quem tem o Passe joga todas.",colAllT:"Todas as coleções",colAllS:"As 10 coleções de hoje por menos da metade do preço.",dealTag:"-60%",progress:"{p}/30 fases",soonT:"Toda semana chega coleção nova.",colS:"30 fases temáticas com figuras próprias",colMonthS:"Nova em novembro. Incluída no Passe.",newTag:"novo",playCol:"Jogar",
+tsT:"Conjuntos de peças",ts_baia:"Baía",ts_frutas:"Frutas",ts_bichos:"Bichos",ts_mar:"Mar",ts_flores:"Flores",ts_doces:"Doces",ts_esportes:"Esportes",tsP:"Trocam os desenhos das 600 fases.",tsS:"Desenhos novos em todas as peças",use:"Usar",inUse:"Em uso",tilesL:"Conjunto de peças",tsLocked:"Conjunto da loja.",
 phT:"Peças com suas fotos",ts_fotos:"Minha Família",phS:"Transforme de 12 a 32 fotos da sua galeria (família, netos, pets) nas peças do jogo. Só você terá esse conjunto.",phTag:"exclusivo",phPass:"1 conjunto incluído no Passe",phCreate:"Criar meu conjunto",phEdit:"Trocar as fotos",phPrivacy:"🔒 Suas fotos ficam só neste aparelho. Nada é enviado para a internet.",phMin:"Escolha pelo menos 12 fotos.",phMax:"Usamos as 32 primeiras fotos.",phWorking:"Preparando as fotos…",phReadyT:"Seu conjunto está pronto!",phReadyP:"{n} fotos viraram peças. Ninguém mais tem esse conjunto.",phPlay:"Jogar com minhas fotos",phFull:"Não coube no aparelho. Tente com menos fotos.",
 legalSub:"Assinatura com renovação automática. O teste grátis de 7 dias vira assinatura anual de {Y} se não for cancelado até 24 horas antes do fim. A cobrança é feita na sua conta da App Store ou do Google Play. Cancele quando quiser em Ajustes > Assinaturas (iPhone) ou Google Play > Pagamentos e assinaturas (Android).",
 legalNo:"Nada aqui é sorteio: você sempre sabe exatamente o que está comprando.",
@@ -234,8 +246,9 @@ year:"Yearly",yearS:"7 days free, then",month:"Monthly",monthS:"Renews every mon
 tryFree:"Try free",subscribe:"Subscribe",buy:"Buy",owned:"Owned",active:"Pass active ✓",
 offersT:"Offers",welcome:"Welcome pack",welcomeS:"20 hints, 10 shuffles and the Fruits tile set. Once only, in your first week.",
 helpT:"Extra help",h10:"10 hints + 5 shuffles",h50:"50 hints + 25 shuffles",
-colT:"Collections (30 levels each)",col_verao:"Collection of the Month: Bay Summer",col_carnaval:"Carnival Collection",col_mar:"Deep Sea Collection",colS:"30 themed levels with their own tiles",colMonthS:"New in November. Included in the Pass.",newTag:"new",playCol:"Play",
-tsT:"Tile sets",ts_baia:"Bay",ts_frutas:"Fruits",ts_bichos:"Animals",tsS:"New drawings on every tile",use:"Use",inUse:"In use",tilesL:"Tile set",tsLocked:"Shop tile set.",
+colT:"Collections (30 levels each)",col_verao:"Collection of the Month: Bay Summer",col_carnaval:"Carnival",col_mar:"Deep Sea",col_fazenda:"Little Farm",col_pomar:"Tropical Fruits",col_flores:"Flower Garden",col_doces:"Grandma's Bakery",col_mundo:"Around the World",col_espaco:"Space Trip",col_natal:"Christmas at the Bay",
+colsT:"Collections",colsP:"Each collection has 30 new levels with their own tiles. Pass members play them all.",colAllT:"All collections",colAllS:"All 10 collections available today for a third of the price.",dealTag:"-66%",progress:"{p}/30 levels",soonT:"A new collection arrives every week.",colS:"30 themed levels with their own tiles",colMonthS:"New in November. Included in the Pass.",newTag:"new",playCol:"Play",
+tsT:"Tile sets",ts_baia:"Bay",ts_frutas:"Fruits",ts_bichos:"Animals",ts_mar:"Sea",ts_flores:"Flowers",ts_doces:"Sweets",ts_esportes:"Sports",tsP:"They change the drawings on all 600 levels.",tsS:"New drawings on every tile",use:"Use",inUse:"In use",tilesL:"Tile set",tsLocked:"Shop tile set.",
 phT:"Tiles with your photos",ts_fotos:"My Family",phS:"Turn 12 to 32 photos from your gallery (family, grandkids, pets) into the game tiles. Nobody else will have this set.",phTag:"exclusive",phPass:"1 set included in the Pass",phCreate:"Create my set",phEdit:"Change photos",phPrivacy:"🔒 Your photos stay on this device. Nothing is uploaded.",phMin:"Pick at least 12 photos.",phMax:"We used the first 32 photos.",phWorking:"Preparing your photos…",phReadyT:"Your set is ready!",phReadyP:"{n} photos became tiles. Nobody else has this set.",phPlay:"Play with my photos",phFull:"Not enough space on this device. Try fewer photos.",
 legalSub:"Auto-renewing subscription. The 7-day free trial becomes a yearly subscription at {Y} unless cancelled at least 24 hours before it ends. Payment is charged to your App Store or Google Play account. Cancel anytime in Settings > Subscriptions (iPhone) or Google Play > Payments & subscriptions (Android).",
 legalNo:"Nothing here is random: you always know exactly what you are buying.",
@@ -265,8 +278,8 @@ ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm 
 };
 const CH_EMOJI=["🏖️","⚓","🍍","🌅","🌴","🐠","🦀","🛶","🎉","🔭","☀️","💧","🌺","🏡","⛵","🌙","🌊","🍋","🐟","🐢","🐚","🎭","🚢","⭐","🎈","🐙","🦜","🎆","🐳","🐋"];
 const PRICES={
-pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90"},
-en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99"}
+pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90",colAll:"R$ 39,90"},
+en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99",colAll:"US$ 9.99"}
 };
 const KEY="mahjongBaia_v2";
 function today(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
@@ -297,9 +310,22 @@ const SET_FRUTAS=["🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🫐"
 const SET_BICHOS=["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦","🐤","🦆","🦉","🐴","🦄","🐝","🐛","🦋","🐌","🐞","🐢","🐍","🦎","🦖"];
 const PKEY=KEY+"_fotos";
 let PHOTOS=[]; try{PHOTOS=JSON.parse(localStorage.getItem(PKEY)||"[]");}catch(e){PHOTOS=[];}
-const TILESETS={baia:SET_BAIA,frutas:SET_FRUTAS,bichos:SET_BICHOS,fotos:PHOTOS};
+const SET_TMAR=["🐋","🐬","🐠","🐟","🐡","🦈","🐙","🦑","🦀","🦞","🦐","🐚","🌊","⚓","🐢","🐧","🐳","⛵","🏝️","💎","💧","🦭","🪸","🐊","🦦","🦩","🐸","🛶","🎣","🚤","🏖️","🌴"];
+const SET_TFLORES=["🌸","🌺","🌻","🌼","🌷","🌹","🥀","💐","🪷","🌿","🍀","🍁","🍂","🌱","🌵","🪴","🦋","🐝","🐞","🐛","🍄","🌳","🌲","🌾","🌴","🎋","🎍","☘️","🌰","🐌","🐦","🌈"];
+const SET_TDOCES=["🍰","🎂","🧁","🍩","🍪","🍫","🍬","🍭","🍮","🍯","🍦","🍨","🍧","🥧","🍡","🍓","🍒","🍌","🥥","🍿","🥞","🧇","🍵","☕","🥐","🥨","🍑","🍉","🍇","🥛","🧃","🍋"];
+const SET_TESP=["⚽","🏀","🏈","⚾","🥎","🎾","🏐","🏉","🥏","🎱","🏓","🏸","🏒","🏑","🥍","🏏","⛳","🏹","🎣","🥊","🥋","🛹","⛸️","🎿","🛷","🥌","🏆","🥇","🥈","🥉","🏅","🎯"];
+const TILESETS={baia:SET_BAIA,frutas:SET_FRUTAS,bichos:SET_BICHOS,mar:SET_TMAR,flores:SET_TFLORES,doces:SET_TDOCES,esportes:SET_TESP,fotos:PHOTOS};
+const TSLIST=["frutas","bichos","mar","flores","doces","esportes"];
 function photoAccess(){ return S.premium||S.photoOwned; }
-const PACKS=["verao","carnaval","mar"], PACKSET={verao:SET_VERAO,carnaval:SET_CARNAVAL,mar:SET_MAR};
+const SET_FAZENDA=["🐄","🐖","🐑","🐐","🐓","🐣","🐥","🦆","🐎","🐇","🐕","🐈","🐝","🌾","🌽","🥕","🍅","🥚","🥛","🧀","🚜","🏡","🐮","🐷","🐴","🌻"];
+const SET_POMAR=["🍍","🥭","🍌","🥥","🍉","🍈","🍓","🍒","🍑","🍊","🍋","🍇","🍏","🍎","🍐","🥝","🫐","🍅","🥑","🌴","🌺","🍹","🧃","🍯"];
+const SET_FLORES=["🌸","🌺","🌻","🌼","🌷","🌹","🥀","💐","🪷","🌿","🍀","🍁","🍂","🌱","🌵","🪴","🦋","🐝","🐞","🐛","🍄","🌳","🌲","🌾"];
+const SET_DOCES=["🍰","🎂","🧁","🍩","🍪","🍫","🍬","🍭","🍮","🍯","🍦","🍨","🍧","🥧","🍡","🍓","🍒","🍌","🥥","🍿","🥞","🧇","🍵","☕"];
+const SET_MUNDO=["🗽","🗼","🏰","🗿","🕌","⛩️","🏯","🎡","🎢","🌋","🗻","🏝️","🏜️","🏟️","🚂","✈️","🚢","🧳","🗺️","🧭","⛺","🌉","🌅","🏔️"];
+const SET_ESPACO=["🚀","🛸","🌍","🌎","🌏","🌕","🌖","🌗","🌘","🌑","🌙","⭐","🌟","✨","☄️","🪐","🌌","🔭","🛰️","👽","🌞","⚡","🌈","💫"];
+const SET_NATAL=["🎄","🎅","🤶","🦌","⛄","☃️","🎁","🔔","🕯️","⭐","🍪","🥛","🧦","🎀","❄️","🌟","🍬","🎶","🛷","🧤","🧣","🍫","🎉","🍷"];
+const PACKS=["verao","mar","fazenda","pomar","flores","doces","mundo","espaco","natal","carnaval"];
+const PACKSET={verao:SET_VERAO,carnaval:SET_CARNAVAL,mar:SET_MAR,fazenda:SET_FAZENDA,pomar:SET_POMAR,flores:SET_FLORES,doces:SET_DOCES,mundo:SET_MUNDO,espaco:SET_ESPACO,natal:SET_NATAL};
 function tsOwned(id){ if(id==="fotos") return photoAccess()&&PHOTOS.length>=12; return id==="baia"||S.premium||S.tileSets.includes(id); }
 const isImg=f=>typeof f==="string"&&f.startsWith("data:");
 const faceHtml=(f,size)=>isImg(f)?'<img src="'+f+'" alt="">':'<span class="em" style="font-size:'+size+'px">'+f+'</span>';
@@ -396,7 +422,9 @@ if(ok) return pairs;
 return null;
 }
 function newBoard(pos,seed,fmin,fmax){
-const tr=wrap.clientHeight>wrap.clientWidth*1.15;
+const fit=(sw)=>{ let mx=0,my=0,mz=0; pos.forEach(q=>{ const x=sw?q.y:q.x, y=sw?q.x:q.y; mx=Math.max(mx,x+2); my=Math.max(my,y+2); mz=Math.max(mz,q.z); });
+return Math.min((wrap.clientWidth-16)/(mx/2+mz*0.1+0.2),(wrap.clientHeight-16)/((my/2)*1.28+mz*0.1+0.2)); };
+const tr=fit(true)>fit(false)*1.02;
 G={tiles:pos.map(p=>tr?{x:p.y,y:p.x,z:p.z,f:0,alive:true}:{x:p.x,y:p.y,z:p.z,f:0,alive:true}),sel:-1,undo:[],used:0};
 buildNb();
 const R=rng(seed);
@@ -566,15 +594,13 @@ if(!S.premium){
 h+='<h3>'+t("helpT")+'</h3>'+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
 }
 h+='<h3>'+t("colT")+'</h3>';
-PACKS.forEach(id=>{ const own=S.premium||S.packs.includes(id), sub=id==="verao"?t("colMonthS"):t("colS"), tg=id==="verao"?{tag:t("newTag")}:{};
-h+=own? row("pk_"+id,t("col_"+id),sub,"",t("playCol"),tg) : row("pk_"+id,t("col_"+id),sub,P("col"),t("buy"),tg); });
+h+=collGrid();
 h+='<h3>'+t("phT")+'</h3>';
 { const acc=photoAccess(), has=PHOTOS.length>=12, thumbs=has?'<span class="thumbs">'+PHOTOS.slice(0,6).map(u=>'<img src="'+u+'" alt="">').join("")+'</span><br>':'';
 h+=row("phBuy",t("ts_fotos")+(S.tileSet==="fotos"&&has?' ✓':''),thumbs+t("phS")+(S.premium?'<br><b>'+t("phPass")+'</b>':''),acc?"":P("photo"),acc?(has?t("phEdit"):t("phCreate")):t("buy"),{tag:t("phTag")}).replace('class="plan','class="plan excl');
 h+='<div class="privacy">'+t("phPrivacy")+'</div>'; }
 h+='<h3>'+t("tsT")+'</h3>';
-["frutas","bichos"].forEach(id=>{ const own=tsOwned(id), cur=S.tileSet===id;
-h+=row("ts_"+id,t("ts_"+id),'<span class="em" style="font-size:20px">'+TILESETS[id].slice(0,5).join(" ")+'</span><br>'+t("tsS"),own?"":P("theme"),own?(cur?t("inUse"):t("use")):t("buy"),{owned:own&&cur}); });
+h+=tsGrid();
 h+='<div class="legal">'+t("legalSub").replace("{Y}",P("year").split("/")[0])+'</div><div class="legal">'+t("legalNo")+'</div>';
 h+='<div class="links"><button id="lRestore">'+t("restore")+'</button><button id="lManage">'+t("manage")+'</button><button id="lTerms">'+t("terms")+'</button><button id="lPriv">'+t("privacy")+'</button></div>';
 h+='<p style="font-size:13px">'+t("proto")+'</p><button class="big" id="mClose">'+t("close")+'</button>';
@@ -586,10 +612,9 @@ bind("pLife",()=>{S.premium=true;S.plan="life";done();});
 bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.tileSets.includes("frutas"))S.tileSets.push("frutas");done();});
 bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
 bind("oH50",()=>{S.bankH+=50;S.bankS+=25;done();});
-PACKS.forEach(id=>bind("pk_"+id,()=>{ if(S.premium||S.packs.includes(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
+bindCatalog(done,openStore);
 bind("fdBuy",()=>{ if(!S.founderNo){ S.founderNo=5000-founderLeft()+1; S.frame="fundador"; done(); } });
 bind("phBuy",()=>{ if(!photoAccess()){ S.photoOwned=true; done(); return; } pickPhotos(); });
-["frutas","bichos"].forEach(id=>bind("ts_"+id,()=>{ if(!tsOwned(id)){S.tileSets.push(id);S.tileSet=id;done();} else {S.tileSet=id;save();toast(t("inUse")+": "+t("ts_"+id));openStore();} }));
 bind("lRestore",()=>toast(t("restored"))); bind("lManage",()=>toast(t("manageSim")));
 bind("lTerms",()=>toast(t("linkSim"))); bind("lPriv",()=>toast(t("linkSim")));
 bind("mClose",closeModal);
@@ -601,7 +626,7 @@ modal('<h2>'+t("setT")+'</h2>'
 +'<div class="setRow"><span>'+t("hl")+'</span><button class="toggle'+(S.hl?' on':'')+'" id="sHl">'+(S.hl?'ON':'OFF')+'</button></div>'
 +'<div class="setRow"><span>'+t("lang")+'</span><button class="toggle on" id="sLang">'+(S.lang==="pt"?"PT":"EN")+'</button></div>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("theme")+'</b></p><div class="themes">'+th("baia","th_baia")+th("contraste","th_contraste")+th("noite","th_noite2")+th("jardim","th_jardim2")+'</div>'
-+'<p style="text-align:left;margin-top:14px"><b>'+t("tilesL")+'</b></p><div class="themes">'+["baia","frutas","bichos","fotos"].map(id=>'<button data-ts="'+id+'" class="'+(S.tileSet===id?'cur':'')+'">'+(id==="fotos"?(PHOTOS.length?'<span class="thumbs"><img src="'+PHOTOS[0]+'" alt=""></span>':'📷'):'<span class="em">'+TILESETS[id][0]+'</span>')+' '+t("ts_"+id)+(tsOwned(id)?'':' 🔒')+'</button>').join("")+'</div>'
++'<p style="text-align:left;margin-top:14px"><b>'+t("tilesL")+'</b></p><div class="themes">'+["baia"].concat(TSLIST,["fotos"]).map(id=>'<button data-ts="'+id+'" class="'+(S.tileSet===id?'cur':'')+'">'+(id==="fotos"?(PHOTOS.length?'<span class="thumbs"><img src="'+PHOTOS[0]+'" alt=""></span>':'📷'):'<span class="em">'+TILESETS[id][0]+'</span>')+' '+t("ts_"+id)+(tsOwned(id)?'':' 🔒')+'</button>').join("")+'</div>'
 +'<div class="links"><button id="lRestore2">'+t("restore")+'</button><button id="lManage2">'+t("manage")+'</button><button id="lTerms2">'+t("terms")+'</button><button id="lPriv2">'+t("privacy")+'</button><button id="lSup2">'+t("support")+'</button></div>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("jumpL")+'</b></p><div class="jump"><input id="jIn" type="number" min="1" max="'+MAX_LEVEL+'" value="'+Math.min(S.level,MAX_LEVEL)+'"><button id="jGo">'+t("go")+'</button></div>'
 +'<button class="sec" id="sChamp">'+t("champSim")+'</button><button class="sec" id="sReset">'+t("reset")+'</button>'+(S.premium?'<button class="sec" id="sCancel">'+t("cancelP")+'</button>':'')
@@ -633,7 +658,7 @@ $("bPlay").textContent=fin?(t("play")+" · "+MAX_LEVEL+"/"+MAX_LEVEL+" ✓"):(t(
 $("bRank").textContent=t("rank");
 { const st=curStreak(); $("prof").innerHTML=avatarHtml(S.nick,S.frame)+'<div class="pn"><b>'+esc(S.nick)+'</b><small>'+frameLabel()+(badgesFor(meRow())?' · '+badgesFor(meRow()):'')+'</small></div><span style="color:var(--muted)">✏️</span>'; }
 { const st=curStreak(); $("bDaily").textContent=(S.dailyDone===today()?t("dailyDone"):t("daily"))+(st?" · 🔥 "+st:""); }
-$("bAlbum").textContent=t("album");
+$("bAlbum").textContent=t("album"); $("bCols").textContent="🗂️ "+t("colsT");
 $("bStore").innerHTML=S.premium?'<span class="premiumTag">'+t("active")+'</span>':t("store");
 $("bSettings").textContent=t("settings"); $("tProto").textContent=t("proto");
 $("bLang").textContent=S.lang==="pt"?"🇧🇷 PT · trocar":"🇺🇸 EN · switch";
@@ -677,11 +702,39 @@ const b=buildPositions(prm,seed); newBoard(b.pos,seed,Math.min(prm.fmin,FACES.le
 G.level=k; G.mode="pack"; G.pack=id; render();
 }
 $("bPlay").onclick=()=>{ if(S.level>MAX_LEVEL){ modal('<h2>'+t("allDone")+'</h2><p>'+t("allDoneP")+'</p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); return; } startLevel(S.level); };
-$("bDaily").onclick=startDaily; $("bRank").onclick=()=>openRank("w"); $("prof").onclick=openProfile; $("bAlbum").onclick=openAlbum;
+$("bDaily").onclick=startDaily; $("bCols").onclick=openCollections; $("bRank").onclick=()=>openRank("w"); $("prof").onclick=openProfile; $("bAlbum").onclick=openAlbum;
 $("bStore").onclick=openStore; $("bGStore").onclick=openStore; $("bSettings").onclick=openSettings;
 $("bLang").onclick=()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();};
 $("bBack").onclick=goHome; $("bHint").onclick=useHint; $("bUndo").onclick=useUndo; $("bShuffle").onclick=()=>useShuffle(false);
 window.addEventListener("resize",()=>{ if(G && $("game").classList.contains("on")) render(); });
+const PACK_ICON={verao:"☀️🏖️🍦",mar:"🐙🦈🐚",fazenda:"🐄🐓🚜",pomar:"🍍🥭🍉",flores:"🌸🌻🌷",doces:"🧁🍩🍫",mundo:"🗽🗼🗿",espaco:"🚀🪐🌙",natal:"🎄🎅🎁",carnaval:"🎭🥁🎉"};
+function packOwned(id){ return S.premium||S.packs.includes(id); }
+function collGrid(){
+let h='';
+if(!S.premium && PACKS.some(id=>!S.packs.includes(id))) h+='<div class="plan best"><div class="pn"><b>🗂️ '+t("colAllT")+'<span class="tag">'+t("dealTag")+'</span></b><small>'+t("colAllS")+'</small></div><div class="price">'+P("colAll")+'</div><button id="pkAll">'+t("buy")+'</button></div>';
+h+='<div class="grid2">';
+PACKS.forEach(id=>{ const own=packOwned(id), pr=Math.min(30,(S.packProg[id]||1)-1), isNew=id==="verao";
+h+='<div class="gc'+(isNew?' new':'')+'">'+(isNew?'<span class="tag">'+t("newTag")+'</span>':'')+'<span class="em">'+PACK_ICON[id]+'</span><b>'+t("col_"+id)+'</b><small>'+(own?t("progress").replace("{p}",pr):(isNew?t("colMonthS"):t("colS")))+'</small>'
++(own?'':'<span class="pr">'+P("col")+'</span>')+'<button id="pk_'+id+'">'+(own?t("playCol"):t("buy"))+'</button></div>'; });
+return h+'</div><p style="font-size:13px">'+t("soonT")+'</p>';
+}
+function tsGrid(){
+let h='<p style="text-align:left;font-size:14px;margin:0 0 4px">'+t("tsP")+'</p><div class="grid2">';
+TSLIST.forEach(id=>{ const own=tsOwned(id), cur=S.tileSet===id;
+h+='<div class="gc"><span class="em">'+TILESETS[id].slice(0,4).join("")+'</span><b>'+t("ts_"+id)+'</b><small>'+t("tsS")+'</small>'+(own?'':'<span class="pr">'+P("theme")+'</span>')
++'<button id="ts_'+id+'"'+(own&&cur?' class="owned" disabled':'')+'>'+(own?(cur?t("inUse"):t("use")):t("buy"))+'</button></div>'; });
+return h+'</div>';
+}
+function bindCatalog(done,back){
+bind("pkAll",()=>{ PACKS.forEach(id=>{ if(!S.packs.includes(id)) S.packs.push(id); }); done(); });
+PACKS.forEach(id=>bind("pk_"+id,()=>{ if(packOwned(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
+TSLIST.forEach(id=>bind("ts_"+id,()=>{ if(!tsOwned(id)){S.tileSets.push(id);S.tileSet=id;done();} else {S.tileSet=id;save();toast(t("inUse")+": "+t("ts_"+id));back();} }));
+}
+function openCollections(){
+let h='<h2>🗂️ '+t("colsT")+'</h2><p>'+t("colsP")+'</p>'+collGrid()+'<h3>'+t("tsT")+'</h3>'+tsGrid()+'<p style="font-size:13px">'+t("proto")+'</p><button class="big" id="mClose">'+t("close")+'</button>';
+modal(h); bind("mClose",closeModal);
+bindCatalog(()=>{save();toast(t("simBuy"));openCollections();applyPrefs();},openCollections);
+}
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fmtNo=n=>String(n).padStart(4,"0");
 function founderLeft(){ return 5000-(4100+Math.floor((dayNum()-20400)%300)); }
@@ -796,7 +849,7 @@ function pickPhotos(){ const i=$("phIn"); i.value=""; i.click(); }
 $("phIn").addEventListener("change",e=>{ usePhotoFiles(e.target.files); });
 applyPrefs();
 window.__mj={get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
-isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
+isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,openCollections,PACKS,PACKSET,TILESETS,TSLIST,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>
 </body>
