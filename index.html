@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Mahjong da Baía (protótipo)</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mahjong">
+<meta name="theme-color" content="#cfeaf4">
+<meta name="robots" content="noindex">
+<style>
+:root{
+--bg1:#e8f6fb; --bg2:#cfeaf4; --ink:#123047; --muted:#4d6b80; --accent:#0e7c86; --accent2:#f2b134;
+--tile:#fffaf0; --tileEdge:#d8c7a6; --tileEdge2:#b9a37c; --panel:#ffffff; --danger:#c0392b; --ok:#1e9e5a;
+}
+body.theme-contraste{ --bg1:#ffffff; --bg2:#f2f2f2; --ink:#000; --muted:#222; --accent:#004a99; --tile:#ffffff; --tileEdge:#555; --tileEdge2:#222; }
+body.theme-noite{ --bg1:#16233a; --bg2:#0d1626; --ink:#f3f6fb; --muted:#b8c6da; --accent:#5cc3d6; --panel:#1f2f4a; --tile:#fdf6e6; --tileEdge:#8d7b5a; --tileEdge2:#6c5b3d; }
+body.theme-jardim{ --bg1:#eef7e4; --bg2:#d7ecc4; --ink:#21361a; --muted:#4f6b44; --accent:#3f8a2f; --tile:#fffdf3; --tileEdge:#cdbf95; --tileEdge2:#a99a6c; }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0; height:100%; overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink);
+background:linear-gradient(180deg,var(--bg1),var(--bg2)); font-size:18px; user-select:none}
+button{font:inherit; color:inherit; cursor:pointer; border:none}
+input{font:inherit}
+.screen{position:absolute; inset:0; display:none; flex-direction:column}
+.screen.on{display:flex}
+#home{align-items:center; justify-content:center; padding:20px; gap:12px; text-align:center; overflow:auto}
+#home h1{margin:0; font-size:34px}
+#home .sub{color:var(--muted); margin:-6px 0 2px}
+.whale{font-size:58px; line-height:1}
+.badge{display:inline-block; background:var(--ok); color:#fff; border-radius:999px; padding:6px 14px; font-weight:700; font-size:16px}
+.chap{width:100%; max-width:340px; background:var(--panel); border-radius:14px; padding:10px 12px; text-align:left; box-shadow:0 2px 0 rgba(0,0,0,.1)}
+.chap b{font-size:18px}
+.chap small{display:block; color:var(--muted); font-size:15px; margin-top:2px}
+.bar{height:10px; background:rgba(0,0,0,.08); border-radius:99px; margin-top:8px; overflow:hidden}
+.bar i{display:block; height:100%; background:var(--ok); border-radius:99px}
+.proto{font-size:14px; color:var(--muted); max-width:340px}
+.big{width:100%; max-width:340px; min-height:60px; border-radius:16px; background:var(--accent); color:#fff; font-size:22px; font-weight:700; box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.big:active{transform:translateY(2px); box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.sec{width:100%; max-width:340px; min-height:54px; border-radius:14px; background:var(--panel); font-size:19px; font-weight:600; box-shadow:0 2px 0 rgba(0,0,0,.12); border:2px solid rgba(0,0,0,.06)}
+.row{display:flex; gap:10px; width:100%; max-width:340px}
+.row .sec{flex:1}
+.premiumTag{color:var(--accent2); font-weight:800}
+#top{height:58px; display:flex; align-items:center; gap:8px; padding:0 10px; flex:none}
+#top .icon{width:48px; height:48px; border-radius:12px; background:var(--panel); font-size:22px; box-shadow:0 2px 0 rgba(0,0,0,.12)}
+#top .title{flex:1; text-align:center; font-weight:800; font-size:18px; line-height:1.15}
+#top .title small{display:block; font-weight:600; color:var(--muted); font-size:14px}
+#boardWrap{flex:1; position:relative; overflow:hidden}
+#board{position:absolute; left:0; top:0}
+.tile{position:absolute; border-radius:10px; background:var(--tile);
+box-shadow: var(--d) var(--d) 0 var(--tileEdge), calc(var(--d)*1.6) calc(var(--d)*1.6) 0 var(--tileEdge2), 0 0 0 1px rgba(0,0,0,.25);
+display:flex; align-items:center; justify-content:center; transition:opacity .25s, transform .25s, filter .2s}
+.tile .face{position:absolute; inset:9%; border-radius:7px; display:flex; align-items:center; justify-content:center}
+.em{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif; line-height:1}
+body.hl .tile.blocked{filter:brightness(.72) saturate(.5)}
+.tile.sel{outline:4px solid var(--accent2); outline-offset:-2px; transform:translate(-2px,-3px)}
+.tile.hint{animation:pulse .8s infinite alternate}
+@keyframes pulse{from{outline:4px solid var(--ok)} to{outline:6px solid #7ff0b0}}
+.tile.gone{opacity:0; transform:scale(.6); pointer-events:none}
+.tile.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+#bottom{flex:none; display:flex; gap:8px; padding:8px 10px 14px; justify-content:center}
+#bottom button{flex:1; max-width:130px; min-height:64px; border-radius:14px; background:var(--panel); font-weight:700; font-size:16px; box-shadow:0 3px 0 rgba(0,0,0,.14); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px}
+#bottom button .ic{font-size:24px}
+#bottom button .cnt{font-size:13px; color:var(--muted); font-weight:600}
+#bottom button:disabled{opacity:.45}
+#modal{position:absolute; inset:0; background:rgba(5,20,35,.55); display:none; align-items:center; justify-content:center; padding:14px; z-index:99999}
+#modal.on{display:flex}
+.card{background:var(--panel); border-radius:20px; padding:20px 18px; width:100%; max-width:400px; max-height:94vh; overflow:auto; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.card h2{margin:4px 0 10px; font-size:25px}
+.card h3{margin:18px 0 4px; font-size:19px; text-align:left}
+.card p{margin:8px 0; color:var(--muted); line-height:1.4}
+.card .big,.card .sec{margin-top:10px}
+.stars{font-size:44px; letter-spacing:4px}
+.plan{border:2px solid rgba(0,0,0,.1); border-radius:14px; padding:12px; margin:8px 0; text-align:left; display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px}
+.plan.best{border-color:var(--accent2); background:rgba(242,177,52,.08)}
+.plan .pn{flex:1 1 100%}
+.plan .price{flex:1; font-weight:800; font-size:18px}
+.plan .price small{display:block; font-weight:600}
+.plan b{display:block; font-size:18px}
+.plan small{color:var(--muted)}
+.plan button{min-height:48px; border-radius:12px; background:var(--accent); color:#fff; font-weight:700; padding:0 14px}
+.plan button.owned{background:#9fb3bf}
+.tag{display:inline-block; background:var(--accent2); color:#3b2a00; font-size:13px; font-weight:800; border-radius:6px; padding:2px 6px; margin-left:6px; vertical-align:middle}
+.noads{background:var(--ok); color:#fff; border-radius:12px; padding:10px; font-weight:700; margin:6px 0 10px}
+.legal{font-size:13px; color:var(--muted); text-align:left; line-height:1.45; margin-top:12px}
+.links{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:8px}
+.links button{background:none; text-decoration:underline; color:var(--accent); font-size:15px; min-height:40px; padding:0 6px}
+ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-height:1.5}
+.setRow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 4px; border-bottom:1px solid rgba(0,0,0,.08); text-align:left}
+.toggle{min-width:76px; min-height:44px; border-radius:999px; background:#c9d3db; font-weight:700}
+.toggle.on{background:var(--ok); color:#fff}
+.themes{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px}
+.themes button{min-height:52px; border-radius:12px; background:var(--panel); border:2px solid rgba(0,0,0,.12); font-weight:700; font-size:16px}
+.themes button.cur{border-color:var(--accent)}
+.album{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px}
+.pc{border-radius:12px; padding:10px 4px; background:rgba(0,0,0,.05); font-size:13px; font-weight:700; min-height:92px}
+.pc .em{font-size:34px; display:block; margin-bottom:4px}
+.pc.lock{opacity:.45}
+.jump{display:flex; gap:8px; margin-top:8px}
+.jump input{flex:1; min-height:48px; border-radius:12px; border:2px solid rgba(0,0,0,.15); padding:0 10px; background:var(--panel); color:var(--ink)}
+.jump button{min-height:48px; border-radius:12px; background:var(--accent); color:#fff; font-weight:700; padding:0 16px}
+#toast{position:absolute; left:50%; bottom:100px; transform:translateX(-50%); background:rgba(10,30,45,.92); color:#fff; padding:12px 18px; border-radius:12px; font-size:17px; z-index:100000; opacity:0; transition:opacity .25s; pointer-events:none; max-width:90%; text-align:center}
+#toast.on{opacity:1}
+</style>
+</head>
+<body class="hl">
+<div id="home" class="screen on">
+<div class="whale">🐋🀄</div>
+<h1 id="tTitle">Mahjong da Baía</h1>
+<div class="sub" id="tSub">Relaxe e combine as peças</div>
+<div class="badge" id="tNoAds">100% sem anúncios</div>
+<div class="chap" id="chap"></div>
+<button class="big" id="bPlay">Jogar</button>
+<button class="sec" id="bDaily">Desafio do dia</button>
+<div class="row">
+<button class="sec" id="bAlbum">📮 Álbum</button>
+<button class="sec" id="bStore">⭐ Loja</button>
+</div>
+<div class="row">
+<button class="sec" id="bSettings">⚙️ Ajustes</button>
+<button class="sec" id="bLang">🇧🇷 / 🇺🇸</button>
+</div>
+<div class="proto" id="tProto"></div>
+</div>
+<div id="game" class="screen">
+<div id="top">
+<button class="icon" id="bBack" aria-label="Voltar">⬅</button>
+<div class="title"><span id="gTitle"></span><small id="gLeft"></small></div>
+<button class="icon" id="bGStore" aria-label="Loja">⭐</button>
+</div>
+<div id="boardWrap"><div id="board"></div></div>
+<div id="bottom">
+<button id="bHint"><span class="ic">💡</span><span id="lHint"></span><span class="cnt" id="cHint"></span></button>
+<button id="bUndo"><span class="ic">↩️</span><span id="lUndo"></span><span class="cnt" id="cUndo"></span></button>
+<button id="bShuffle"><span class="ic">🔀</span><span id="lShuffle"></span><span class="cnt" id="cShuffle"></span></button>
+</div>
+</div>
+<div id="modal"><div class="card" id="card"></div></div>
+<div id="toast"></div>
+<script>
+(function(){
+"use strict";
+const MAX_LEVEL=600, PER_CHAPTER=20, FREE_HINTS=3, FREE_SHUFFLES=3;
+const T={
+pt:{title:"Mahjong da Baía",sub:"Relaxe e combine as peças",noads:"100% sem anúncios",play:"Jogar",level:"Fase",chapter:"Capítulo",daily:"Desafio do dia",dailyDone:"Desafio do dia ✓",
+album:"📮 Álbum",store:"⭐ Loja",settings:"⚙️ Ajustes",proto:"Protótipo: arte provisória e compras simuladas (nenhuma cobrança real).",
+tiles:"peças",hint:"Dica",undo:"Desfazer",shuffle:"Embaralhar",free:"livre",unl:"ilimitado",
+blocked:"Peça presa. Ela precisa ter um lado livre e nada por cima.",noMatch:"Não formam par. Tente outra.",won:"Parabéns!",wonP:"Você limpou o tabuleiro.",next:"Próxima fase",home:"Início",
+calm:"Fase tranquila",special:"Fase especial",stuck:"Sem jogadas",stuckP:"Não há pares livres. Embaralhar agora é grátis.",shuffleFree:"Embaralhar grátis",
+outHints:"Acabaram as dicas de hoje",outShuffle:"Acabaram os embaralhamentos de hoje",outP:"Amanhã você ganha mais. Se quiser, veja as opções na loja.",seeStore:"Ver a loja",close:"Fechar",nothingUndo:"Nada para desfazer.",
+chDone:"Capítulo concluído!",chDoneP:"Você ganhou um cartão-postal para o seu álbum:",allDone:"Você completou todas as fases disponíveis!",allDoneP:"Novos capítulos chegam toda semana. Enquanto isso, jogue o desafio do dia e as coleções.",
+albumT:"Álbum de postais",albumP:"Complete um capítulo para ganhar o postal.",
+storeT:"Loja",noAdsBanner:"Sem anúncios. Sempre. Para todos.",passT:"Passe da Baía",passWhat:"O Passe libera:",
+b1:"Dicas e embaralhamentos ilimitados",b2:"Todos os temas",b3:"Arquivo de desafios diários",b4:"Todas as coleções lançadas enquanto o Passe estiver ativo",
+year:"Anual",yearS:"7 dias grátis, depois",month:"Mensal",monthS:"Renova todo mês",life:"Vitalício",lifeS:"Pagamento único, sem renovação",popular:"mais escolhido",
+tryFree:"Testar grátis",subscribe:"Assinar",buy:"Comprar",owned:"Comprado",active:"Passe ativo ✓",
+offersT:"Ofertas",welcome:"Pacote de boas-vindas",welcomeS:"20 dicas, 10 embaralhamentos e o tema Jardim. Uma vez só, na primeira semana.",
+helpT:"Ajuda avulsa",h10:"10 dicas + 5 embaralhamentos",h50:"50 dicas + 25 embaralhamentos",
+colT:"Coleções (30 fases cada)",col_carnaval:"Coleção Carnaval",col_mar:"Coleção Fundo do Mar",colS:"30 fases temáticas com figuras próprias",playCol:"Jogar",
+themesT:"Temas",th_noite:"Tema Noite",th_jardim:"Tema Jardim",thS:"Cores novas para o tabuleiro",
+legalSub:"Assinatura com renovação automática. O teste grátis de 7 dias vira assinatura anual de {Y} se não for cancelado até 24 horas antes do fim. A cobrança é feita na sua conta da App Store ou do Google Play. Cancele quando quiser em Ajustes > Assinaturas (iPhone) ou Google Play > Pagamentos e assinaturas (Android).",
+legalNo:"Nada aqui é sorteio: você sempre sabe exatamente o que está comprando.",
+restore:"Restaurar compras",manage:"Gerenciar assinatura",terms:"Termos de uso",privacy:"Privacidade",support:"Suporte",
+simBuy:"Compra simulada concluída.",restored:"Compras restauradas (simulação).",linkSim:"No app final, abre a página no site.",
+manageSim:"No app final, abre a tela de assinaturas da loja.",
+setT:"Ajustes",hl:"Escurecer peças presas",theme:"Tema",th_baia:"Baía",th_contraste:"Alto contraste",th_noite2:"Noite",th_jardim2:"Jardim",locked:"Tema da loja.",lang:"Idioma",
+reset:"Apagar progresso (teste)",cancelP:"Cancelar Passe (teste)",resetDone:"Progresso apagado.",jumpL:"Ir para a fase (teste)",go:"Ir",
+dailyT:"Desafio do dia",dailyAlready:"Você já fez o desafio de hoje. Volte amanhã!",dailyWon:"Desafio do dia concluído!",confirmReset:"Apagar tudo?",yes:"Sim, apagar",no:"Cancelar",
+colWon:"Fase da coleção concluída!",colEnd:"Coleção completa!",
+ch:["Praia da Baleia","Cais dos Pescadores","Feira da Vila","Ilha do Farol","Coqueiral","Recife de Coral","Mangue","Vila dos Pescadores","Festa Junina","Mirante",
+"Dunas","Cachoeira","Jardim da Vó Dita","A Pousada","Regata","Noite de Lua","Rio Azul","Pomar","Mercado de Peixe","Ilha das Tartarugas",
+"Gruta das Conchas","Carnaval","Porto Antigo","Baía das Estrelas","Morro do Vento","Fundo do Mar","Ilha dos Papagaios","Noite de Fogos","Caminho das Baleias","Cidade da Jubarte"]},
+en:{title:"Bay Mahjong",sub:"Relax and match the tiles",noads:"100% ad-free",play:"Play",level:"Level",chapter:"Chapter",daily:"Daily challenge",dailyDone:"Daily challenge ✓",
+album:"📮 Album",store:"⭐ Shop",settings:"⚙️ Settings",proto:"Prototype: placeholder art and simulated purchases (no real charges).",
+tiles:"tiles",hint:"Hint",undo:"Undo",shuffle:"Shuffle",free:"free",unl:"unlimited",
+blocked:"This tile is blocked. It needs one free side and nothing on top.",noMatch:"Not a pair. Try another.",won:"Well done!",wonP:"You cleared the board.",next:"Next level",home:"Home",
+calm:"Relaxing level",special:"Special level",stuck:"No moves",stuckP:"No free pairs left. Shuffling now is free.",shuffleFree:"Free shuffle",
+outHints:"No hints left today",outShuffle:"No shuffles left today",outP:"You get more tomorrow. If you like, see the options in the shop.",seeStore:"See the shop",close:"Close",nothingUndo:"Nothing to undo.",
+chDone:"Chapter complete!",chDoneP:"You earned a postcard for your album:",allDone:"You finished every level available!",allDoneP:"New chapters arrive every week. Meanwhile, play the daily challenge and the collections.",
+albumT:"Postcard album",albumP:"Finish a chapter to earn its postcard.",
+storeT:"Shop",noAdsBanner:"No ads. Ever. For everyone.",passT:"Bay Pass",passWhat:"The Pass unlocks:",
+b1:"Unlimited hints and shuffles",b2:"All themes",b3:"Daily challenge archive",b4:"Every collection released while the Pass is active",
+year:"Yearly",yearS:"7 days free, then",month:"Monthly",monthS:"Renews every month",life:"Lifetime",lifeS:"One payment, no renewal",popular:"most popular",
+tryFree:"Try free",subscribe:"Subscribe",buy:"Buy",owned:"Owned",active:"Pass active ✓",
+offersT:"Offers",welcome:"Welcome pack",welcomeS:"20 hints, 10 shuffles and the Garden theme. Once only, in your first week.",
+helpT:"Extra help",h10:"10 hints + 5 shuffles",h50:"50 hints + 25 shuffles",
+colT:"Collections (30 levels each)",col_carnaval:"Carnival Collection",col_mar:"Deep Sea Collection",colS:"30 themed levels with their own tiles",playCol:"Play",
+themesT:"Themes",th_noite:"Night theme",th_jardim:"Garden theme",thS:"New colors for the board",
+legalSub:"Auto-renewing subscription. The 7-day free trial becomes a yearly subscription at {Y} unless cancelled at least 24 hours before it ends. Payment is charged to your App Store or Google Play account. Cancel anytime in Settings > Subscriptions (iPhone) or Google Play > Payments & subscriptions (Android).",
+legalNo:"Nothing here is random: you always know exactly what you are buying.",
+restore:"Restore purchases",manage:"Manage subscription",terms:"Terms of use",privacy:"Privacy",support:"Support",
+simBuy:"Simulated purchase complete.",restored:"Purchases restored (simulation).",linkSim:"In the final app, this opens the page on the website.",
+manageSim:"In the final app, this opens the store's subscriptions screen.",
+setT:"Settings",hl:"Dim blocked tiles",theme:"Theme",th_baia:"Bay",th_contraste:"High contrast",th_noite2:"Night",th_jardim2:"Garden",locked:"Shop theme.",lang:"Language",
+reset:"Erase progress (test)",cancelP:"Cancel Pass (test)",resetDone:"Progress erased.",jumpL:"Go to level (test)",go:"Go",
+dailyT:"Daily challenge",dailyAlready:"You already played today's challenge. Come back tomorrow!",dailyWon:"Daily challenge complete!",confirmReset:"Erase everything?",yes:"Yes, erase",no:"Cancel",
+colWon:"Collection level complete!",colEnd:"Collection complete!",
+ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm Grove","Coral Reef","Mangrove","Fishing Village","June Festival","Lookout Point",
+"Dunes","Waterfall","Grandma's Garden","The Inn","Regatta","Moonlit Night","Blue River","Orchard","Fish Market","Turtle Island",
+"Shell Cave","Carnival","Old Harbor","Starry Bay","Windy Hill","Deep Sea","Parrot Island","Fireworks Night","Whale Trail","Humpback City"]}
+};
+const CH_EMOJI=["🏖️","⚓","🍍","🌅","🌴","🐠","🦀","🛶","🎉","🔭","☀️","💧","🌺","🏡","⛵","🌙","🌊","🍋","🐟","🐢","🐚","🎭","🚢","⭐","🎈","🐙","🦜","🎆","🐳","🐋"];
+const PRICES={
+pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90"},
+en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99"}
+};
+const KEY="mahjongBaia_v2";
+function today(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function dayNum(){return Math.floor(Date.now()/86400000);}
+function defState(){return {level:1,premium:false,plan:"",lang:(navigator.language||"pt").toLowerCase().startsWith("pt")?"pt":"en",hl:true,theme:"baia",
+day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false};}
+let S=defState();
+try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(defState(),JSON.parse(raw));}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function rollDay(){if(S.day!==today()){S.day=today();S.hints=FREE_HINTS;S.shuffles=FREE_SHUFFLES;save();}}
+rollDay();
+const t=k=>(T[S.lang]&&T[S.lang][k]!==undefined?T[S.lang][k]:T.pt[k]);
+const P=k=>PRICES[S.lang][k];
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let x=Math.imul(a^a>>>15,1|a);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};}
+function hashStr(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;}
+const PALETTE=["#cfe8ff","#c9f0ff","#ffe0bd","#ffcfc7","#ffe4f0","#fff1a8","#d5f3cb","#eadccb","#d9e1ea","#dfe9ff","#c6ecf8","#d8f2cf","#ffd5c9","#efd6f6","#fad2e6","#fff0b8"];
+const SET_BAIA=["🐋","🐬","🐠","🦀","🐚","⭐","🌴","🥥","⚓","⛵","🌊","🐢","🦐","🦑","🐙","🍍","🌺","🌻","🍉","☀️","🌙","🎣","🍋","🦜","🍒","🔔","🎈","🍇","🌽","🐞","🍄","🌵"];
+const SET_CARNAVAL=["🎭","🎉","🎊","🥁","🎺","🎷","💃","🎈","🌟","🍬","🍭","🎵","🎶","🎁","👑","💎","🎸","🎻","🎤","🦚","🌈","🍹","🎀","🎆"];
+const SET_MAR=["🐋","🐬","🐠","🐟","🐡","🦈","🐙","🦑","🦀","🦞","🦐","🐚","🌊","⚓","🐢","🐧","🌴","🐳","🧜","🔱","⛵","🏝️","💎","💧"];
+let FACES=SET_BAIA;
+const faceColor=i=>PALETTE[i%PALETTE.length];
+function baseMask(type,c,r){
+const cells=[];
+const add=(i,j)=>cells.push([i,j]);
+if(type==="twin"){ const w=Math.floor((c-1)/2); for(let j=0;j<r;j++){ for(let i=0;i<w;i++)add(i,j); for(let i=c-w;i<c;i++)add(i,j);} }
+else if(type==="cross"){ const h0=Math.floor(r/2)-1, v0=Math.floor(c/2)-1;
+for(let j=0;j<r;j++)for(let i=0;i<c;i++){ if((j>=h0&&j<=h0+1)||(i>=v0&&i<=v0+1)) add(i,j);} }
+else if(type==="diamond"){ const mid=(r-1)/2; for(let j=0;j<r;j++){ const cut=Math.round(Math.abs(j-mid)); for(let i=cut;i<c-cut;i++)add(i,j);} }
+else { for(let j=0;j<r;j++)for(let i=0;i<c;i++)add(i,j); }
+return cells;
+}
+const SHAPES={
+whale:["..XXXXXX....",".XXXXXXXXX.X","XXXXXXXXXXXX","XXXXXXXXXXX.",".XXXXXXXX..."],
+heart:[".XXX.XXX.","XXXXXXXXX","XXXXXXXXX",".XXXXXXX.","..XXXXX..","...XXX..."],
+anchor:["...XXX...","...XXX...","XXXXXXXXX","XXXXXXXXX","...XXX...","X..XXX..X","XXXXXXXXX",".XXXXXXX."],
+fish:["...XXXX.....","..XXXXXX..XX",".XXXXXXXXXXX","XXXXXXXXXXX.",".XXXXXXX..XX","..XXXXX....."],
+star:["....X....","...XXX...","XXXXXXXXX",".XXXXXXX.","..XXXXX..",".XXX.XXX.","XX.....XX"]
+};
+const SHAPE_KEYS=Object.keys(SHAPES);
+function maskFromArt(art){const c=[];art.forEach((row,j)=>[...row].forEach((ch,i)=>{if(ch==="X")c.push([i,j]);}));return c;}
+function stack(base,L,R,halfBias){
+const layers=[base.map(([i,j])=>[2*i,2*j])];
+for(let z=1;z<L;z++){
+const cur=new Set(layers[z-1].map(([x,y])=>x+","+y)); const has=(x,y)=>cur.has(x+","+y);
+const half=R()<halfBias; const nx=[];
+for(const [x,y] of layers[z-1]){
+if(half){ if(has(x+2,y)&&has(x,y+2)&&has(x+2,y+2)) nx.push([x+1,y+1]); }
+else { if(has(x-2,y)&&has(x+2,y)&&has(x,y-2)&&has(x,y+2)) nx.push([x,y]); }
+}
+if(!nx.length) break; layers.push(nx);
+}
+const out=[]; layers.forEach((lay,z)=>lay.forEach(([x,y])=>out.push({x,y,z})));
+if(out.length%2){ let k=out.length-1; out.splice(k,1); }
+return out;
+}
+function levelParams(n){
+const p=((n-1)%PER_CHAPTER)+1;
+let target,L,fmin,fmax;
+if(n<=3){ target=[24,28,32][n-1]; L=n===1?1:2; fmin=8; fmax=10; }
+else if(n<=20){ target=32+(n-4)*1.5; L=n<12?2:3; fmin=10; fmax=16; }
+else if(n<=100){ target=56+(n-20)*0.45; L=3+((n%3)===0?1:0); fmin=16; fmax=24; }
+else { target=72+((n*37)%73); L=4+((n%2)); fmin=24; fmax=32; }
+const kind = n<=3?"normal" : (p%10===0?"special" : (p%5===0?"calm":"normal"));
+if(kind==="calm"){ target=Math.max(24,target*0.6); L=Math.max(1,L-1); }
+return {n,target:Math.round(target),L,fmin,fmax,kind};
+}
+function buildPositions(prm,seed){
+const R=rng(seed);
+if(prm.kind==="special"){
+const k10=Math.floor(prm.n/10), key=SHAPE_KEYS[(k10+Math.floor(k10/5))%SHAPE_KEYS.length];
+const L=prm.n<=20?2:Math.min(prm.L+1,4);
+return {pos:stack(maskFromArt(SHAPES[key]),L,rng(seed),0.6),shape:key};
+}
+const types=prm.n<=20?["rect","rect","diamond"]:["rect","twin","cross","diamond","rect"];
+const type=types[Math.floor(R()*types.length)];
+let best=null;
+for(let c=3;c<=12;c++)for(let r=2;r<=8;r++){
+if((type==="twin"&&c<5)||(type==="cross"&&(c<5||r<4))||(type==="diamond"&&r<3)) continue;
+const pos=stack(baseMask(type,c,r),prm.L,rng(seed),0.5);
+const score=Math.abs(pos.length-prm.target)+Math.abs(c/r-1.6)*3;
+if(pos.length>=16 && (!best||score<best.score)) best={score,pos};
+}
+return {pos:best.pos,shape:type};
+}
+let G=null;
+function buildNb(){
+const ts=G.tiles; ts.forEach(a=>{a.up=[];a.lf=[];a.rt=[];});
+for(let i=0;i<ts.length;i++)for(let k=0;k<ts.length;k++){ if(i===k)continue; const a=ts[i],b=ts[k];
+if(b.z===a.z+1&&Math.abs(b.x-a.x)<2&&Math.abs(b.y-a.y)<2) a.up.push(k);
+else if(b.z===a.z&&Math.abs(b.y-a.y)<2){ if(b.x===a.x-2)a.lf.push(k); else if(b.x===a.x+2)a.rt.push(k); } }
+}
+function isFree(i,alive){ const a=G.tiles[i];
+if(a.up.some(k=>alive[k])) return false;
+return !(a.lf.some(k=>alive[k]) && a.rt.some(k=>alive[k]));
+}
+function pairUp(indices,R){
+for(let attempt=0;attempt<300;attempt++){
+const alive=G.tiles.map(()=>false); indices.forEach(i=>alive[i]=true);
+let remaining=indices.length; const pairs=[]; let ok=true;
+while(remaining>0){
+const free=[]; for(const i of indices) if(alive[i]&&isFree(i,alive)) free.push(i);
+if(free.length<2){ok=false;break;}
+free.sort((p,q)=>G.tiles[q].z-G.tiles[p].z+(R()-.5)*1.5);
+const a=free[0], rest=free.slice(1), b=rest[Math.floor(R()*Math.min(rest.length,4))];
+alive[a]=false; alive[b]=false; remaining-=2; pairs.push([a,b]);
+}
+if(ok) return pairs;
+}
+return null;
+}
+function newBoard(pos,seed,fmin,fmax){
+const tr=wrap.clientHeight>wrap.clientWidth*1.15;
+G={tiles:pos.map(p=>tr?{x:p.y,y:p.x,z:p.z,f:0,alive:true}:{x:p.x,y:p.y,z:p.z,f:0,alive:true}),sel:-1,undo:[],used:0};
+buildNb();
+const R=rng(seed);
+const pairs=pairUp(G.tiles.map((_,i)=>i),R);
+if(!pairs) return newBoard(pos,seed+1,fmin,fmax);
+const nf=Math.max(2,Math.min(FACES.length,Math.min(pairs.length,fmin+Math.floor(R()*(fmax-fmin+1)))));
+const order=[...Array(FACES.length).keys()].sort(()=>R()-.5).slice(0,nf);
+pairs.forEach((pr,k)=>{const f=order[k%nf]; G.tiles[pr[0]].f=f; G.tiles[pr[1]].f=f;});
+}
+const aliveArr=()=>G.tiles.map(x=>x.alive);
+function freePairs(){ const al=aliveArr(), byF={};
+G.tiles.forEach((x,i)=>{ if(x.alive&&isFree(i,al)) (byF[x.f]=byF[x.f]||[]).push(i); });
+const out=[]; for(const f in byF){ if(byF[f].length>=2) out.push([byF[f][0],byF[f][1]]); } return out; }
+function reshuffle(seed){
+const R=rng(seed);
+const idx=G.tiles.map((x,i)=>x.alive?i:-1).filter(i=>i>=0);
+let pairs=pairUp(idx,R);
+if(!pairs){ // não dá para resolver onde estão (ex.: duas peças empilhadas): espalha as restantes num tabuleiro plano
+const n=idx.length, cols=Math.min(n,Math.max(2,Math.ceil(Math.sqrt(n*1.6))));
+const minX=Math.min(...idx.map(i=>G.tiles[i].x)), minY=Math.min(...idx.map(i=>G.tiles[i].y));
+idx.forEach((i,k)=>{G.tiles[i].x=minX+(k%cols)*2; G.tiles[i].y=minY+Math.floor(k/cols)*2; G.tiles[i].z=0;});
+G.tiles.forEach(x=>{ if(!x.alive){ x.x=-99; x.y=-99; x.z=0; } });
+buildNb(); pairs=pairUp(idx,R); if(!pairs) return false;
+}
+const fs={}; idx.forEach(i=>{fs[G.tiles[i].f]=(fs[G.tiles[i].f]||0)+1;});
+const fp=[]; for(const f in fs){ for(let n=0;n<fs[f]/2;n++) fp.push(+f); }
+fp.sort(()=>R()-.5);
+pairs.forEach((pr,k)=>{G.tiles[pr[0]].f=fp[k]; G.tiles[pr[1]].f=fp[k];});
+G.undo=[]; return true;
+}
+const $=id=>document.getElementById(id);
+const board=$("board"), wrap=$("boardWrap");
+let geo=null;
+function layoutGeo(){
+let mx=0,my=0,mz=0; G.tiles.forEach(p=>{ if(p.x<0)return; mx=Math.max(mx,p.x+2);my=Math.max(my,p.y+2);mz=Math.max(mz,p.z);});
+const W0=wrap.clientWidth-16, H0=wrap.clientHeight-16, ratio=1.28, dk=0.1;
+let w=Math.min(W0/(mx/2+mz*dk+0.2), H0/((my/2)*ratio+mz*dk+0.2)); w=Math.min(w,110);
+const h=w*ratio, d=Math.max(3,w*dk);
+const bw=mx/2*w+mz*d+d*1.6, bh=my/2*h+mz*d+d*1.6;
+geo={w,h,d,mz,off:[(wrap.clientWidth-bw)/2,(wrap.clientHeight-bh)/2]};
+}
+function render(){
+layoutGeo(); board.innerHTML="";
+const {w,h,d,mz,off}=geo;
+G.tiles.forEach((p,i)=>{
+const el=document.createElement("div"); el.className="tile"; el.dataset.i=i;
+el.style.width=(w-2)+"px"; el.style.height=(h-2)+"px";
+el.style.left=(off[0]+p.x/2*w+(mz-p.z)*d)+"px"; el.style.top=(off[1]+p.y/2*h+(mz-p.z)*d)+"px";
+el.style.zIndex=p.z*10000+Math.max(0,p.y)*100+Math.max(0,p.x); el.style.setProperty("--d",Math.max(2,d*0.6)+"px");
+el.innerHTML='<div class="face" style="background:'+faceColor(p.f)+'"><span class="em" style="font-size:'+(w*0.6)+'px">'+FACES[p.f]+'</span></div>';
+el.addEventListener("click",()=>onTile(i));
+p.el=el; board.appendChild(el);
+});
+refresh();
+}
+function hintCount(){ return S.premium?t("unl"):(S.hints+(S.bankH?" + "+S.bankH:"")); }
+function shufCount(){ return S.premium?t("unl"):(S.shuffles+(S.bankS?" + "+S.bankS:"")); }
+function refresh(){
+const al=aliveArr(); let n=0;
+G.tiles.forEach((p,i)=>{ if(!p.el)return; p.el.classList.toggle("gone",!p.alive); p.el.classList.remove("hint");
+p.el.classList.toggle("blocked",p.alive&&!isFree(i,al)); p.el.classList.toggle("sel",i===G.sel); if(p.alive)n++; });
+let sub=n+" "+t("tiles");
+if(G.mode==="level"){ if(G.kind==="calm")sub=t("calm")+" · "+sub; if(G.kind==="special")sub=t("special")+" · "+sub; }
+$("gLeft").textContent=sub;
+$("gTitle").textContent=G.mode==="daily"?t("dailyT"):G.mode==="pack"?(t("col_"+G.pack)+" · "+G.level+"/30"):(t("level")+" "+G.level+" · "+t("chapter")+" "+Math.ceil(G.level/PER_CHAPTER));
+$("lHint").textContent=t("hint"); $("lUndo").textContent=t("undo"); $("lShuffle").textContent=t("shuffle");
+$("cHint").textContent=hintCount(); $("cShuffle").textContent=shufCount(); $("cUndo").textContent=t("free");
+$("bUndo").disabled=G.undo.length===0;
+}
+let toastT=0;
+function toast(msg){const e=$("toast");e.textContent=msg;e.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("on"),2200);}
+function onTile(i){
+const p=G.tiles[i]; if(!p.alive) return;
+if(!isFree(i,aliveArr())){ p.el.classList.remove("shake"); void p.el.offsetWidth; p.el.classList.add("shake"); toast(t("blocked")); return; }
+if(G.sel===-1) G.sel=i;
+else if(G.sel===i) G.sel=-1;
+else if(G.tiles[G.sel].f===p.f){ removePair(G.sel,i); return; }
+else { toast(t("noMatch")); G.sel=i; }
+refresh();
+}
+function removePair(a,b){ G.tiles[a].alive=false; G.tiles[b].alive=false; G.undo.push([a,b]); G.sel=-1; refresh(); afterMove(); }
+function afterMove(){
+if(G.tiles.every(x=>!x.alive)){ setTimeout(win,350); return; }
+if(freePairs().length===0) setTimeout(stuck,350);
+}
+function spend(kind){ // true se pôde gastar
+if(S.premium) return true;
+const d=kind==="h"?"hints":"shuffles", b=kind==="h"?"bankH":"bankS";
+if(S[d]>0){S[d]--;save();return true;}
+if(S[b]>0){S[b]--;save();return true;}
+return false;
+}
+function useHint(){
+const fp=freePairs(); if(fp.length===0){ stuck(); return; }
+if(!spend("h")){ outOf("outHints"); return; }
+G.used++; refresh(); fp[0].forEach(i=>G.tiles[i].el.classList.add("hint"));
+}
+function useShuffle(free){
+if(!free && !spend("s")){ outOf("outShuffle"); return; }
+if(!reshuffle((Date.now()&0xffffff)+G.tiles.length)){ toast("…"); return; }
+if(!free) G.used++;
+G.sel=-1; render();
+}
+function useUndo(){ const u=G.undo.pop(); if(!u){toast(t("nothingUndo"));return;} u.forEach(i=>G.tiles[i].alive=true); G.sel=-1; refresh(); }
+function modal(html){ $("card").innerHTML=html; $("card").scrollTop=0; $("modal").classList.add("on"); }
+function closeModal(){ $("modal").classList.remove("on"); }
+$("modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
+function bind(id,fn){const e=document.getElementById(id); if(e) e.onclick=fn;}
+const starsHtml=()=>{const s=G.used===0?3:(G.used<=2?2:1);return '<div class="stars">'+"★".repeat(s)+"☆".repeat(3-s)+'</div>';};
+function win(){
+if(G.mode==="daily"){ S.dailyDone=today(); save();
+modal(starsHtml()+'<h2>'+t("dailyWon")+'</h2><p>'+t("wonP")+'</p><button class="big" id="mHome">'+t("home")+'</button>');
+bind("mHome",()=>{closeModal();goHome();}); return; }
+if(G.mode==="pack"){ S.packProg[G.pack]=Math.max(S.packProg[G.pack]||1,G.level+1); save();
+const end=G.level>=30;
+modal(starsHtml()+'<h2>'+(end?t("colEnd"):t("colWon"))+'</h2>'+(end?'':'<button class="big" id="mNext">'+t("next")+' ('+(G.level+1)+'/30)</button>')+'<button class="sec" id="mHome">'+t("home")+'</button>');
+bind("mNext",()=>{closeModal();startPack(G.pack,G.level+1);}); bind("mHome",()=>{closeModal();goHome();}); return; }
+const n=G.level; S.level=Math.max(S.level,n+1);
+let extra="";
+if(n%PER_CHAPTER===0){ const c=n/PER_CHAPTER; if(!S.album.includes(c)) S.album.push(c);
+extra='<p><b>'+t("chDone")+'</b></p><p>'+t("chDoneP")+'</p><div class="pc" style="max-width:160px;margin:6px auto"><span class="em">'+CH_EMOJI[c-1]+'</span>'+t("ch")[c-1]+'</div>'; }
+save();
+const more=n<MAX_LEVEL;
+modal(starsHtml()+'<h2>'+t("won")+'</h2>'+(extra||'<p>'+t("wonP")+'</p>')+(more?'<button class="big" id="mNext">'+t("next")+' ('+(n+1)+')</button>':'<p><b>'+t("allDone")+'</b></p><p>'+t("allDoneP")+'</p>')+'<button class="sec" id="mHome">'+t("home")+'</button>');
+bind("mNext",()=>{closeModal();startLevel(n+1);}); bind("mHome",()=>{closeModal();goHome();});
+}
+function stuck(){ modal('<h2>'+t("stuck")+'</h2><p>'+t("stuckP")+'</p><button class="big" id="mShuf">🔀 '+t("shuffleFree")+'</button>'); bind("mShuf",()=>{closeModal();useShuffle(true);}); }
+function outOf(k){ modal('<h2>'+t(k)+'</h2><p>'+t("outP")+'</p><button class="big" id="mStore">⭐ '+t("seeStore")+'</button><button class="sec" id="mClose">'+t("close")+'</button>'); bind("mStore",openStore); bind("mClose",closeModal); }
+function openAlbum(){
+let h='<h2>'+t("albumT")+'</h2><p>'+t("albumP")+' ('+S.album.length+'/30)</p><div class="album">';
+for(let c=1;c<=30;c++){ const got=S.album.includes(c);
+h+='<div class="pc'+(got?'':' lock')+'"><span class="em">'+(got?CH_EMOJI[c-1]:"🔒")+'</span>'+(got?t("ch")[c-1]:t("chapter")+" "+c)+'</div>'; }
+h+='</div><button class="big" id="mClose">'+t("close")+'</button>';
+modal(h); bind("mClose",closeModal);
+}
+function welcomeAvailable(){ return !S.welcome && (dayNum()-S.install)<7; }
+function openStore(){
+const row=(id,name,sub,price,btn,opts)=>{opts=opts||{};
+return '<div class="plan'+(opts.best?' best':'')+'"><div class="pn"><b>'+name+(opts.tag?'<span class="tag">'+opts.tag+'</span>':'')+'</b><small>'+sub+'</small></div><div class="price">'+price+'</div><button id="'+id+'"'+(opts.owned?' class="owned" disabled':'')+'>'+btn+'</button></div>';};
+let h='<h2>⭐ '+t("storeT")+'</h2><div class="noads">🚫📺 '+t("noAdsBanner")+'</div>';
+h+='<h3>'+t("passT")+'</h3>';
+if(S.premium){ h+='<div class="noads">'+t("active")+'</div>'; }
+else {
+h+='<p style="text-align:left;margin:4px 0 0"><b>'+t("passWhat")+'</b></p><ul class="ben"><li>'+t("b1")+'</li><li>'+t("b2")+'</li><li>'+t("b3")+'</li><li>'+t("b4")+'</li></ul>';
+h+=row("pYear",t("year"),t("yearS")+" "+P("year"),'<small>'+P("year")+'</small>',t("tryFree"),{best:1,tag:t("popular")});
+h+=row("pMonth",t("month"),t("monthS"),P("month"),t("subscribe"));
+h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
+}
+if(welcomeAvailable()){ h+='<h3>'+t("offersT")+'</h3>'+row("oWelcome",t("welcome"),t("welcomeS"),P("welcome"),t("buy")); }
+if(!S.premium){
+h+='<h3>'+t("helpT")+'</h3>'+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
+}
+h+='<h3>'+t("colT")+'</h3>';
+["carnaval","mar"].forEach(id=>{ const own=S.premium||S.packs.includes(id);
+h+=own? row("pk_"+id,t("col_"+id),t("colS"),"",t("playCol")) : row("pk_"+id,t("col_"+id),t("colS"),P("col"),t("buy")); });
+h+='<h3>'+t("themesT")+'</h3>';
+["noite","jardim"].forEach(id=>{ const own=S.premium||S.themes.includes(id); h+=row("th_"+id,t("th_"+id),t("thS"),own?"":P("theme"),own?t("owned"):t("buy"),{owned:own}); });
+h+='<div class="legal">'+t("legalSub").replace("{Y}",P("year").split("/")[0])+'</div><div class="legal">'+t("legalNo")+'</div>';
+h+='<div class="links"><button id="lRestore">'+t("restore")+'</button><button id="lManage">'+t("manage")+'</button><button id="lTerms">'+t("terms")+'</button><button id="lPriv">'+t("privacy")+'</button></div>';
+h+='<p style="font-size:13px">'+t("proto")+'</p><button class="big" id="mClose">'+t("close")+'</button>';
+modal(h);
+const done=()=>{save();toast(t("simBuy"));openStore();if(G&&$("game").classList.contains("on"))refresh();applyPrefs();};
+bind("pYear",()=>{S.premium=true;S.plan="year";done();});
+bind("pMonth",()=>{S.premium=true;S.plan="month";done();});
+bind("pLife",()=>{S.premium=true;S.plan="life";done();});
+bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.themes.includes("jardim"))S.themes.push("jardim");done();});
+bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
+bind("oH50",()=>{S.bankH+=50;S.bankS+=25;done();});
+["carnaval","mar"].forEach(id=>bind("pk_"+id,()=>{ if(S.premium||S.packs.includes(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
+["noite","jardim"].forEach(id=>bind("th_"+id,()=>{ if(!S.themes.includes(id)){S.themes.push(id);done();} }));
+bind("lRestore",()=>toast(t("restored"))); bind("lManage",()=>toast(t("manageSim")));
+bind("lTerms",()=>toast(t("linkSim"))); bind("lPriv",()=>toast(t("linkSim")));
+bind("mClose",closeModal);
+}
+function themeOwned(id){ return id==="baia"||id==="contraste"||S.premium||S.themes.includes(id); }
+function openSettings(){
+const th=(id,key)=>'<button data-th="'+id+'" class="'+(S.theme===id?'cur':'')+'">'+t(key)+(themeOwned(id)?'':' 🔒')+'</button>';
+modal('<h2>'+t("setT")+'</h2>'
++'<div class="setRow"><span>'+t("hl")+'</span><button class="toggle'+(S.hl?' on':'')+'" id="sHl">'+(S.hl?'ON':'OFF')+'</button></div>'
++'<div class="setRow"><span>'+t("lang")+'</span><button class="toggle on" id="sLang">'+(S.lang==="pt"?"PT":"EN")+'</button></div>'
++'<p style="text-align:left;margin-top:14px"><b>'+t("theme")+'</b></p><div class="themes">'+th("baia","th_baia")+th("contraste","th_contraste")+th("noite","th_noite2")+th("jardim","th_jardim2")+'</div>'
++'<div class="links"><button id="lRestore2">'+t("restore")+'</button><button id="lManage2">'+t("manage")+'</button><button id="lTerms2">'+t("terms")+'</button><button id="lPriv2">'+t("privacy")+'</button><button id="lSup2">'+t("support")+'</button></div>'
++'<p style="text-align:left;margin-top:14px"><b>'+t("jumpL")+'</b></p><div class="jump"><input id="jIn" type="number" min="1" max="'+MAX_LEVEL+'" value="'+Math.min(S.level,MAX_LEVEL)+'"><button id="jGo">'+t("go")+'</button></div>'
++'<button class="sec" id="sReset">'+t("reset")+'</button>'+(S.premium?'<button class="sec" id="sCancel">'+t("cancelP")+'</button>':'')
++'<button class="big" id="mClose">'+t("close")+'</button>');
+bind("sHl",()=>{S.hl=!S.hl;save();applyPrefs();openSettings();});
+bind("sLang",()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();openSettings();});
+document.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{const id=b.dataset.th;
+if(!themeOwned(id)){toast(t("locked"));openStore();return;} S.theme=id;save();applyPrefs();openSettings();});
+bind("lRestore2",()=>toast(t("restored"))); bind("lManage2",()=>toast(t("manageSim"))); bind("lTerms2",()=>toast(t("linkSim"))); bind("lPriv2",()=>toast(t("linkSim"))); bind("lSup2",()=>toast(t("linkSim")));
+bind("jGo",()=>{ const v=Math.max(1,Math.min(MAX_LEVEL,parseInt($("jIn").value,10)||1)); S.level=Math.max(S.level,v); save(); closeModal(); startLevel(v); });
+bind("sReset",()=>{modal('<h2>'+t("confirmReset")+'</h2><button class="big" id="cY" style="background:var(--danger)">'+t("yes")+'</button><button class="sec" id="cN">'+t("no")+'</button>');
+bind("cY",()=>{const lang=S.lang;S=defState();S.lang=lang;save();applyPrefs();closeModal();toast(t("resetDone"));}); bind("cN",openSettings);});
+bind("sCancel",()=>{S.premium=false;S.plan="";if(!themeOwned(S.theme))S.theme="baia";save();applyPrefs();openSettings();});
+bind("mClose",closeModal);
+}
+function applyPrefs(){
+if(!themeOwned(S.theme)) S.theme="baia";
+document.body.className=(S.hl?"hl ":"")+"theme-"+S.theme;
+document.documentElement.lang=S.lang==="pt"?"pt-BR":"en";
+$("tTitle").textContent=t("title"); document.title=t("title")+(S.lang==="pt"?" (protótipo)":" (prototype)");
+$("tSub").textContent=t("sub"); $("tNoAds").textContent=t("noads");
+const lv=Math.min(S.level,MAX_LEVEL), c=Math.ceil(lv/PER_CHAPTER), p=((lv-1)%PER_CHAPTER)+1;
+const fin=S.level>MAX_LEVEL;
+$("chap").innerHTML='<b><span class="em">'+CH_EMOJI[c-1]+'</span> '+t("chapter")+' '+c+' · '+t("ch")[c-1]+'</b><small>'+(fin?t("allDone"):t("level")+' '+p+'/'+PER_CHAPTER+' · '+S.album.length+'/30 📮')+'</small><div class="bar"><i style="width:'+(fin?100:((p-1)/PER_CHAPTER*100))+'%"></i></div>';
+$("bPlay").textContent=fin?(t("play")+" · "+MAX_LEVEL+"/"+MAX_LEVEL+" ✓"):(t("play")+" · "+t("level")+" "+lv);
+$("bDaily").textContent=S.dailyDone===today()?t("dailyDone"):t("daily");
+$("bAlbum").textContent=t("album");
+$("bStore").innerHTML=S.premium?'<span class="premiumTag">'+t("active")+'</span>':t("store");
+$("bSettings").textContent=t("settings"); $("tProto").textContent=t("proto");
+$("bLang").textContent=S.lang==="pt"?"🇧🇷 PT · trocar":"🇺🇸 EN · switch";
+if(G && $("game").classList.contains("on")) refresh();
+}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on",s.id===id));}
+function goHome(){ if(G) G.sel=-1; show("home"); applyPrefs(); }
+function startLevel(n){
+rollDay(); n=Math.max(1,Math.min(MAX_LEVEL,n));
+FACES=SET_BAIA; show("game");
+const prm=levelParams(n), seed=1000+n*7919, b=buildPositions(prm,seed);
+newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=n; G.mode="level"; G.kind=prm.kind; G.shape=b.shape; render();
+}
+function startDaily(){
+rollDay();
+if(S.dailyDone===today()&&!S.premium){ modal('<h2>'+t("dailyT")+'</h2><p>'+t("dailyAlready")+'</p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); return; }
+FACES=SET_BAIA; show("game");
+const seed=hashStr(today()), prm={n:60+seed%40,target:76,L:3,fmin:18,fmax:24,kind:(seed%2?"special":"normal")};
+const b=buildPositions(prm,seed); newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=0; G.mode="daily"; render();
+}
+function startPack(id,k){
+rollDay(); FACES=id==="carnaval"?SET_CARNAVAL:SET_MAR; show("game");
+const seed=hashStr(id)+k*104729, prm=levelParams(20+k*3); if(k%10===0)prm.kind="special";
+const b=buildPositions(prm,seed); newBoard(b.pos,seed,Math.min(prm.fmin,FACES.length-4),Math.min(prm.fmax,FACES.length));
+G.level=k; G.mode="pack"; G.pack=id; render();
+}
+$("bPlay").onclick=()=>{ if(S.level>MAX_LEVEL){ modal('<h2>'+t("allDone")+'</h2><p>'+t("allDoneP")+'</p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); return; } startLevel(S.level); };
+$("bDaily").onclick=startDaily; $("bAlbum").onclick=openAlbum;
+$("bStore").onclick=openStore; $("bGStore").onclick=openStore; $("bSettings").onclick=openSettings;
+$("bLang").onclick=()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();};
+$("bBack").onclick=goHome; $("bHint").onclick=useHint; $("bUndo").onclick=useUndo; $("bShuffle").onclick=()=>useShuffle(false);
+window.addEventListener("resize",()=>{ if(G && $("game").classList.contains("on")) render(); });
+applyPrefs();
+window.__mj={get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
+isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();}};
+})();
+</script>
+</body>
+</html>
