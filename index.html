@@ -25,6 +25,7 @@ button{font:inherit; color:inherit; cursor:pointer; border:none}
 input{font:inherit}
 .screen{position:absolute; inset:0; display:none; flex-direction:column}
 .screen.on{display:flex}
+.sndBtn{position:absolute; top:12px; right:12px; width:48px; height:48px; border-radius:12px; background:var(--panel); font-size:22px; box-shadow:0 2px 0 rgba(0,0,0,.12); z-index:5}
 #home{align-items:center; justify-content:center; padding:20px; gap:12px; text-align:center; overflow:auto}
 #home h1{margin:0; font-size:34px}
 #home .sub{color:var(--muted); margin:-6px 0 2px}
@@ -46,6 +47,7 @@ input{font:inherit}
 #top .icon{width:48px; height:48px; border-radius:12px; background:var(--panel); font-size:22px; box-shadow:0 2px 0 rgba(0,0,0,.12)}
 #top .title{flex:1; text-align:center; font-weight:800; font-size:18px; line-height:1.15}
 #top .title small{display:block; font-weight:600; color:var(--muted); font-size:14px}
+@media (max-width:400px){ #top{gap:6px; padding:0 8px} #top .title{font-size:15px} #top .title small{font-size:13px} }
 #boardWrap{flex:1; position:relative; overflow:hidden}
 #board{position:absolute; left:0; top:0}
 .tile{position:absolute; border-radius:10px; background:var(--tile);
@@ -189,6 +191,7 @@ body.ts1 #home, body.ts1 .card{zoom:1.12} body.ts2 #home, body.ts2 .card{zoom:1.
 </head>
 <body class="hl">
 <div id="home" class="screen on">
+<button class="sndBtn" id="bHSound" aria-label="Desligar som">🔊</button>
 <div class="whale">🐋🀄</div>
 <h1 id="tTitle">Mahjong Family</h1>
 <div class="sub" id="tSub">Jogue com as fotos da família</div>
@@ -225,6 +228,7 @@ body.ts1 #home, body.ts1 .card{zoom:1.12} body.ts2 #home, body.ts2 .card{zoom:1.
 <div id="top">
 <button class="icon" id="bBack" aria-label="Voltar">⬅</button>
 <div class="title"><span id="gTitle"></span><small id="gLeft"></small></div>
+<button class="icon" id="bGSound" aria-label="Desligar som">🔊</button>
 <button class="icon" id="bGStore" aria-label="Loja">⭐</button>
 </div>
 <div id="boardWrap"><div id="board"></div></div>
@@ -317,7 +321,7 @@ combo:"Combo x{n}!",perfect:"Tabuleiro limpo!",
 chalB:"👨‍👩‍👧 Desafiar a família",chalTxt:"{nk} te desafiou no Mahjong Family: {what} em {tm} ({st}). Consegue mais rápido? Jogue aqui: {url}",chalInvT:"{nk} te desafiou!",chalInvP:"{what}: {tm} · {st}",
 chalAccept:"Aceitar desafio",chalLater:"Agora não",chalT:"Desafio de {nk}",chalWin:"Você venceu o desafio!",chalLose:"Quase! Tente de novo.",chalReply:"Responder o desafio",you:"Você",
 dayW:"Desafio do dia {d}",lvlW:"fase {n}",
-setSnd:"Efeitos sonoros",setMus:"Música relaxante",setMusVol:"Volume da música",musHint:"Ondas do mar e acordes suaves. Não interrompe outras músicas do celular.",setMemo:"Momentos de memória (fotos)",setPause:"Lembrete de pausa (45 min)",pauseMsg:"Você está jogando há 45 minutos. Que tal uma pausa para esticar as pernas? 😊",
+setSnd:"Efeitos sonoros",sndOnT:"🔊 Som ligado",sndOffT:"🔇 Som desligado",sndBtnOff:"Desligar som",sndBtnOn:"Ligar som",setMus:"Música relaxante",setMusVol:"Volume da música",musHint:"Ondas do mar e acordes suaves. Não interrompe outras músicas do celular.",setMemo:"Momentos de memória (fotos)",setPause:"Lembrete de pausa (45 min)",pauseMsg:"Você está jogando há 45 minutos. Que tal uma pausa para esticar as pernas? 😊",
 capB:"✏️ Escrever legendas das fotos",capT:"Legendas das fotos",capP:"Aparecem quando você forma o par da foto. Ex.: Natal 2019",capSave:"Salvar legendas",capOk:"Legendas salvas.",
 months:["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"],
 ch:["Praia da Baleia","Cais dos Pescadores","Feira da Vila","Ilha do Farol","Coqueiral","Recife de Coral","Mangue","Vila dos Pescadores","Festa Junina","Mirante",
@@ -397,7 +401,7 @@ combo:"Combo x{n}!",perfect:"Board cleared!",
 chalB:"👨‍👩‍👧 Challenge the family",chalTxt:"{nk} challenged you in Mahjong Family: {what} in {tm} ({st}). Can you beat it? Play here: {url}",chalInvT:"{nk} challenged you!",chalInvP:"{what}: {tm} · {st}",
 chalAccept:"Accept challenge",chalLater:"Not now",chalT:"{nk}'s challenge",chalWin:"You won the challenge!",chalLose:"So close! Try again.",chalReply:"Reply to the challenge",you:"You",
 dayW:"Daily challenge {d}",lvlW:"level {n}",
-setSnd:"Sound effects",setMus:"Relaxing music",setMusVol:"Music volume",musHint:"Sea waves and soft chords. Does not stop other audio on your phone.",setMemo:"Memory moments (photos)",setPause:"Break reminder (45 min)",pauseMsg:"You have been playing for 45 minutes. How about a short break to stretch? 😊",
+setSnd:"Sound effects",sndOnT:"🔊 Sound on",sndOffT:"🔇 Sound off",sndBtnOff:"Turn sound off",sndBtnOn:"Turn sound on",setMus:"Relaxing music",setMusVol:"Music volume",musHint:"Sea waves and soft chords. Does not stop other audio on your phone.",setMemo:"Memory moments (photos)",setPause:"Break reminder (45 min)",pauseMsg:"You have been playing for 45 minutes. How about a short break to stretch? 😊",
 capB:"✏️ Write photo captions",capT:"Photo captions",capP:"They show up when you match the photo pair. E.g. Christmas 2019",capSave:"Save captions",capOk:"Captions saved.",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"],
 ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm Grove","Coral Reef","Mangrove","Fishing Village","June Festival","Lookout Point",
@@ -418,7 +422,7 @@ function dateShort(k){const d=new Date(Date.now()-k*86400000);return d.getDate()
 function defState(){return {level:1,premium:false,plan:"",lang:(navigator.language||"pt").toLowerCase().startsWith("pt")?"pt":"en",hl:true,theme:"baia",
 day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false,
 tileSets:[],tileSet:"baia",photoOwned:false,
-nick:"",frame:"none",founderNo:0,snd:true,mus:true,musVol:30,memo:true,pauseRem:true,pace:"normal",tsz:0,classic:false,timer:false,stats:{three:0,daily:0,chalS:0,chalW:0,maxCombo:0,giftS:0},ach:[],dailyLog:[],mon:{k:"",pairs:0,lv:0,days:[],hits:{}},famDates:[],redeemed:[],remind:[],stars:0,best:{},bay:{},gift:{i:0,last:-99},ciFrames:[],evt:{wk:"",n:0,done:false},evtCards:[],caps:[],champ:[],weekPts:{},monthPts:{},league:1,blocked:[],streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
+nick:"",frame:"none",founderNo:0,snd:true,mute:false,mus:true,musVol:30,memo:true,pauseRem:true,pace:"normal",tsz:0,classic:false,timer:false,stats:{three:0,daily:0,chalS:0,chalW:0,maxCombo:0,giftS:0},ach:[],dailyLog:[],mon:{k:"",pairs:0,lv:0,days:[],hits:{}},famDates:[],redeemed:[],remind:[],stars:0,best:{},bay:{},gift:{i:0,last:-99},ciFrames:[],evt:{wk:"",n:0,done:false},evtCards:[],caps:[],champ:[],weekPts:{},monthPts:{},league:1,blocked:[],streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
 let S=defState();
 try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(defState(),JSON.parse(raw));}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
@@ -811,7 +815,7 @@ bind("mClose",closeModal);
 function applyPrefs(){
 if(!themeOwned(S.theme)) S.theme="baia";
 document.body.className=(S.hl?"hl ":"")+"theme-"+S.theme+(S.tsz?" ts"+S.tsz:"");
-document.documentElement.lang=S.lang==="pt"?"pt-BR":"en"; if(typeof musicSync==="function") musicSync();
+document.documentElement.lang=S.lang==="pt"?"pt-BR":"en"; if(typeof musicSync==="function"){ soundBtns(); musicSync(); }
 $("tTitle").textContent=t("title"); document.title=t("title")+(S.lang==="pt"?" (protótipo)":" (prototype)");
 $("tSub").textContent=t("sub"); $("tNoAds").textContent=t("noads");
 const lv=Math.min(S.level,MAX_LEVEL), c=Math.ceil(lv/PER_CHAPTER), p=((lv-1)%PER_CHAPTER)+1;
@@ -877,7 +881,7 @@ $("bLang").onclick=()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();};
 $("bBack").onclick=goHome; $("bHint").onclick=useHint; $("bUndo").onclick=useUndo; $("bShuffle").onclick=()=>useShuffle(false);
 window.addEventListener("resize",()=>{ if(G && $("game").classList.contains("on")) render(); });
 let AC=null, SESSION0=Date.now(), pauseShown=false;
-function tone(freq,dur,type){ if(!S.snd) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const o=AC.createOscillator(), g=AC.createGain(), t0=AC.currentTime;
+function tone(freq,dur,type){ if(!S.snd||S.mute) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); const o=AC.createOscillator(), g=AC.createGain(), t0=AC.currentTime;
 o.type=type||"sine"; o.frequency.value=freq; g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.16,t0+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
 o.connect(g); g.connect(AC.destination); o.start(t0); o.stop(t0+dur+0.03); }catch(e){} }
 let MUS=null, musGest=false;
@@ -885,7 +889,7 @@ try{ if(navigator.audioSession) navigator.audioSession.type="ambient"; }catch(e)
 function musLevel(){ return Math.max(0,Math.min(100,S.musVol??30))/100*1.1; }
 function mtof(m){ return 440*Math.pow(2,(m-69)/12); }
 function musicVol(){ if(MUS&&AC) MUS.g.gain.setTargetAtTime(Math.max(0.0001,musLevel()),AC.currentTime,0.25); }
-function musicSync(){ if(!S.mus||document.hidden){ musicStop(); return; } if(musGest) musicStart(); }
+function musicSync(){ if(!S.mus||S.mute||document.hidden){ musicStop(); return; } if(musGest) musicStart(); }
 function musicStart(){ try{
 AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended") AC.resume();
 if(MUS){ musicVol(); return; }
@@ -912,10 +916,13 @@ MUS=M; tick(); M.iv=setInterval(tick,250);
 }catch(e){} }
 function musicStop(){ if(!MUS) return; const M=MUS; MUS=null; clearInterval(M.iv); try{ const t=AC.currentTime; M.g.gain.cancelScheduledValues(t); M.g.gain.setTargetAtTime(0.0001,t,0.3);
 setTimeout(()=>{ try{ M.src.stop(); M.lfo.stop(); M.g.disconnect(); }catch(e){} },1500); }catch(e){} }
-function musicState(){ return {on:!!S.mus,playing:!!MUS,vol:S.musVol??30,ctx:AC?AC.state:"none",chords:MUS?MUS.count:0}; }
+function soundBtns(){ ["bHSound","bGSound"].forEach(id=>{ const b=$(id); if(!b) return; b.textContent=S.mute?"🔇":"🔊"; b.setAttribute("aria-label",t(S.mute?"sndBtnOn":"sndBtnOff")); b.setAttribute("aria-pressed",S.mute?"true":"false"); }); }
+function toggleMute(){ S.mute=!S.mute; if(!S.mute&&!S.mus&&!S.snd){ S.mus=true; S.snd=true; } save(); soundBtns(); musGest=true; musicSync(); toast(t(S.mute?"sndOffT":"sndOnT")); if(!S.mute) tone(660,0.15,"sine"); if($("modal").classList.contains("on")&&$("sMusV")!==undefined&&document.querySelector("[data-tg=mus]")) openSettings(); }
+function musicState(){ return {mute:!!S.mute,on:!!S.mus,playing:!!MUS,vol:S.musVol??30,ctx:AC?AC.state:"none",chords:MUS?MUS.count:0}; }
 document.addEventListener("pointerdown",()=>{ if(!musGest){ musGest=true; musicSync(); } },{passive:true,capture:true});
 document.addEventListener("keydown",()=>{ if(!musGest){ musGest=true; musicSync(); } });
 document.addEventListener("visibilitychange",musicSync);
+$("bHSound").onclick=toggleMute; $("bGSound").onclick=toggleMute;
 function burst(el){ if(!el) return; const gr=$("game").getBoundingClientRect(), r=el.getBoundingClientRect(), cx=r.left+r.width/2-gr.left, cy=r.top+r.height/2-gr.top;
 for(let i=0;i<6;i++){ const d=document.createElement("div"); d.className="fx"; d.textContent=["✨","⭐","💫"][i%3]; const a=Math.PI*2*i/6+Math.random()*0.6, R=40+Math.random()*30;
 d.style.left=(cx-11)+"px"; d.style.top=(cy-14)+"px"; d.style.setProperty("--dx",Math.cos(a)*R+"px"); d.style.setProperty("--dy",Math.sin(a)*R+"px"); $("game").appendChild(d); setTimeout(()=>d.remove(),750); } }
@@ -1264,7 +1271,7 @@ if(gc) setTimeout(()=>showGiftInvite(gc,(q.get("nk")||"").slice(0,16)),300);
 else if(fam) setTimeout(()=>openFamSend((q.get("to")||"").slice(0,16)||"?"),300);
 else if(ch){ try{ history.replaceState(null,"",location.pathname); }catch(e){} setTimeout(()=>showChallengeInvite(ch),300); }
 else if(!window.__NOGIFT && giftAvailable()) setTimeout(()=>openGift(true),400); }
-window.__mj={musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
+window.__mj={toggleMute,musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
 isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,applyPace,openAch,openFamily,openNews,newsItems,openRecap,openDates,openGive,redeemCode,makeCode,checkAch,todayBdays,openBday,medalFor,openGift,openBay,openEvt,checkIn,startChallenge,readChallenge,shareChallenge,giftAvailable,evtState,setSession:ms=>{SESSION0=Date.now()-ms;},openCollections,PACKS,PACKSET,TILESETS,TSLIST,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>
