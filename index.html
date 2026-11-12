@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Mahjong da Baía (protótipo)</title>
+<title>Mahjong Family (protótipo)</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Mahjong">
+<meta name="apple-mobile-web-app-title" content="Mahjong Family">
 <meta name="theme-color" content="#cfeaf4">
 <meta name="robots" content="noindex">
 <style>
@@ -137,8 +137,8 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 <body class="hl">
 <div id="home" class="screen on">
 <div class="whale">🐋🀄</div>
-<h1 id="tTitle">Mahjong da Baía</h1>
-<div class="sub" id="tSub">Relaxe e combine as peças</div>
+<h1 id="tTitle">Mahjong Family</h1>
+<div class="sub" id="tSub">Jogue com as fotos da família</div>
 <div class="badge" id="tNoAds">100% sem anúncios</div>
 <div id="prof"></div>
 <div class="chap" id="chap"></div>
@@ -176,7 +176,7 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 "use strict";
 const MAX_LEVEL=600, PER_CHAPTER=20, FREE_HINTS=3, FREE_SHUFFLES=3;
 const T={
-pt:{title:"Mahjong da Baía",sub:"Relaxe e combine as peças",noads:"100% sem anúncios",play:"Jogar",level:"Fase",chapter:"Capítulo",daily:"Desafio do dia",dailyDone:"Desafio do dia ✓",
+pt:{title:"Mahjong Family",sub:"Jogue com as fotos da família",noads:"100% sem anúncios",play:"Jogar",level:"Fase",chapter:"Capítulo",daily:"Desafio do dia",dailyDone:"Desafio do dia ✓",
 album:"📮 Álbum",store:"⭐ Loja",settings:"⚙️ Ajustes",proto:"Protótipo: arte provisória e compras simuladas (nenhuma cobrança real).",
 tiles:"peças",hint:"Dica",undo:"Desfazer",shuffle:"Embaralhar",free:"livre",unl:"ilimitado",
 blocked:"Peça presa. Ela precisa ter um lado livre e nada por cima.",noMatch:"Não formam par. Tente outra.",won:"Parabéns!",wonP:"Você limpou o tabuleiro.",next:"Próxima fase",home:"Início",
@@ -209,8 +209,8 @@ promo:"Os 5 primeiros sobem de liga no domingo. Os 5 últimos descem.",pts:"pts"
 champInfo:"Os 100 primeiros do mês ganham a moldura \"Campeão de {m}\", que nunca mais volta. Ela não está à venda.",report:"Denunciar apelido",block:"Bloquear jogador",reported:"Denúncia enviada. Obrigado!",blockedT:"Jogador bloqueado.",
 scoreL:"Pontos no ranking",noScoreHint:"Você usou dica, então este desafio não pontua no ranking.",leaguePos:"Você está em {p}º lugar na {l}.",
 share:"📲 Compartilhar no WhatsApp",shareT:"Compartilhar",sharePhotos:"Incluir minhas fotos no cartão",shareSave:"No iPhone, toque e segure a imagem para salvar ou enviar.",shareOpen:"Abrir o WhatsApp",shareSend:"Enviar",
-shareTxtD:"Fiz o desafio do dia no Mahjong da Baía! 🔥 {s} dias seguidos.",shareTxtC:"Completei o capítulo {c} no Mahjong da Baía e ganhei o postal {n}!",
-cardDaily:"Desafio do dia concluído",cardStreak:"dias seguidos",cardChap:"Capítulo {c} concluído",cardFoot:"Mahjong da Baía · sem anúncios",
+shareTxtD:"Fiz o desafio do dia no Mahjong Family! 🔥 {s} dias seguidos.",shareTxtC:"Completei o capítulo {c} no Mahjong Family e ganhei o postal {n}!",
+cardDaily:"Desafio do dia concluído",cardStreak:"dias seguidos",cardChap:"Capítulo {c} concluído",cardFoot:"Mahjong Family · sem anúncios",
 profT:"Perfil",nickL:"Apelido (aparece no ranking)",saveB:"Salvar",nickBad:"Escolha outro apelido (3 a 16 letras, sem palavrões).",nickOk:"Apelido salvo.",frameL:"Moldura",
 fr_none:"Sem moldura",fr_fundador:"Fundador",fr_campeao:"Campeão",founderT:"Edição Fundadora",founderS:"Moldura dourada numerada no ranking e no cartão do WhatsApp. Só 5.000 no mundo. Quando acabar, não volta.",
 founderTag:"tiragem limitada",founderNo:"Fundador nº {n} de 5.000",founderLeft:"Restam {r} de 5.000",champSim:"Ganhar moldura de campeão (teste)",champGot:"Você ganhou a moldura Campeão de {m}!",
@@ -219,7 +219,7 @@ months:["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","
 ch:["Praia da Baleia","Cais dos Pescadores","Feira da Vila","Ilha do Farol","Coqueiral","Recife de Coral","Mangue","Vila dos Pescadores","Festa Junina","Mirante",
 "Dunas","Cachoeira","Jardim da Vó Dita","A Pousada","Regata","Noite de Lua","Rio Azul","Pomar","Mercado de Peixe","Ilha das Tartarugas",
 "Gruta das Conchas","Carnaval","Porto Antigo","Baía das Estrelas","Morro do Vento","Fundo do Mar","Ilha dos Papagaios","Noite de Fogos","Caminho das Baleias","Cidade da Jubarte"]},
-en:{title:"Bay Mahjong",sub:"Relax and match the tiles",noads:"100% ad-free",play:"Play",level:"Level",chapter:"Chapter",daily:"Daily challenge",dailyDone:"Daily challenge ✓",
+en:{title:"Mahjong Family",sub:"Play with your family photos",noads:"100% ad-free",play:"Play",level:"Level",chapter:"Chapter",daily:"Daily challenge",dailyDone:"Daily challenge ✓",
 album:"📮 Album",store:"⭐ Shop",settings:"⚙️ Settings",proto:"Prototype: placeholder art and simulated purchases (no real charges).",
 tiles:"tiles",hint:"Hint",undo:"Undo",shuffle:"Shuffle",free:"free",unl:"unlimited",
 blocked:"This tile is blocked. It needs one free side and nothing on top.",noMatch:"Not a pair. Try another.",won:"Well done!",wonP:"You cleared the board.",next:"Next level",home:"Home",
@@ -252,8 +252,8 @@ promo:"Top 5 move up a league on Sunday. Bottom 5 move down.",pts:"pts",monthTop
 champInfo:"The top 100 of the month earn the \"{m} Champion\" frame, which never comes back. It is not for sale.",report:"Report nickname",block:"Block player",reported:"Report sent. Thank you!",blockedT:"Player blocked.",
 scoreL:"Leaderboard points",noScoreHint:"You used a hint, so this challenge does not score.",leaguePos:"You are #{p} in the {l}.",
 share:"📲 Share on WhatsApp",shareT:"Share",sharePhotos:"Include my photos on the card",shareSave:"On iPhone, touch and hold the image to save or send it.",shareOpen:"Open WhatsApp",shareSend:"Send",
-shareTxtD:"I finished the daily challenge in Bay Mahjong! 🔥 {s} day streak.",shareTxtC:"I finished chapter {c} in Bay Mahjong and earned the {n} postcard!",
-cardDaily:"Daily challenge complete",cardStreak:"day streak",cardChap:"Chapter {c} complete",cardFoot:"Bay Mahjong · no ads",
+shareTxtD:"I finished the daily challenge in Mahjong Family! 🔥 {s} day streak.",shareTxtC:"I finished chapter {c} in Mahjong Family and earned the {n} postcard!",
+cardDaily:"Daily challenge complete",cardStreak:"day streak",cardChap:"Chapter {c} complete",cardFoot:"Mahjong Family · no ads",
 profT:"Profile",nickL:"Nickname (shown on the leaderboard)",saveB:"Save",nickBad:"Pick another nickname (3 to 16 letters, no bad words).",nickOk:"Nickname saved.",frameL:"Frame",
 fr_none:"No frame",fr_fundador:"Founder",fr_campeao:"Champion",founderT:"Founder Edition",founderS:"Numbered gold frame on the leaderboard and on your WhatsApp card. Only 5,000 in the world. When it is gone, it never comes back.",
 founderTag:"limited run",founderNo:"Founder #{n} of 5,000",founderLeft:"{r} of 5,000 left",champSim:"Get a champion frame (test)",champGot:"You earned the {m} Champion frame!",
