@@ -61,6 +61,15 @@ body.hl .tile.blocked{filter:brightness(.72) saturate(.5)}
 @keyframes pulse{from{outline:4px solid var(--ok)} to{outline:6px solid #7ff0b0}}
 .tile.gone{opacity:0; transform:scale(.6); pointer-events:none}
 .tile.shake{animation:shake .3s}
+.tile.nudge{animation:nudge .55s ease-in-out 2; outline:4px solid var(--ok); outline-offset:-2px; z-index:999}
+@keyframes nudge{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg) translateY(-3px)}40%{transform:rotate(6deg) translateY(-3px)}60%{transform:rotate(-4deg)}80%{transform:rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){ .tile.nudge{animation:none} }
+#ahBar{position:absolute; left:50%; bottom:96px; transform:translateX(-50%); background:#123047; color:#fff; border-radius:14px; padding:10px 12px; display:none; gap:10px; align-items:center; font-size:15px; font-weight:700; width:max-content; max-width:92%; z-index:99000; box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#ahBar.on{display:flex} #ahBar button{background:#ffd166; color:#123047; border-radius:10px; min-height:40px; padding:0 12px; font-weight:800; flex:none}
+.av img{width:100%; height:100%; border-radius:50%; object-fit:cover; display:block}
+.av.em{background:#e6f4f8}
+.avgrid{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:6px 0} .avgrid button{min-height:56px; border-radius:14px; background:rgba(0,0,0,.05); display:flex; align-items:center; justify-content:center; border:3px solid transparent} .avgrid button.cur{border-color:var(--accent)}
+#avCv{width:240px; height:240px; border-radius:50%; touch-action:none; cursor:grab; display:block; margin:8px auto; box-shadow:0 0 0 4px var(--accent)}
 @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 #bottom{flex:none; display:flex; gap:8px; padding:8px 10px 14px; justify-content:center}
 #bottom button{flex:1; max-width:130px; min-height:64px; border-radius:14px; background:var(--panel); font-weight:700; font-size:16px; box-shadow:0 3px 0 rgba(0,0,0,.14); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px}
@@ -232,6 +241,7 @@ body.ts1 #home, body.ts1 .card{zoom:1.12} body.ts2 #home, body.ts2 .card{zoom:1.
 <button class="icon" id="bGStore" aria-label="Loja">⭐</button>
 </div>
 <div id="boardWrap"><div id="board"></div></div>
+<div id="ahBar" role="status"><span id="ahTxt"></span><button id="ahGo"></button></div>
 <div id="bottom">
 <button id="bHint"><span class="ic">💡</span><span id="lHint"></span><span class="cnt" id="cHint"></span></button>
 <button id="bUndo"><span class="ic">↩️</span><span id="lUndo"></span><span class="cnt" id="cUndo"></span></button>
@@ -256,7 +266,7 @@ outHints:"Acabaram as dicas de hoje",outShuffle:"Acabaram os embaralhamentos de 
 chDone:"Capítulo concluído!",chDoneP:"Você ganhou um cartão-postal para o seu álbum:",allDone:"Você completou todas as fases disponíveis!",allDoneP:"Novos capítulos chegam toda semana. Enquanto isso, jogue o desafio do dia e as coleções.",
 albumT:"Álbum de postais",albumP:"Complete um capítulo para ganhar o postal.",
 storeT:"Loja",noAdsBanner:"Sem anúncios. Sempre. Para todos.",passT:"Passe da Baía",passWhat:"O Passe libera:",
-b1:"Coleção nova todo mês, liberada na hora",b2:"Todas as coleções já lançadas",b3:"Todos os conjuntos de peças",b4:"Desafio extra todo dia e arquivo dos últimos 30 dias",b5:"Proteção de sequência: perder 1 dia não zera seus dias seguidos",b6:"Dicas ilimitadas",
+b1:"Coleção nova todo mês, liberada na hora",b2:"Todas as coleções já lançadas",b3:"Todos os conjuntos de peças",b4:"Desafio extra todo dia e arquivo dos últimos 30 dias",b5:"Proteção de sequência: perder 1 dia não zera seus dias seguidos",b6:"Dicas e ajuda automática ilimitadas",
 freeAll:"<b>Grátis para todos, sempre:</b> as 600 fases, 1 desafio por dia, embaralhar quando travar e os modos de cor e contraste.",
 year:"Anual",yearS:"7 dias grátis, depois",month:"Mensal",monthS:"Renova todo mês",life:"Vitalício",lifeS:"Pagamento único. Inclui todas as coleções, inclusive as futuras.",popular:"mais escolhido",
 tryFree:"Testar grátis",subscribe:"Assinar",buy:"Comprar",owned:"Comprado",active:"Passe ativo ✓",
@@ -293,7 +303,8 @@ paceHint:"Relaxado: tabuleiros menores. Desafiador: mais peças e camadas. Você
 achT:"Conquistas",achGot:"🏅 Conquista: {a} (+5 ⭐)",medalsT:"Medalhas do mês",medalsP:"Faça o desafio do dia: {n} dias em {m}.",
 medal:["Bronze","Prata","Ouro","Diamante","Perfeita"],medalReq:["7 dias","14 dias","21 dias","28 dias","Todos os dias"],
 ach:{lv1:"Primeira fase",lv10:"10 fases",lv50:"50 fases",lv100:"100 fases",ch1:"Primeiro postal",ch5:"5 postais",three10:"10 fases com 3 estrelas",combo5:"Combo x5",daily7:"7 desafios do dia",daily30:"30 desafios do dia",bay1:"Primeira reforma",bayAll:"Baía completa",photos:"Minha Família",chalS:"Desafiou a família",chalW:"Venceu um desafio",evt:"Evento concluído",st7:"7 dias seguidos",st30:"30 dias seguidos",col:"Coleção completa",gift:"Deu um presente"},
-privTab:"Minhas ligas",famLiga:"🏅 Liga da família",famLigaS:"Crie uma liga e convide amigos e familiares",privT:"🏅 Minhas ligas",privEmpty:"Crie uma liga só sua, chame a família e os amigos pelo WhatsApp e vejam toda semana quem joga melhor o desafio do dia.",privCreate:"➕ Criar liga",privJoinCode:"🔑 Entrar com código",privNewT:"Nova liga",privName:"Nome da liga (ex.: Família Silva)",privEmo:"Escolha um símbolo",privCreateGo:"Criar liga",privNameBad:"Escolha outro nome (3 a 24 letras, sem palavrões).",privMax:"Você já está em 5 ligas. Saia de uma para entrar em outra.",privFull:"Esta liga está cheia (30 pessoas).",privCreated:"Liga criada! Agora convide a família.",privInvite:"📲 Convidar pelo WhatsApp",privCode:"Código da liga: {c}",privInvTxt:"{by} convidou você para a liga \"{n}\" no Mahjong Family! Toque para entrar: {url}",privInvT:"{by} convidou você",privInvP:"Entre na liga \"{n}\" e jogue o desafio do dia junto com quem você ama. Toda segunda começa uma semana nova.",privJoin:"Entrar na liga",privJoined:"Você entrou na liga {n}!",privAlready:"Você já está nesta liga.",privEnds:"Termina em {d}d · vale o desafio do dia",privMembers:"{n} pessoas",privYou:"você em {p}º",privLeave:"Sair da liga",privDelete:"Apagar liga",privLeaveQ:"Sair da liga {n}?",privDeleteQ:"Apagar a liga {n} para todos?",privLeft:"Você saiu da liga.",privDeleted:"Liga apagada.",privClap:"👏 Aplaudir",privClapped:"Você aplaudiu {n}! 👏",privRemove:"Remover da liga",privRemoved:"{n} saiu da liga.",privChamps:"Campeões das semanas",privChampWin:"👑 Você foi o campeão da semana na liga {n}!",privSim:"Simular familiares entrando (protótipo)",privProto:"No protótipo, os outros participantes e os pontos deles são simulados. Na versão final todos aparecem em tempo real.",privOwner:"criou a liga",privCodeIn:"Digite o código que você recebeu",privCodeBad:"Código inválido.",privAlone:"Só você por enquanto. Convide alguém para começar a disputa!",privCodeName:"Liga {c}",privBack:"Voltar",famT:"Família",famP:"Jogue junto com quem você ama.",famAsk:"📷 Pedir fotos à família",famAskS:"Um link para filhos e netos enviarem fotos para o seu jogo",famGive:"🎁 Dar de presente",famGiveS:"Passe, fotos ou coleções para alguém especial",famRedeem:"🎟️ Resgatar presente",famRedeemS:"Digite o código que você recebeu",famDates:"🎂 Datas da família",famDatesS:"Aniversários com fase especial e cartão",famRecap:"🗓️ Meu mês na Baía",famRecapS:"Resumo do mês para compartilhar",famChal:"👨‍👩‍👧 Desafiar a família",famChalS:"Termine uma fase e mande o mesmo tabuleiro",
+avT:"Foto do perfil",avPhone:"📷 Escolher do celular",avNone:"Inicial",avPhotoL:"Sua foto",avCropT:"Ajuste sua foto",avCropP:"Arraste para posicionar e use a barra para aproximar.",avZoom:"Aproximar",avSave:"Usar esta foto",avBadType:"Formato não suportado. Use foto JPG, PNG ou WebP.",avBig:"Foto muito grande (máximo 15 MB).",avSaved:"Foto do perfil atualizada!",avPriv:"🔒 Sua foto fica só neste aparelho e aparece só para você e nas suas ligas privadas. No ranking geral aparece só o símbolo ou a inicial. Use apenas uma foto sua.",avFull:"Sem espaço no aparelho para a foto.",
+ahSet:"Ajuda automática",ahOff:"Desligada",ahHint:"Se você ficar parado, o jogo balança um par que combina. 3 por fase grátis; ilimitada com o Ajudante da Baía ou o Passe. Não vale no desafio do dia nem nos desafios da família.",ahToast:"🤝 Ajuda automática ({n} de 3 nesta fase)",ahToastU:"🤝 Ajuda automática",ahOut:"As 3 ajudas automáticas desta fase acabaram.",ahOutB:"Ver Ajudante",helperT:"🤝 Ajudante da Baía",helperS:"Ajuda automática ilimitada em todas as fases, para sempre. Compra única.",helperPass:"Incluído no seu Passe.",privTab:"Minhas ligas",famLiga:"🏅 Liga da família",famLigaS:"Crie uma liga e convide amigos e familiares",privT:"🏅 Minhas ligas",privEmpty:"Crie uma liga só sua, chame a família e os amigos pelo WhatsApp e vejam toda semana quem joga melhor o desafio do dia.",privCreate:"➕ Criar liga",privJoinCode:"🔑 Entrar com código",privNewT:"Nova liga",privName:"Nome da liga (ex.: Família Silva)",privEmo:"Escolha um símbolo",privCreateGo:"Criar liga",privNameBad:"Escolha outro nome (3 a 24 letras, sem palavrões).",privMax:"Você já está em 5 ligas. Saia de uma para entrar em outra.",privFull:"Esta liga está cheia (30 pessoas).",privCreated:"Liga criada! Agora convide a família.",privInvite:"📲 Convidar pelo WhatsApp",privCode:"Código da liga: {c}",privInvTxt:"{by} convidou você para a liga \"{n}\" no Mahjong Family! Toque para entrar: {url}",privInvT:"{by} convidou você",privInvP:"Entre na liga \"{n}\" e jogue o desafio do dia junto com quem você ama. Toda segunda começa uma semana nova.",privJoin:"Entrar na liga",privJoined:"Você entrou na liga {n}!",privAlready:"Você já está nesta liga.",privEnds:"Termina em {d}d · vale o desafio do dia",privMembers:"{n} pessoas",privYou:"você em {p}º",privLeave:"Sair da liga",privDelete:"Apagar liga",privLeaveQ:"Sair da liga {n}?",privDeleteQ:"Apagar a liga {n} para todos?",privLeft:"Você saiu da liga.",privDeleted:"Liga apagada.",privClap:"👏 Aplaudir",privClapped:"Você aplaudiu {n}! 👏",privRemove:"Remover da liga",privRemoved:"{n} saiu da liga.",privChamps:"Campeões das semanas",privChampWin:"👑 Você foi o campeão da semana na liga {n}!",privSim:"Simular familiares entrando (protótipo)",privProto:"No protótipo, os outros participantes e os pontos deles são simulados. Na versão final todos aparecem em tempo real.",privOwner:"criou a liga",privCodeIn:"Digite o código que você recebeu",privCodeBad:"Código inválido.",privAlone:"Só você por enquanto. Convide alguém para começar a disputa!",privCodeName:"Liga {c}",privBack:"Voltar",famT:"Família",famP:"Jogue junto com quem você ama.",famAsk:"📷 Pedir fotos à família",famAskS:"Um link para filhos e netos enviarem fotos para o seu jogo",famGive:"🎁 Dar de presente",famGiveS:"Passe, fotos ou coleções para alguém especial",famRedeem:"🎟️ Resgatar presente",famRedeemS:"Digite o código que você recebeu",famDates:"🎂 Datas da família",famDatesS:"Aniversários com fase especial e cartão",famRecap:"🗓️ Meu mês na Baía",famRecapS:"Resumo do mês para compartilhar",famChal:"👨‍👩‍👧 Desafiar a família",famChalS:"Termine uma fase e mande o mesmo tabuleiro",
 askTxt:"Oi! Estou jogando Mahjong Family e quero jogar com fotos nossas. Me manda umas fotos por aqui? {url}",askSent:"Link criado. Mande para a família pelo WhatsApp.",
 sendT:"Enviar fotos para {to}",sendP:"Escolha de 12 a 32 fotos. Elas viram as peças do jogo de {to}.",sendConsent:"As pessoas das fotos concordam em aparecer no jogo da família.",sendPick:"Escolher fotos",
 sendDone:"✅ Fotos enviadas para {to}!",sendProto:"Protótipo: na versão final, as fotos chegam no celular de {to} em segundos e são apagadas do servidor depois da entrega.",sendLocal:"Ver como ficou neste aparelho",
@@ -336,7 +347,7 @@ outHints:"No hints left today",outShuffle:"No shuffles left today",outP:"You get
 chDone:"Chapter complete!",chDoneP:"You earned a postcard for your album:",allDone:"You finished every level available!",allDoneP:"New chapters arrive every week. Meanwhile, play the daily challenge and the collections.",
 albumT:"Postcard album",albumP:"Finish a chapter to earn its postcard.",
 storeT:"Shop",noAdsBanner:"No ads. Ever. For everyone.",passT:"Bay Pass",passWhat:"The Pass unlocks:",
-b1:"A new collection every month, unlocked right away",b2:"Every collection released so far",b3:"Every tile set",b4:"An extra challenge every day and the last 30 days archive",b5:"Streak protection: missing 1 day keeps your streak",b6:"Unlimited hints",
+b1:"A new collection every month, unlocked right away",b2:"Every collection released so far",b3:"Every tile set",b4:"An extra challenge every day and the last 30 days archive",b5:"Streak protection: missing 1 day keeps your streak",b6:"Unlimited hints and auto help",
 freeAll:"<b>Free for everyone, always:</b> all 600 levels, 1 challenge a day, shuffling when stuck, and the color and contrast modes.",
 year:"Yearly",yearS:"7 days free, then",month:"Monthly",monthS:"Renews every month",life:"Lifetime",lifeS:"One payment. Includes every collection, future ones too.",popular:"most popular",
 tryFree:"Try free",subscribe:"Subscribe",buy:"Buy",owned:"Owned",active:"Pass active ✓",
@@ -373,7 +384,8 @@ paceHint:"Relaxed: smaller boards. Challenging: more tiles and layers. You never
 achT:"Achievements",achGot:"🏅 Achievement: {a} (+5 ⭐)",medalsT:"Monthly medals",medalsP:"Play the daily challenge: {n} days in {m}.",
 medal:["Bronze","Silver","Gold","Diamond","Perfect"],medalReq:["7 days","14 days","21 days","28 days","Every day"],
 ach:{lv1:"First level",lv10:"10 levels",lv50:"50 levels",lv100:"100 levels",ch1:"First postcard",ch5:"5 postcards",three10:"10 three-star levels",combo5:"Combo x5",daily7:"7 daily challenges",daily30:"30 daily challenges",bay1:"First upgrade",bayAll:"Bay restored",photos:"My Family",chalS:"Challenged the family",chalW:"Won a challenge",evt:"Event complete",st7:"7-day streak",st30:"30-day streak",col:"Collection complete",gift:"Gave a gift"},
-privTab:"My leagues",famLiga:"🏅 Family league",famLigaS:"Create a league and invite friends and family",privT:"🏅 My leagues",privEmpty:"Create your own league, invite family and friends on WhatsApp and see every week who plays the daily challenge best.",privCreate:"➕ Create a league",privJoinCode:"🔑 Join with a code",privNewT:"New league",privName:"League name (e.g. The Smiths)",privEmo:"Pick a symbol",privCreateGo:"Create league",privNameBad:"Pick another name (3 to 24 letters, no bad words).",privMax:"You are already in 5 leagues. Leave one to join another.",privFull:"This league is full (30 people).",privCreated:"League created! Now invite your family.",privInvite:"📲 Invite on WhatsApp",privCode:"League code: {c}",privInvTxt:"{by} invited you to the \"{n}\" league on Mahjong Family! Tap to join: {url}",privInvT:"{by} invited you",privInvP:"Join the \"{n}\" league and play the daily challenge with the people you love. A new week starts every Monday.",privJoin:"Join the league",privJoined:"You joined {n}!",privAlready:"You are already in this league.",privEnds:"Ends in {d}d · daily challenge counts",privMembers:"{n} people",privYou:"you are #{p}",privLeave:"Leave league",privDelete:"Delete league",privLeaveQ:"Leave {n}?",privDeleteQ:"Delete {n} for everyone?",privLeft:"You left the league.",privDeleted:"League deleted.",privClap:"👏 Applaud",privClapped:"You applauded {n}! 👏",privRemove:"Remove from league",privRemoved:"{n} left the league.",privChamps:"Weekly champions",privChampWin:"👑 You were this week's champion in {n}!",privSim:"Simulate family joining (prototype)",privProto:"In the prototype, other members and their points are simulated. In the final version everyone shows up live.",privOwner:"created the league",privCodeIn:"Type the code you received",privCodeBad:"Invalid code.",privAlone:"Just you for now. Invite someone to start the race!",privCodeName:"League {c}",privBack:"Back",famT:"Family",famP:"Play together with the people you love.",famAsk:"📷 Ask the family for photos",famAskS:"A link for kids and grandkids to send photos to your game",famGive:"🎁 Give a gift",famGiveS:"Pass, photos or collections for someone special",famRedeem:"🎟️ Redeem a gift",famRedeemS:"Type the code you received",famDates:"🎂 Family dates",famDatesS:"Birthdays with a special level and card",famRecap:"🗓️ My month at the Bay",famRecapS:"Monthly summary to share",famChal:"👨‍👩‍👧 Challenge the family",famChalS:"Finish a level and send the same board",
+avT:"Profile picture",avPhone:"📷 Choose from phone",avNone:"Initial",avPhotoL:"Your photo",avCropT:"Adjust your photo",avCropP:"Drag to position and use the bar to zoom.",avZoom:"Zoom",avSave:"Use this photo",avBadType:"Format not supported. Use a JPG, PNG or WebP photo.",avBig:"Photo too large (15 MB max).",avSaved:"Profile picture updated!",avPriv:"🔒 Your photo stays on this device and only you and your private leagues see it. The global leaderboard shows only the symbol or initial. Use only a photo of yourself.",avFull:"Not enough space on the device for the photo.",
+ahSet:"Auto help",ahOff:"Off",ahHint:"If you stay idle, the game wiggles a matching pair. 3 per level free; unlimited with the Bay Helper or the Pass. Not used in the daily challenge or family challenges.",ahToast:"🤝 Auto help ({n} of 3 this level)",ahToastU:"🤝 Auto help",ahOut:"The 3 auto helps for this level are used up.",ahOutB:"See Helper",helperT:"🤝 Bay Helper",helperS:"Unlimited auto help on every level, forever. One-time purchase.",helperPass:"Included in your Pass.",privTab:"My leagues",famLiga:"🏅 Family league",famLigaS:"Create a league and invite friends and family",privT:"🏅 My leagues",privEmpty:"Create your own league, invite family and friends on WhatsApp and see every week who plays the daily challenge best.",privCreate:"➕ Create a league",privJoinCode:"🔑 Join with a code",privNewT:"New league",privName:"League name (e.g. The Smiths)",privEmo:"Pick a symbol",privCreateGo:"Create league",privNameBad:"Pick another name (3 to 24 letters, no bad words).",privMax:"You are already in 5 leagues. Leave one to join another.",privFull:"This league is full (30 people).",privCreated:"League created! Now invite your family.",privInvite:"📲 Invite on WhatsApp",privCode:"League code: {c}",privInvTxt:"{by} invited you to the \"{n}\" league on Mahjong Family! Tap to join: {url}",privInvT:"{by} invited you",privInvP:"Join the \"{n}\" league and play the daily challenge with the people you love. A new week starts every Monday.",privJoin:"Join the league",privJoined:"You joined {n}!",privAlready:"You are already in this league.",privEnds:"Ends in {d}d · daily challenge counts",privMembers:"{n} people",privYou:"you are #{p}",privLeave:"Leave league",privDelete:"Delete league",privLeaveQ:"Leave {n}?",privDeleteQ:"Delete {n} for everyone?",privLeft:"You left the league.",privDeleted:"League deleted.",privClap:"👏 Applaud",privClapped:"You applauded {n}! 👏",privRemove:"Remove from league",privRemoved:"{n} left the league.",privChamps:"Weekly champions",privChampWin:"👑 You were this week's champion in {n}!",privSim:"Simulate family joining (prototype)",privProto:"In the prototype, other members and their points are simulated. In the final version everyone shows up live.",privOwner:"created the league",privCodeIn:"Type the code you received",privCodeBad:"Invalid code.",privAlone:"Just you for now. Invite someone to start the race!",privCodeName:"League {c}",privBack:"Back",famT:"Family",famP:"Play together with the people you love.",famAsk:"📷 Ask the family for photos",famAskS:"A link for kids and grandkids to send photos to your game",famGive:"🎁 Give a gift",famGiveS:"Pass, photos or collections for someone special",famRedeem:"🎟️ Redeem a gift",famRedeemS:"Type the code you received",famDates:"🎂 Family dates",famDatesS:"Birthdays with a special level and card",famRecap:"🗓️ My month at the Bay",famRecapS:"Monthly summary to share",famChal:"👨‍👩‍👧 Challenge the family",famChalS:"Finish a level and send the same board",
 askTxt:"Hi! I'm playing Mahjong Family and want to play with our photos. Can you send me some here? {url}",askSent:"Link created. Send it to the family on WhatsApp.",
 sendT:"Send photos to {to}",sendP:"Pick 12 to 32 photos. They become the tiles in {to}'s game.",sendConsent:"The people in the photos agree to appear in the family game.",sendPick:"Pick photos",
 sendDone:"✅ Photos sent to {to}!",sendProto:"Prototype: in the final version the photos reach {to}'s phone in seconds and are deleted from the server after delivery.",sendLocal:"See how it looks on this device",
@@ -410,8 +422,8 @@ ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm 
 };
 const CH_EMOJI=["🏖️","⚓","🍍","🌅","🌴","🐠","🦀","🛶","🎉","🔭","☀️","💧","🌺","🏡","⛵","🌙","🌊","🍋","🐟","🐢","🐚","🎭","🚢","⭐","🎈","🐙","🦜","🎆","🐳","🐋"];
 const PRICES={
-pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90",colAll:"R$ 39,90"},
-en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99",colAll:"US$ 9.99"}
+pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90",colAll:"R$ 39,90",helper:"R$ 9,90"},
+en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99",colAll:"US$ 9.99",helper:"US$ 2.99"}
 };
 const KEY="mahjongBaia_v2";
 function today(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
@@ -422,7 +434,7 @@ function dateShort(k){const d=new Date(Date.now()-k*86400000);return d.getDate()
 function defState(){return {level:1,premium:false,plan:"",lang:(navigator.language||"pt").toLowerCase().startsWith("pt")?"pt":"en",hl:true,theme:"baia",
 day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false,
 tileSets:[],tileSet:"baia",photoOwned:false,
-nick:"",frame:"none",founderNo:0,snd:true,mute:false,mus:true,musVol:30,memo:true,pauseRem:true,pace:"normal",tsz:0,classic:false,timer:false,stats:{three:0,daily:0,chalS:0,chalW:0,maxCombo:0,giftS:0},ach:[],dailyLog:[],mon:{k:"",pairs:0,lv:0,days:[],hits:{}},famDates:[],priv:[],redeemed:[],remind:[],stars:0,best:{},bay:{},gift:{i:0,last:-99},ciFrames:[],evt:{wk:"",n:0,done:false},evtCards:[],caps:[],champ:[],weekPts:{},monthPts:{},league:1,blocked:[],streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
+nick:"",frame:"none",founderNo:0,snd:true,mute:false,mus:true,musVol:30,memo:true,pauseRem:true,pace:"normal",tsz:0,classic:false,timer:false,stats:{three:0,daily:0,chalS:0,chalW:0,maxCombo:0,giftS:0},ach:[],dailyLog:[],mon:{k:"",pairs:0,lv:0,days:[],hits:{}},famDates:[],priv:[],avatar:"",autoHelp:5,helper:false,redeemed:[],remind:[],stars:0,best:{},bay:{},gift:{i:0,last:-99},ciFrames:[],evt:{wk:"",n:0,done:false},evtCards:[],caps:[],champ:[],weekPts:{},monthPts:{},league:1,blocked:[],streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
 let S=defState();
 try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(defState(),JSON.parse(raw));}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
@@ -564,7 +576,7 @@ function newBoard(pos,seed,fmin,fmax){
 const fit=(sw)=>{ let mx=0,my=0,mz=0; pos.forEach(q=>{ const x=sw?q.y:q.x, y=sw?q.x:q.y; mx=Math.max(mx,x+2); my=Math.max(my,y+2); mz=Math.max(mz,q.z); });
 return Math.min((wrap.clientWidth-16)/(mx/2+mz*0.1+0.2),(wrap.clientHeight-16)/((my/2)*1.28+mz*0.1+0.2)); };
 const tr=fit(true)>fit(false)*1.02;
-G={tiles:pos.map(p=>tr?{x:p.y,y:p.x,z:p.z,f:0,alive:true}:{x:p.x,y:p.y,z:p.z,f:0,alive:true}),sel:-1,undo:[],used:0};
+G={tiles:pos.map(p=>tr?{x:p.y,y:p.x,z:p.z,f:0,alive:true}:{x:p.x,y:p.y,z:p.z,f:0,alive:true}),sel:-1,undo:[],used:0,ah:0,ahNote:false,ahPair:null,lastAct:Date.now()}; if(typeof ahBar==='function') ahBar(false);
 buildNb();
 const R=rng(seed);
 const pairs=pairUp(G.tiles.map((_,i)=>i),R);
@@ -637,7 +649,7 @@ $("bUndo").disabled=G.undo.length===0;
 let toastT=0;
 function toast(msg){const e=$("toast");e.textContent=msg;e.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("on"),2200);}
 function onTile(i){
-const p=G.tiles[i]; if(!p.alive) return;
+ahAct(); const p=G.tiles[i]; if(!p.alive) return;
 if(!isFree(i,aliveArr())){ p.el.classList.remove("shake"); void p.el.offsetWidth; p.el.classList.add("shake"); toast(t("blocked")); return; }
 if(G.sel===-1) G.sel=i;
 else if(G.sel===i) G.sel=-1;
@@ -666,17 +678,37 @@ if(S[b]>0){S[b]--;save();return true;}
 return false;
 }
 function useHint(){
+ahAct();
 const fp=freePairs(); if(fp.length===0){ stuck(); return; }
 if(!spend("h")){ outOf("outHints"); return; }
 G.used++; G.hinted=true; refresh(); fp[0].forEach(i=>G.tiles[i].el.classList.add("hint"));
 }
 function useShuffle(free){
+ahAct();
 if(!free && !spend("s")){ outOf("outShuffle"); return; }
 if(!reshuffle((Date.now()&0xffffff)+G.tiles.length)){ toast("…"); return; }
 if(!free) G.used++; G.shuf=true;
 G.sel=-1; render();
 }
-function useUndo(){ const u=G.undo.pop(); if(!u){toast(t("nothingUndo"));return;} u.forEach(i=>G.tiles[i].alive=true); G.sel=-1; refresh(); }
+function useUndo(){ ahAct(); const u=G.undo.pop(); if(!u){toast(t("nothingUndo"));return;} u.forEach(i=>G.tiles[i].alive=true); G.sel=-1; refresh(); }
+function ahUnl(){ return !!(S.premium||S.helper); }
+function ahAllowed(){ return G&&G.mode!=="daily"&&G.mode!=="chal"&&(S.autoHelp??5)>0; }
+function ahAct(){ if(!G) return; G.lastAct=Date.now(); if(G.ahPair){ G.ahPair.forEach(i=>{ const el=G.tiles[i]&&G.tiles[i].el; if(el) el.classList.remove("nudge"); }); G.ahPair=null; } }
+function ahBar(show){ const b=$("ahBar"); if(!show){ b.classList.remove("on"); return; } $("ahTxt").textContent=t("ahOut"); $("ahGo").textContent=t("ahOutB"); b.classList.add("on"); clearTimeout(window.__ahT); window.__ahT=setTimeout(()=>b.classList.remove("on"),7000); }
+function ahTick(){ if(!G||!$("game").classList.contains("on")||$("modal").classList.contains("on")||document.hidden) { if(G) G.lastAct=Math.max(G.lastAct||0,Date.now()-1000); return; }
+if(!ahAllowed()||G.tiles.every(x=>!x.alive)) return;
+if(G.lastAct==null) G.lastAct=Date.now();
+const wait=(S.autoHelp??5)*1000; if(Date.now()-G.lastAct<wait||G.ahPair) return;
+const unl=ahUnl(); G.ah=G.ah||0;
+if(!unl&&G.ah>=3){ if(!G.ahNote){ G.ahNote=true; ahBar(true); } G.lastAct=Date.now(); return; }
+const fp=freePairs(); if(!fp.length) return;
+const pair=fp[G.sel>=0?Math.max(0,fp.findIndex(p=>p.includes(G.sel))):0];
+pair.forEach(i=>{ const el=G.tiles[i].el; el.classList.remove("nudge"); void el.offsetWidth; el.classList.add("nudge"); });
+G.ahPair=pair; G.ah++; G.lastAct=Date.now();
+toast(unl?t("ahToastU"):t("ahToast").replace("{n}",G.ah)); try{ if(navigator.vibrate) navigator.vibrate([10,60,10]); }catch(e){}
+setTimeout(()=>{ if(G&&G.ahPair===pair){ pair.forEach(i=>{ const el=G.tiles[i]&&G.tiles[i].el; if(el) el.classList.remove("nudge"); }); G.ahPair=null; G.lastAct=Date.now(); } },1400); }
+setInterval(ahTick,250);
+$("ahGo").onclick=()=>{ ahBar(false); openStore(); setTimeout(()=>{ const b=$("oHelper"); if(b) b.scrollIntoView({block:"center"}); },60); };
 function modal(html){ $("card").innerHTML=html; $("card").scrollTop=0; $("modal").classList.add("on"); }
 function closeModal(){ $("modal").classList.remove("on"); }
 $("modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
@@ -740,12 +772,12 @@ h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
 }
 h+='<div class="free4all">'+t("freeAll")+'</div>';
 h+='<h3>'+t("founderT")+'</h3>';
-h+=S.founderNo? row("fdBuy",t("founderT"),avatarHtml(S.nick,"fundador")+' '+t("founderNo").replace("{n}",fmtNo(S.founderNo)),"",t("owned"),{owned:1,tag:t("founderTag")})
+h+=S.founderNo? row("fdBuy",t("founderT"),avatarHtml(S.nick,"fundador",38,myAv())+' '+t("founderNo").replace("{n}",fmtNo(S.founderNo)),"",t("owned"),{owned:1,tag:t("founderTag")})
 : row("fdBuy",t("founderT"),t("founderS")+'<br><b>'+t("founderLeft").replace("{r}",founderLeft())+'</b>',P("founder"),t("buy"),{tag:t("founderTag")});
 if(welcomeAvailable()){ h+='<h3>'+t("offersT")+'</h3>'+row("oWelcome",t("welcome"),t("welcomeS"),P("welcome"),t("buy")); }
 if(!S.premium){
-h+='<h3>'+t("helpT")+'</h3>'+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
-}
+h+='<h3>'+t("helpT")+'</h3>'+row("oHelper",t("helperT"),t("helperS"),S.helper?"":P("helper"),S.helper?t("owned"):t("buy"),S.helper?{owned:1}:{})+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
+} else { h+='<h3>'+t("helpT")+'</h3>'+row("oHelper",t("helperT"),t("helperS")+'<br><b>'+t("helperPass")+'</b>',"",t("owned"),{owned:1}); }
 h+='<h3>'+t("colT")+'</h3>';
 h+=collGrid();
 h+='<h3>'+t("phT")+'</h3>';
@@ -763,6 +795,7 @@ bind("pYear",()=>{S.premium=true;S.plan="year";done();});
 bind("pMonth",()=>{S.premium=true;S.plan="month";done();});
 bind("pLife",()=>{S.premium=true;S.plan="life";done();});
 bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.tileSets.includes("frutas"))S.tileSets.push("frutas");done();});
+bind("oHelper",()=>{ if(S.helper||S.premium) return; S.helper=true; done(); });
 bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
 bind("oH50",()=>{S.bankH+=50;S.bankS+=25;done();});
 bindCatalog(done,openStore);
@@ -778,6 +811,7 @@ const th=(id,key)=>'<button data-th="'+id+'" class="'+(S.theme===id?'cur':'')+'"
 modal('<h2>'+t("setT")+'</h2>'
 +'<p style="text-align:left;margin:4px 0 0"><b>'+t("setSize")+'</b></p><div class="seg">'+[0,1,2].map(i=>'<button data-sz="'+i+'" class="'+((S.tsz||0)===i?'cur':'')+'">'+t("sz"+i)+'</button>').join("")+'</div>'
 +'<p style="text-align:left;margin:10px 0 0"><b>'+t("setPace")+'</b></p><div class="seg">'+["relax","normal","hard"].map(k=>'<button data-pace="'+k+'" class="'+(S.pace===k?'cur':'')+'">'+t("pace_"+k)+'</button>').join("")+'</div><div class="hint2">'+t("paceHint")+'</div>'
++'<p style="text-align:left;margin:10px 0 0"><b>'+t("ahSet")+'</b></p><div class="seg">'+[0,5,10].map(v=>'<button data-ah="'+v+'" class="'+((S.autoHelp??5)===v?'cur':'')+'">'+(v?v+" s":t("ahOff"))+'</button>').join("")+'</div><div class="hint2">'+t("ahHint")+'</div>'
 +'<div class="setRow"><span>'+t("setClassic")+'</span><button class="toggle'+(S.classic?' on':'')+'" data-tg="classic">'+(S.classic?'ON':'OFF')+'</button></div><div class="hint2">'+t("classicHint")+'</div>'
 +'<div class="setRow"><span>'+t("setTimer")+'</span><button class="toggle'+(S.timer?' on':'')+'" data-tg="timer">'+(S.timer?'ON':'OFF')+'</button></div>'
 +'<div class="setRow"><span>'+t("hl")+'</span><button class="toggle'+(S.hl?' on':'')+'" id="sHl">'+(S.hl?'ON':'OFF')+'</button></div>'
@@ -797,6 +831,7 @@ bind("sHl",()=>{S.hl=!S.hl;save();applyPrefs();openSettings();});
 const mv=$("sMusV"); if(mv) mv.oninput=()=>{ S.musVol=+mv.value; save(); musicVol(); };
 document.querySelectorAll("[data-tg]").forEach(b=>b.onclick=()=>{ const k=b.dataset.tg; S[k]=!S[k]; save(); applyPrefs(); openSettings(); });
 document.querySelectorAll("[data-sz]").forEach(b=>b.onclick=()=>{ S.tsz=+b.dataset.sz; save(); applyPrefs(); openSettings(); });
+document.querySelectorAll("[data-ah]").forEach(b=>b.onclick=()=>{ S.autoHelp=+b.dataset.ah; save(); openSettings(); });
 document.querySelectorAll("[data-pace]").forEach(b=>b.onclick=()=>{ S.pace=b.dataset.pace; save(); openSettings(); });
 bind("sCap",openCaptions); bind("sCi",()=>{ S.streak=29; S.lastDailyN=dayLocal()-1; S.gift.last=-99; save(); applyPrefs(); openGift(false); });
 bind("sLang",()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();openSettings();});
@@ -828,7 +863,7 @@ $("bRank").textContent=t("rank"); $("bFam").textContent=t("fam");
 document.body.classList.toggle("ts1",S.tsz===1); document.body.classList.toggle("ts2",S.tsz===2); $("bBay").textContent="🏝️ "+t("bayShort")+" · ⭐"+S.stars; $("bGift").textContent="🎁 "+t("giftShort")+(giftAvailable()?" !":" ✓");
 { const e=evtState(), nm=t("evts")[evtIdx()], pc=Math.min(100,Math.round(e.n/EVT_GOAL*100));
 $("evt").innerHTML='<b><span class="em">'+EVT_EMO[evtIdx()]+'</span> '+nm+'</b><small>'+t("evtL")+' · '+Math.min(e.n,EVT_GOAL)+'/'+EVT_GOAL+' '+t("pairs")+(e.done?' · '+t("evtDoneShort"):'')+'</small><div class="bar"><i style="width:'+pc+'%"></i></div>'; }
-{ const st=curStreak(); $("prof").innerHTML=avatarHtml(S.nick,S.frame)+'<div class="pn"><b>'+esc(S.nick)+'</b><small>'+frameLabel()+(badgesFor(meRow())?' · '+badgesFor(meRow()):'')+'</small></div><span style="color:var(--muted)">✏️</span>'; }
+{ const st=curStreak(); $("prof").innerHTML=avatarHtml(S.nick,S.frame,38,myAv())+'<div class="pn"><b>'+esc(S.nick)+'</b><small>'+frameLabel()+(badgesFor(meRow())?' · '+badgesFor(meRow()):'')+'</small></div><span style="color:var(--muted)">✏️</span>'; }
 { const st=curStreak(); $("bDaily").textContent=t("dailyShort")+(S.dailyDone===today()?" ✓":"")+(st?" · 🔥"+st:""); }
 $("bAlbum").textContent=t("album"); $("bCols").textContent="🗂️ "+t("colsT");
 $("bStore").innerHTML=S.premium?'<span class="premiumTag">'+t("active")+'</span>':t("store");
@@ -1155,11 +1190,16 @@ function founderLeft(){ return 5000-(4100+Math.floor((dayNum()-20400)%300)); }
 function weekKey(){ const d=new Date(), k=(d.getDay()+6)%7, m=new Date(d.getFullYear(),d.getMonth(),d.getDate()-k); return m.getFullYear()+"-"+(m.getMonth()+1)+"-"+m.getDate(); }
 function weekDay(){ return (new Date().getDay()+6)%7+1; }
 function monthKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1); }
-function avatarHtml(nick,frame,size){ size=size||38; const ini=(String(nick).trim()[0]||"?").toUpperCase();
+const AV_EMO=["🐋","🐬","🐢","🦀","🐙","🐠","🦩","🌺","🌴","⚓","🐚","⭐","🌻","🐱","🐶"];
+const AKEY=KEY+"_avatar"; let AVPHOTO=""; try{ AVPHOTO=localStorage.getItem(AKEY)||""; }catch(e){}
+function myAv(pub){ const a=S.avatar||""; if(a==="p") return (pub||!AVPHOTO)?"":"p"; return a; }
+function avatarHtml(nick,frame,size,av){ size=size||38; const ini=(String(nick).trim()[0]||"?").toUpperCase();
+if(av==="p"&&AVPHOTO) return '<span class="av fr-'+(frame||"none")+'" style="width:'+size+'px;height:'+size+'px"><img src="'+AVPHOTO+'" alt=""></span>';
+if(av&&av.startsWith("e:")&&AV_EMO.includes(av.slice(2))) return '<span class="av em fr-'+(frame||"none")+'" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.55)+'px">'+av.slice(2)+'</span>';
 return '<span class="av fr-'+(frame||"none")+'" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.45)+'px">'+esc(ini)+'</span>'; }
 const FRAME_COLOR={fundador:"#d4a017",campeao:"#8e44ad",d30:"#cd7f32",d90:"#9aa5b1",d180:"#f1c40f",d365:"#29b6f6"};
 function frameLabel(){ if(/^d\d+$/.test(S.frame)&&S.ciFrames.includes(S.frame)) return '🔥 '+t("ciL")+' · '+t("fr_"+S.frame); if(S.frame==="fundador"&&S.founderNo) return '🥇 '+t("founderNo").replace("{n}",fmtNo(S.founderNo)); if(S.frame==="campeao"&&S.champ.length) return '🏆 '+t("fr_campeao")+' · '+S.champ[S.champ.length-1]; return t("profTap"); }
-function meRow(){ return {nick:S.nick,frame:S.frame,photo:PHOTOS.length>=12,streak:curStreak(),pts:S.weekPts[weekKey()]||0,me:true,fno:S.founderNo}; }
+function meRow(pub){ return {av:myAv(pub),nick:S.nick,frame:S.frame,photo:PHOTOS.length>=12,streak:curStreak(),pts:S.weekPts[weekKey()]||0,me:true,fno:S.founderNo}; }
 function badgesFor(r){ return (r.photo?'📷':'')+(r.streak?(r.photo?' ':'')+'🔥'+r.streak:''); }
 const BOTN={pt:["Ana Lú","Seu Zé","Vovó Cida","Marquinhos","Dona Fátima","Tio Beto","Lurdinha","Joãozinho","Cris B.","Rosa M.","Paulão","Neide","Silvinha","Carlão","Tânia R.","Dudu","Vera L.","Toninho","Glória","Rê","Mila","Nonô","Biazinha","Juca","Lena","Beto Praia","Cidinha","Márcia F.","Zezé","Lia","Odete","Valdir","Sônia","Gil"],
 en:["Grandma Sue","Bob K.","Linda M.","Joe","Patty","Mike R.","Carol","Dave","Nancy B.","Tom","Judy","Rick","Barb","Gary","Sandy","Larry","Deb","Ron","Kathy","Jim","Pam","Steve","Donna","Ed","Sharon","Bill","Ruth","Hank","Peggy","Walt","Joan","Fred","Lois","Al"]};
@@ -1168,11 +1208,11 @@ for(let i=0;i<29;i++){ const avg=320+R()*720+S.league*60, act=0.35+R()*0.65, day
 const fr=R()<0.09?"fundador":(R()<0.07?"campeao":"none");
 out.push({nick:names[i],frame:fr,photo:R()<0.28,streak:Math.floor(R()*45),pts:Math.round(avg*days),fno:1+Math.floor(R()*4100)}); }
 return out.filter(b=>!S.blocked.includes(b.nick)); }
-function leagueRows(){ return [...bots(),meRow()].sort((a,b)=>b.pts-a.pts||(a.me?-1:b.me?1:0)); }
+function leagueRows(){ return [...bots(),meRow(true)].sort((a,b)=>b.pts-a.pts||(a.me?-1:b.me?1:0)); }
 function myLeaguePos(){ return leagueRows().findIndex(r=>r.me)+1; }
 function rowHtml(r,pos,total,zones){ const cls='rk'+(r.me?' me':'')+(zones&&pos<=5?' up':'')+(zones&&pos>total-5?' down':'');
 const sub=(r.frame==="fundador"?'🥇 '+t("fr_fundador")+' nº '+fmtNo(r.fno):r.frame==="campeao"?'🏆 '+t("fr_campeao"):'')+(badgesFor(r)?((r.frame!=="none")?' · ':'')+badgesFor(r):'');
-return '<div class="'+cls+'"><span class="pos">'+pos+'</span>'+avatarHtml(r.nick,r.frame)+'<span class="nm">'+esc(r.nick)+(sub?'<small>'+sub+'</small>':'')+'</span><span class="pt">'+r.pts.toLocaleString(S.lang==="pt"?"pt-BR":"en-US")+'</span>'+(r.me?'<span style="width:32px"></span>':'<button class="mn" data-nick="'+esc(r.nick)+'" aria-label="'+t("report")+'">⋯</button>')+'</div>'; }
+return '<div class="'+cls+'"><span class="pos">'+pos+'</span>'+avatarHtml(r.nick,r.frame,38,r.av)+'<span class="nm">'+esc(r.nick)+(sub?'<small>'+sub+'</small>':'')+'</span><span class="pt">'+r.pts.toLocaleString(S.lang==="pt"?"pt-BR":"en-US")+'</span>'+(r.me?'<span style="width:32px"></span>':'<button class="mn" data-nick="'+esc(r.nick)+'" aria-label="'+t("report")+'">⋯</button>')+'</div>'; }
 function openRank(tab){
 const mName=t("months")[new Date().getMonth()];
 let h='<h2>'+t("rankT")+'</h2><div class="tabs"><button id="tW" class="'+(tab==="w"?"cur":"")+'">'+t("weekly")+'</button><button id="tM" class="'+(tab==="m"?"cur":"")+'">'+t("monthly")+'</button><button id="tP">'+t("privTab")+'</button></div>';
@@ -1181,7 +1221,7 @@ h+='<p style="margin:4px 0"><b>'+t("leagues")[S.league]+'</b></p><p style="font-
 rows.forEach((r,i)=>{ h+=rowHtml(r,i+1,rows.length,true); }); }
 else { const R=rng(hashStr(monthKey()+":"+S.lang)), dom=new Date().getDate(), names=BOTN[S.lang]||BOTN.pt, top=[];
 for(let i=0;i<10;i++){ const fr=i<3?"campeao":(R()<0.3?"fundador":"none"); top.push({nick:names[(i*7+3)%names.length],frame:fr,photo:R()<0.4,streak:dom+Math.floor(R()*60),pts:Math.round(dom*1150*(1-i*0.012)),fno:1+Math.floor(R()*900)}); }
-const me=meRow(); me.pts=S.monthPts[monthKey()]||0; const min=top[9].pts;
+const me=meRow(true); me.pts=S.monthPts[monthKey()]||0; const min=top[9].pts;
 let pos; if(me.pts>=min){ top.push(me); top.sort((a,b)=>b.pts-a.pts); pos=top.findIndex(r=>r.me)+1; top.length=10; if(!top.some(r=>r.me)) pos=11; }
 else { const ratio=Math.min(1,me.pts/(dom*1150)); pos=Math.max(11,Math.min(48000,Math.round(48000*Math.pow(1-ratio,2.2)))); }
 h+='<p style="margin:4px 0"><b>'+t("monthTop").replace("{m}",mName)+'</b></p>';
@@ -1201,7 +1241,7 @@ function lgParse(c){ c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,""); if(
 function daysToMonday(){ return 8-weekDay(); }
 function simPts(nick,wk,full){ const R=rng(hashStr(wk+":lg:"+nick)), avg=220+R()*680, act=0.3+R()*0.7, wd=full?7:weekDay(); const days=Math.min(wd,Math.max(0,Math.round(wd*act+R()*0.6-0.3))); return Math.round(avg*days); }
 function lgRows(L,wk){ wk=wk||weekKey(); const full=wk!==weekKey();
-const rows=L.members.filter(m=>!S.blocked.includes(m.nick)).map(m=>({nick:m.nick,frame:"none",photo:false,streak:0,pts:simPts(m.nick,wk,full),fno:0,owner:m.nick===L.by}));
+const rows=L.members.filter(m=>!S.blocked.includes(m.nick)).map(m=>({av:(hashStr(m.nick)%3===0)?"e:"+AV_EMO[hashStr(m.nick)%AV_EMO.length]:"",nick:m.nick,frame:"none",photo:false,streak:0,pts:simPts(m.nick,wk,full),fno:0,owner:m.nick===L.by}));
 const me=meRow(); me.pts=S.weekPts[wk]||0; me.owner=L.owner; rows.push(me);
 return rows.sort((a,b)=>b.pts-a.pts||(a.me?-1:b.me?1:0)); }
 function lgRoll(){ let won=null; (S.priv||[]).forEach(L=>{ const wk=weekKey(); if(L.wk&&L.wk!==wk){ const r=lgRows(L,L.wk); if(r.length>1&&r[0].pts>0){ L.hist.unshift({wk:L.wk,nick:r[0].nick,me:!!r[0].me}); L.hist.length=Math.min(L.hist.length,12); if(r[0].me) won=L; } } L.wk=wk; });
@@ -1253,14 +1293,43 @@ const BAD=["merda","porra","caralho","puta","buceta","viado","cu ","fdp","shit",
 function nickOk(n){ n=n.trim(); if(n.length<3||n.length>16) return false; if(!/^[\p{L}\p{N} ._-]+$/u.test(n)) return false; const l=(" "+n.toLowerCase()+" "); return !BAD.some(w=>l.includes(w)); }
 function openProfile(){
 const frames=["none"].concat(S.founderNo?["fundador"]:[]).concat(S.champ.length?["campeao"]:[]).concat(S.ciFrames);
-let h='<h2>'+t("profT")+'</h2><div style="margin:6px auto">'+avatarHtml(S.nick,S.frame,64)+'</div><p style="text-align:left;margin-bottom:4px"><b>'+t("nickL")+'</b></p><input class="nickin" id="nkIn" maxlength="16" value="'+esc(S.nick)+'"><button class="big" id="nkSave">'+t("saveB")+'</button>';
-h+='<p style="text-align:left;margin-top:14px"><b>'+t("frameL")+'</b></p><div class="themes">'+frames.map(f=>'<button data-fr="'+f+'" class="'+(S.frame===f?'cur':'')+'">'+avatarHtml(S.nick,f,28)+' '+t("fr_"+f)+'</button>').join("")+'</div>';
+let h='<h2>'+t("profT")+'</h2><div style="margin:6px auto">'+avatarHtml(S.nick,S.frame,72,myAv())+'</div><p style="text-align:left;margin-bottom:4px"><b>'+t("nickL")+'</b></p><input class="nickin" id="nkIn" maxlength="16" value="'+esc(S.nick)+'"><button class="big" id="nkSave">'+t("saveB")+'</button>';
+{ const cur=S.avatar||""; h+='<p style="text-align:left;margin-top:14px"><b>'+t("avT")+'</b></p><div class="avgrid">'
++'<button data-av="" class="'+(cur===""?"cur":"")+'" aria-label="'+t("avNone")+'">'+avatarHtml(S.nick,"none",40)+'</button>'
++(AVPHOTO?'<button data-av="p" class="'+(cur==="p"?"cur":"")+'" aria-label="'+t("avPhotoL")+'">'+avatarHtml(S.nick,"none",40,"p")+'</button>':'')
++AV_EMO.map(e=>'<button data-av="e:'+e+'" class="'+(cur==="e:"+e?"cur":"")+'" aria-label="'+e+'">'+avatarHtml(S.nick,"none",40,"e:"+e)+'</button>').join("")
++'</div><button class="sec" id="avPick">'+t("avPhone")+'</button><input type="file" id="avFile" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" style="display:none"><div class="privacy">'+t("avPriv")+'</div>'; }
+h+='<p style="text-align:left;margin-top:14px"><b>'+t("frameL")+'</b></p><div class="themes">'+frames.map(f=>'<button data-fr="'+f+'" class="'+(S.frame===f?'cur':'')+'">'+avatarHtml(S.nick,f,28,myAv())+' '+t("fr_"+f)+'</button>').join("")+'</div>';
 if(!S.founderNo) h+='<button class="sec" id="mFd">🥇 '+t("founderT")+' · '+P("founder")+'</button>';
 h+='<div class="privacy">'+t("rankPrivacy")+'</div><button class="sec" id="mClose">'+t("close")+'</button>';
 modal(h); bind("mClose",closeModal); bind("mFd",openStore);
 bind("nkSave",()=>{ const v=$("nkIn").value.trim(); if(!nickOk(v)){ toast(t("nickBad")); return; } S.nick=v; save(); applyPrefs(); toast(t("nickOk")); openProfile(); });
 document.querySelectorAll("[data-fr]").forEach(b=>b.onclick=()=>{ S.frame=b.dataset.fr; save(); applyPrefs(); openProfile(); });
+document.querySelectorAll("[data-av]").forEach(b=>b.onclick=()=>{ S.avatar=b.dataset.av; save(); applyPrefs(); openProfile(); });
+bind("avPick",()=>$("avFile").click());
+$("avFile").onchange=()=>{ const f=$("avFile").files[0]; if(f) avLoad(f); };
 }
+async function avLoad(f){
+if(f.size>15*1024*1024){ toast(t("avBig")); return; }
+let img=null; try{ if(window.createImageBitmap) img=await createImageBitmap(f); }catch(e){ img=null; }
+if(!img){ const url=URL.createObjectURL(f); img=await loadImg(url); }
+if(!img||!img.width){ toast(t("avBadType")); return; }
+avCrop(img); }
+function avCrop(img){ window.__avImg=img; const V=240, base=Math.max(V/img.width,V/img.height); let z=1, ox=0, oy=0;
+modal('<h2>'+t("avCropT")+'</h2><p>'+t("avCropP")+'</p><canvas id="avCv" width="480" height="480" aria-label="'+t("avCropT")+'"></canvas><div class="setRow"><span>'+t("avZoom")+'</span><input type="range" id="avZ" min="1" max="3" step="0.05" value="1" aria-label="'+t("avZoom")+'" style="width:150px"></div><button class="big" id="avOk">'+t("avSave")+'</button><button class="sec" id="avBack">'+t("privBack")+'</button>');
+const cv=$("avCv"), g=cv.getContext("2d");
+function clamp(){ const s=base*z, w=img.width*s, h=img.height*s, mx=Math.max(0,(w-V)/2), my=Math.max(0,(h-V)/2); ox=Math.max(-mx,Math.min(mx,ox)); oy=Math.max(-my,Math.min(my,oy)); }
+function draw(ctx,size){ const k=size/V, s=base*z*k, w=img.width*s, h=img.height*s; ctx.clearRect(0,0,size,size); ctx.drawImage(img,(size-w)/2+ox*k,(size-h)/2+oy*k,w,h); }
+function paint(){ clamp(); draw(g,480); } paint();
+let drag=null; cv.onpointerdown=e=>{ drag={x:e.clientX,y:e.clientY,ox,oy}; try{cv.setPointerCapture(e.pointerId);}catch(_){} };
+cv.onpointermove=e=>{ if(!drag) return; ox=drag.ox+(e.clientX-drag.x); oy=drag.oy+(e.clientY-drag.y); paint(); };
+cv.onpointerup=cv.onpointercancel=()=>{ drag=null; };
+$("avZ").oninput=()=>{ z=+$("avZ").value; paint(); };
+window.__avNudge=(dx,dy,zz)=>{ ox+=dx; oy+=dy; if(zz){ z=zz; $("avZ").value=zz; } paint(); return [ox,oy,z]; };
+bind("avBack",openProfile);
+bind("avOk",()=>{ const out=document.createElement("canvas"); out.width=out.height=256; const o=out.getContext("2d"); o.fillStyle="#fff"; o.fillRect(0,0,256,256); draw(o,256);
+const url=out.toDataURL("image/jpeg",0.85); try{ localStorage.setItem(AKEY,url); }catch(e){ toast(t("avFull")); return; }
+AVPHOTO=url; S.avatar="p"; save(); applyPrefs(); toast(t("avSaved")); openProfile(); }); }
 function loadImg(src){ return new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=src; }); }
 async function makeCard(kind,c,withPhotos){
 const W=1080,H=1350,cv=document.createElement("canvas"); cv.width=W; cv.height=H; const g=cv.getContext("2d");
@@ -1327,7 +1396,7 @@ else if(fam) setTimeout(()=>openFamSend((q.get("to")||"").slice(0,16)||"?"),300)
 else if(lg) setTimeout(()=>showLgInvite(lg,(q.get("ln")||"").slice(0,24),q.get("le")||"",(q.get("by")||"").slice(0,16)),300);
 else if(ch){ try{ history.replaceState(null,"",location.pathname); }catch(e){} setTimeout(()=>showChallengeInvite(ch),300); }
 else if(!window.__NOGIFT && giftAvailable()) setTimeout(()=>openGift(true),400); }
-window.__mj={openPriv,openLeague,joinLeague,lgRows,lgParse,lgCode,lgRoll,showLgInvite,toggleMute,musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
+window.__mj={ahTick,ahAct,ahUnl,myAv,avCrop,avLoad,avatarHtml,openProfile,openSettings,openStore,openPriv,openLeague,joinLeague,lgRows,lgParse,lgCode,lgRoll,showLgInvite,toggleMute,musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
 isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,applyPace,openAch,openFamily,openNews,newsItems,openRecap,openDates,openGive,redeemCode,makeCode,checkAch,todayBdays,openBday,medalFor,openGift,openBay,openEvt,checkIn,startChallenge,readChallenge,shareChallenge,giftAvailable,evtState,setSession:ms=>{SESSION0=Date.now()-ms;},openCollections,PACKS,PACKSET,TILESETS,TSLIST,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>
