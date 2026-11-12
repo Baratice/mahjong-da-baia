@@ -91,6 +91,11 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 .setRow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 4px; border-bottom:1px solid rgba(0,0,0,.08); text-align:left}
 .toggle{min-width:76px; min-height:44px; border-radius:999px; background:#c9d3db; font-weight:700}
 .toggle.on{background:var(--ok); color:#fff}
+.free4all{background:rgba(30,158,90,.1); border:2px solid rgba(30,158,90,.35); border-radius:12px; padding:10px; text-align:left; font-size:15px; color:var(--ink); margin:6px 0}
+.days{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-top:8px}
+.days button{min-height:44px; border-radius:10px; background:rgba(0,0,0,.06); font-weight:700; font-size:14px}
+.days button.done{background:rgba(30,158,90,.25)}
+.streak{font-weight:800; color:#d35400}
 .themes{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px}
 .themes button{min-height:52px; border-radius:12px; background:var(--panel); border:2px solid rgba(0,0,0,.12); font-weight:700; font-size:16px}
 .themes button.cur{border-color:var(--accent)}
@@ -153,21 +158,22 @@ outHints:"Acabaram as dicas de hoje",outShuffle:"Acabaram os embaralhamentos de 
 chDone:"Capítulo concluído!",chDoneP:"Você ganhou um cartão-postal para o seu álbum:",allDone:"Você completou todas as fases disponíveis!",allDoneP:"Novos capítulos chegam toda semana. Enquanto isso, jogue o desafio do dia e as coleções.",
 albumT:"Álbum de postais",albumP:"Complete um capítulo para ganhar o postal.",
 storeT:"Loja",noAdsBanner:"Sem anúncios. Sempre. Para todos.",passT:"Passe da Baía",passWhat:"O Passe libera:",
-b1:"Dicas e embaralhamentos ilimitados",b2:"Todos os temas",b3:"Arquivo de desafios diários",b4:"Todas as coleções lançadas enquanto o Passe estiver ativo",
-year:"Anual",yearS:"7 dias grátis, depois",month:"Mensal",monthS:"Renova todo mês",life:"Vitalício",lifeS:"Pagamento único, sem renovação",popular:"mais escolhido",
+b1:"Coleção nova todo mês, liberada na hora",b2:"Todas as coleções já lançadas",b3:"Todos os conjuntos de peças",b4:"Desafio extra todo dia e arquivo dos últimos 30 dias",b5:"Proteção de sequência: perder 1 dia não zera seus dias seguidos",b6:"Dicas ilimitadas",
+freeAll:"<b>Grátis para todos, sempre:</b> as 600 fases, 1 desafio por dia, embaralhar quando travar e os modos de cor e contraste.",
+year:"Anual",yearS:"7 dias grátis, depois",month:"Mensal",monthS:"Renova todo mês",life:"Vitalício",lifeS:"Pagamento único. Inclui todas as coleções, inclusive as futuras.",popular:"mais escolhido",
 tryFree:"Testar grátis",subscribe:"Assinar",buy:"Comprar",owned:"Comprado",active:"Passe ativo ✓",
-offersT:"Ofertas",welcome:"Pacote de boas-vindas",welcomeS:"20 dicas, 10 embaralhamentos e o tema Jardim. Uma vez só, na primeira semana.",
+offersT:"Ofertas",welcome:"Pacote de boas-vindas",welcomeS:"20 dicas, 10 embaralhamentos e o conjunto Frutas. Uma vez só, na primeira semana.",
 helpT:"Ajuda avulsa",h10:"10 dicas + 5 embaralhamentos",h50:"50 dicas + 25 embaralhamentos",
-colT:"Coleções (30 fases cada)",col_carnaval:"Coleção Carnaval",col_mar:"Coleção Fundo do Mar",colS:"30 fases temáticas com figuras próprias",playCol:"Jogar",
-themesT:"Temas",th_noite:"Tema Noite",th_jardim:"Tema Jardim",thS:"Cores novas para o tabuleiro",
+colT:"Coleções (30 fases cada)",col_verao:"Coleção do Mês: Verão na Baía",col_carnaval:"Coleção Carnaval",col_mar:"Coleção Fundo do Mar",colS:"30 fases temáticas com figuras próprias",colMonthS:"Nova em novembro. Incluída no Passe.",newTag:"novo",playCol:"Jogar",
+tsT:"Conjuntos de peças",ts_baia:"Baía",ts_frutas:"Frutas",ts_bichos:"Bichos",tsS:"Desenhos novos em todas as peças",use:"Usar",inUse:"Em uso",tilesL:"Conjunto de peças",tsLocked:"Conjunto da loja.",
 legalSub:"Assinatura com renovação automática. O teste grátis de 7 dias vira assinatura anual de {Y} se não for cancelado até 24 horas antes do fim. A cobrança é feita na sua conta da App Store ou do Google Play. Cancele quando quiser em Ajustes > Assinaturas (iPhone) ou Google Play > Pagamentos e assinaturas (Android).",
 legalNo:"Nada aqui é sorteio: você sempre sabe exatamente o que está comprando.",
 restore:"Restaurar compras",manage:"Gerenciar assinatura",terms:"Termos de uso",privacy:"Privacidade",support:"Suporte",
 simBuy:"Compra simulada concluída.",restored:"Compras restauradas (simulação).",linkSim:"No app final, abre a página no site.",
 manageSim:"No app final, abre a tela de assinaturas da loja.",
-setT:"Ajustes",hl:"Escurecer peças presas",theme:"Tema",th_baia:"Baía",th_contraste:"Alto contraste",th_noite2:"Noite",th_jardim2:"Jardim",locked:"Tema da loja.",lang:"Idioma",
+setT:"Ajustes",hl:"Escurecer peças presas",theme:"Tema",th_baia:"Baía",th_contraste:"Alto contraste",th_noite2:"Noite",th_jardim2:"Jardim",lang:"Idioma",
 reset:"Apagar progresso (teste)",cancelP:"Cancelar Passe (teste)",resetDone:"Progresso apagado.",jumpL:"Ir para a fase (teste)",go:"Ir",
-dailyT:"Desafio do dia",dailyAlready:"Você já fez o desafio de hoje. Volte amanhã!",dailyWon:"Desafio do dia concluído!",confirmReset:"Apagar tudo?",yes:"Sim, apagar",no:"Cancelar",
+dailyT:"Desafio do dia",dailyAlready:"Você já fez o desafio de hoje. Volte amanhã!",dailyWon:"Desafio do dia concluído!",extraT:"Desafio extra",extraWon:"Desafio extra concluído!",archT:"Arquivo",archP:"Escolha um dia dos últimos 30:",playExtra:"Jogar o desafio extra",extraDone:"Desafio extra de hoje ✓",passPitch:"Com o Passe você joga um desafio extra por dia e o arquivo dos últimos 30 dias.",seePass:"Ver o Passe",streakL:"dias seguidos",streak1:"dia seguido",protected:"Sua sequência foi protegida pelo Passe.",confirmReset:"Apagar tudo?",yes:"Sim, apagar",no:"Cancelar",
 colWon:"Fase da coleção concluída!",colEnd:"Coleção completa!",
 ch:["Praia da Baleia","Cais dos Pescadores","Feira da Vila","Ilha do Farol","Coqueiral","Recife de Coral","Mangue","Vila dos Pescadores","Festa Junina","Mirante",
 "Dunas","Cachoeira","Jardim da Vó Dita","A Pousada","Regata","Noite de Lua","Rio Azul","Pomar","Mercado de Peixe","Ilha das Tartarugas",
@@ -181,21 +187,22 @@ outHints:"No hints left today",outShuffle:"No shuffles left today",outP:"You get
 chDone:"Chapter complete!",chDoneP:"You earned a postcard for your album:",allDone:"You finished every level available!",allDoneP:"New chapters arrive every week. Meanwhile, play the daily challenge and the collections.",
 albumT:"Postcard album",albumP:"Finish a chapter to earn its postcard.",
 storeT:"Shop",noAdsBanner:"No ads. Ever. For everyone.",passT:"Bay Pass",passWhat:"The Pass unlocks:",
-b1:"Unlimited hints and shuffles",b2:"All themes",b3:"Daily challenge archive",b4:"Every collection released while the Pass is active",
-year:"Yearly",yearS:"7 days free, then",month:"Monthly",monthS:"Renews every month",life:"Lifetime",lifeS:"One payment, no renewal",popular:"most popular",
+b1:"A new collection every month, unlocked right away",b2:"Every collection released so far",b3:"Every tile set",b4:"An extra challenge every day and the last 30 days archive",b5:"Streak protection: missing 1 day keeps your streak",b6:"Unlimited hints",
+freeAll:"<b>Free for everyone, always:</b> all 600 levels, 1 challenge a day, shuffling when stuck, and the color and contrast modes.",
+year:"Yearly",yearS:"7 days free, then",month:"Monthly",monthS:"Renews every month",life:"Lifetime",lifeS:"One payment. Includes every collection, future ones too.",popular:"most popular",
 tryFree:"Try free",subscribe:"Subscribe",buy:"Buy",owned:"Owned",active:"Pass active ✓",
-offersT:"Offers",welcome:"Welcome pack",welcomeS:"20 hints, 10 shuffles and the Garden theme. Once only, in your first week.",
+offersT:"Offers",welcome:"Welcome pack",welcomeS:"20 hints, 10 shuffles and the Fruits tile set. Once only, in your first week.",
 helpT:"Extra help",h10:"10 hints + 5 shuffles",h50:"50 hints + 25 shuffles",
-colT:"Collections (30 levels each)",col_carnaval:"Carnival Collection",col_mar:"Deep Sea Collection",colS:"30 themed levels with their own tiles",playCol:"Play",
-themesT:"Themes",th_noite:"Night theme",th_jardim:"Garden theme",thS:"New colors for the board",
+colT:"Collections (30 levels each)",col_verao:"Collection of the Month: Bay Summer",col_carnaval:"Carnival Collection",col_mar:"Deep Sea Collection",colS:"30 themed levels with their own tiles",colMonthS:"New in November. Included in the Pass.",newTag:"new",playCol:"Play",
+tsT:"Tile sets",ts_baia:"Bay",ts_frutas:"Fruits",ts_bichos:"Animals",tsS:"New drawings on every tile",use:"Use",inUse:"In use",tilesL:"Tile set",tsLocked:"Shop tile set.",
 legalSub:"Auto-renewing subscription. The 7-day free trial becomes a yearly subscription at {Y} unless cancelled at least 24 hours before it ends. Payment is charged to your App Store or Google Play account. Cancel anytime in Settings > Subscriptions (iPhone) or Google Play > Payments & subscriptions (Android).",
 legalNo:"Nothing here is random: you always know exactly what you are buying.",
 restore:"Restore purchases",manage:"Manage subscription",terms:"Terms of use",privacy:"Privacy",support:"Support",
 simBuy:"Simulated purchase complete.",restored:"Purchases restored (simulation).",linkSim:"In the final app, this opens the page on the website.",
 manageSim:"In the final app, this opens the store's subscriptions screen.",
-setT:"Settings",hl:"Dim blocked tiles",theme:"Theme",th_baia:"Bay",th_contraste:"High contrast",th_noite2:"Night",th_jardim2:"Garden",locked:"Shop theme.",lang:"Language",
+setT:"Settings",hl:"Dim blocked tiles",theme:"Theme",th_baia:"Bay",th_contraste:"High contrast",th_noite2:"Night",th_jardim2:"Garden",lang:"Language",
 reset:"Erase progress (test)",cancelP:"Cancel Pass (test)",resetDone:"Progress erased.",jumpL:"Go to level (test)",go:"Go",
-dailyT:"Daily challenge",dailyAlready:"You already played today's challenge. Come back tomorrow!",dailyWon:"Daily challenge complete!",confirmReset:"Erase everything?",yes:"Yes, erase",no:"Cancel",
+dailyT:"Daily challenge",dailyAlready:"You already played today's challenge. Come back tomorrow!",dailyWon:"Daily challenge complete!",extraT:"Extra challenge",extraWon:"Extra challenge complete!",archT:"Archive",archP:"Pick a day from the last 30:",playExtra:"Play the extra challenge",extraDone:"Today's extra challenge ✓",passPitch:"With the Pass you play an extra challenge every day and the last 30 days archive.",seePass:"See the Pass",streakL:"day streak",streak1:"day streak",protected:"Your streak was protected by the Pass.",confirmReset:"Erase everything?",yes:"Yes, erase",no:"Cancel",
 colWon:"Collection level complete!",colEnd:"Collection complete!",
 ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm Grove","Coral Reef","Mangrove","Fishing Village","June Festival","Lookout Point",
 "Dunes","Waterfall","Grandma's Garden","The Inn","Regatta","Moonlit Night","Blue River","Orchard","Fish Market","Turtle Island",
@@ -209,8 +216,12 @@ en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",
 const KEY="mahjongBaia_v2";
 function today(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
 function dayNum(){return Math.floor(Date.now()/86400000);}
+function dayLocal(){const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000);}
+function dateStr(k){const d=new Date(Date.now()-k*86400000);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function dateShort(k){const d=new Date(Date.now()-k*86400000);return d.getDate()+"/"+(d.getMonth()+1);}
 function defState(){return {level:1,premium:false,plan:"",lang:(navigator.language||"pt").toLowerCase().startsWith("pt")?"pt":"en",hl:true,theme:"baia",
-day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false};}
+day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false,
+tileSets:[],tileSet:"baia",streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
 let S=defState();
 try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(defState(),JSON.parse(raw));}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
@@ -224,6 +235,13 @@ const PALETTE=["#cfe8ff","#c9f0ff","#ffe0bd","#ffcfc7","#ffe4f0","#fff1a8","#d5f
 const SET_BAIA=["🐋","🐬","🐠","🦀","🐚","⭐","🌴","🥥","⚓","⛵","🌊","🐢","🦐","🦑","🐙","🍍","🌺","🌻","🍉","☀️","🌙","🎣","🍋","🦜","🍒","🔔","🎈","🍇","🌽","🐞","🍄","🌵"];
 const SET_CARNAVAL=["🎭","🎉","🎊","🥁","🎺","🎷","💃","🎈","🌟","🍬","🍭","🎵","🎶","🎁","👑","💎","🎸","🎻","🎤","🦚","🌈","🍹","🎀","🎆"];
 const SET_MAR=["🐋","🐬","🐠","🐟","🐡","🦈","🐙","🦑","🦀","🦞","🦐","🐚","🌊","⚓","🐢","🐧","🌴","🐳","🧜","🔱","⛵","🏝️","💎","💧"];
+const SET_VERAO=["☀️","🏖️","🍦","🍉","🕶️","👙","🏄","⛱️","🥥","🍹","🌺","🦩","🐚","🌴","🍍","🥭","🍓","🧃","🪁","⚽","🎏","🚤","🐠","🌊"];
+const SET_FRUTAS=["🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🥑","🥕","🌽","🌶️","🥒","🥦","🧄","🧅","🍄","🥜","🌰","🍞","🧀","🥚","🍯"];
+const SET_BICHOS=["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦","🐤","🦆","🦉","🐴","🦄","🐝","🐛","🦋","🐌","🐞","🐢","🐍","🦎","🦖"];
+const TILESETS={baia:SET_BAIA,frutas:SET_FRUTAS,bichos:SET_BICHOS};
+const PACKS=["verao","carnaval","mar"], PACKSET={verao:SET_VERAO,carnaval:SET_CARNAVAL,mar:SET_MAR};
+function tsOwned(id){ return id==="baia"||S.premium||S.tileSets.includes(id); }
+function baseFaces(){ if(!tsOwned(S.tileSet)) S.tileSet="baia"; return TILESETS[S.tileSet]||SET_BAIA; }
 let FACES=SET_BAIA;
 const faceColor=i=>PALETTE[i%PALETTE.length];
 function baseMask(type,c,r){
@@ -278,7 +296,7 @@ const k10=Math.floor(prm.n/10), key=SHAPE_KEYS[(k10+Math.floor(k10/5))%SHAPE_KEY
 const L=prm.n<=20?2:Math.min(prm.L+1,4);
 return {pos:stack(maskFromArt(SHAPES[key]),L,rng(seed),0.6),shape:key};
 }
-const types=prm.n<=20?["rect","rect","diamond"]:["rect","twin","cross","diamond","rect"];
+const types=prm.n<=20?["rect","rect","diamond"]:["rect","twin","diamond","rect"];
 const type=types[Math.floor(R()*types.length)];
 let best=null;
 for(let c=3;c<=12;c++)for(let r=2;r<=8;r++){
@@ -381,7 +399,7 @@ p.el.classList.toggle("blocked",p.alive&&!isFree(i,al)); p.el.classList.toggle("
 let sub=n+" "+t("tiles");
 if(G.mode==="level"){ if(G.kind==="calm")sub=t("calm")+" · "+sub; if(G.kind==="special")sub=t("special")+" · "+sub; }
 $("gLeft").textContent=sub;
-$("gTitle").textContent=G.mode==="daily"?t("dailyT"):G.mode==="pack"?(t("col_"+G.pack)+" · "+G.level+"/30"):(t("level")+" "+G.level+" · "+t("chapter")+" "+Math.ceil(G.level/PER_CHAPTER));
+$("gTitle").textContent=G.mode==="daily"?(G.dtitle||t("dailyT")):G.mode==="pack"?(t("col_"+G.pack)+" · "+G.level+"/30"):(t("level")+" "+G.level+" · "+t("chapter")+" "+Math.ceil(G.level/PER_CHAPTER));
 $("lHint").textContent=t("hint"); $("lUndo").textContent=t("undo"); $("lShuffle").textContent=t("shuffle");
 $("cHint").textContent=hintCount(); $("cShuffle").textContent=shufCount(); $("cUndo").textContent=t("free");
 $("bUndo").disabled=G.undo.length===0;
@@ -426,9 +444,17 @@ function closeModal(){ $("modal").classList.remove("on"); }
 $("modal").addEventListener("click",e=>{ if(e.target.id==="modal") closeModal(); });
 function bind(id,fn){const e=document.getElementById(id); if(e) e.onclick=fn;}
 const starsHtml=()=>{const s=G.used===0?3:(G.used<=2?2:1);return '<div class="stars">'+"★".repeat(s)+"☆".repeat(3-s)+'</div>';};
+function curStreak(){ if(!S.streak) return 0; const gap=dayLocal()-S.lastDailyN; if(gap<=1) return S.streak; if(gap===2&&S.premium) return S.streak; return 0; }
+function streakTxt(n){ return '<span class="streak">🔥 '+n+' '+(n===1?t("streak1"):t("streakL"))+'</span>'; }
 function win(){
-if(G.mode==="daily"){ S.dailyDone=today(); save();
-modal(starsHtml()+'<h2>'+t("dailyWon")+'</h2><p>'+t("wonP")+'</p><button class="big" id="mHome">'+t("home")+'</button>');
+if(G.mode==="daily"){ let note="", title=t("dailyWon");
+if(G.dkind==="today"){ const gap=dayLocal()-S.lastDailyN;
+if(gap===0){} else if(gap===1) S.streak++; else if(gap===2&&S.premium){ S.streak++; note='<p>🛡️ '+t("protected")+'</p>'; } else S.streak=1;
+S.lastDailyN=dayLocal(); S.dailyDone=today(); }
+else if(G.dkind==="extra"){ S.extraDone=today(); title=t("extraWon"); }
+else { if(!S.archDone.includes(G.dkey)) S.archDone.push(G.dkey); }
+save();
+modal(starsHtml()+'<h2>'+title+'</h2><p>'+t("wonP")+'</p>'+(curStreak()?'<p>'+streakTxt(curStreak())+'</p>':'')+note+'<button class="big" id="mHome">'+t("home")+'</button>');
 bind("mHome",()=>{closeModal();goHome();}); return; }
 if(G.mode==="pack"){ S.packProg[G.pack]=Math.max(S.packProg[G.pack]||1,G.level+1); save();
 const end=G.level>=30;
@@ -460,20 +486,22 @@ let h='<h2>⭐ '+t("storeT")+'</h2><div class="noads">🚫📺 '+t("noAdsBanner"
 h+='<h3>'+t("passT")+'</h3>';
 if(S.premium){ h+='<div class="noads">'+t("active")+'</div>'; }
 else {
-h+='<p style="text-align:left;margin:4px 0 0"><b>'+t("passWhat")+'</b></p><ul class="ben"><li>'+t("b1")+'</li><li>'+t("b2")+'</li><li>'+t("b3")+'</li><li>'+t("b4")+'</li></ul>';
+h+='<p style="text-align:left;margin:4px 0 0"><b>'+t("passWhat")+'</b></p><ul class="ben">'+["b1","b2","b3","b4","b5","b6"].map(k=>'<li>'+t(k)+'</li>').join("")+'</ul>';
 h+=row("pYear",t("year"),t("yearS")+" "+P("year"),'<small>'+P("year")+'</small>',t("tryFree"),{best:1,tag:t("popular")});
 h+=row("pMonth",t("month"),t("monthS"),P("month"),t("subscribe"));
 h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
 }
+h+='<div class="free4all">'+t("freeAll")+'</div>';
 if(welcomeAvailable()){ h+='<h3>'+t("offersT")+'</h3>'+row("oWelcome",t("welcome"),t("welcomeS"),P("welcome"),t("buy")); }
 if(!S.premium){
 h+='<h3>'+t("helpT")+'</h3>'+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
 }
 h+='<h3>'+t("colT")+'</h3>';
-["carnaval","mar"].forEach(id=>{ const own=S.premium||S.packs.includes(id);
-h+=own? row("pk_"+id,t("col_"+id),t("colS"),"",t("playCol")) : row("pk_"+id,t("col_"+id),t("colS"),P("col"),t("buy")); });
-h+='<h3>'+t("themesT")+'</h3>';
-["noite","jardim"].forEach(id=>{ const own=S.premium||S.themes.includes(id); h+=row("th_"+id,t("th_"+id),t("thS"),own?"":P("theme"),own?t("owned"):t("buy"),{owned:own}); });
+PACKS.forEach(id=>{ const own=S.premium||S.packs.includes(id), sub=id==="verao"?t("colMonthS"):t("colS"), tg=id==="verao"?{tag:t("newTag")}:{};
+h+=own? row("pk_"+id,t("col_"+id),sub,"",t("playCol"),tg) : row("pk_"+id,t("col_"+id),sub,P("col"),t("buy"),tg); });
+h+='<h3>'+t("tsT")+'</h3>';
+["frutas","bichos"].forEach(id=>{ const own=tsOwned(id), cur=S.tileSet===id;
+h+=row("ts_"+id,t("ts_"+id),'<span class="em" style="font-size:20px">'+TILESETS[id].slice(0,5).join(" ")+'</span><br>'+t("tsS"),own?"":P("theme"),own?(cur?t("inUse"):t("use")):t("buy"),{owned:own&&cur}); });
 h+='<div class="legal">'+t("legalSub").replace("{Y}",P("year").split("/")[0])+'</div><div class="legal">'+t("legalNo")+'</div>';
 h+='<div class="links"><button id="lRestore">'+t("restore")+'</button><button id="lManage">'+t("manage")+'</button><button id="lTerms">'+t("terms")+'</button><button id="lPriv">'+t("privacy")+'</button></div>';
 h+='<p style="font-size:13px">'+t("proto")+'</p><button class="big" id="mClose">'+t("close")+'</button>';
@@ -482,22 +510,23 @@ const done=()=>{save();toast(t("simBuy"));openStore();if(G&&$("game").classList.
 bind("pYear",()=>{S.premium=true;S.plan="year";done();});
 bind("pMonth",()=>{S.premium=true;S.plan="month";done();});
 bind("pLife",()=>{S.premium=true;S.plan="life";done();});
-bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.themes.includes("jardim"))S.themes.push("jardim");done();});
+bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.tileSets.includes("frutas"))S.tileSets.push("frutas");done();});
 bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
 bind("oH50",()=>{S.bankH+=50;S.bankS+=25;done();});
-["carnaval","mar"].forEach(id=>bind("pk_"+id,()=>{ if(S.premium||S.packs.includes(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
-["noite","jardim"].forEach(id=>bind("th_"+id,()=>{ if(!S.themes.includes(id)){S.themes.push(id);done();} }));
+PACKS.forEach(id=>bind("pk_"+id,()=>{ if(S.premium||S.packs.includes(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
+["frutas","bichos"].forEach(id=>bind("ts_"+id,()=>{ if(!tsOwned(id)){S.tileSets.push(id);S.tileSet=id;done();} else {S.tileSet=id;save();toast(t("inUse")+": "+t("ts_"+id));openStore();} }));
 bind("lRestore",()=>toast(t("restored"))); bind("lManage",()=>toast(t("manageSim")));
 bind("lTerms",()=>toast(t("linkSim"))); bind("lPriv",()=>toast(t("linkSim")));
 bind("mClose",closeModal);
 }
-function themeOwned(id){ return id==="baia"||id==="contraste"||S.premium||S.themes.includes(id); }
+function themeOwned(id){ return true; }
 function openSettings(){
 const th=(id,key)=>'<button data-th="'+id+'" class="'+(S.theme===id?'cur':'')+'">'+t(key)+(themeOwned(id)?'':' 🔒')+'</button>';
 modal('<h2>'+t("setT")+'</h2>'
 +'<div class="setRow"><span>'+t("hl")+'</span><button class="toggle'+(S.hl?' on':'')+'" id="sHl">'+(S.hl?'ON':'OFF')+'</button></div>'
 +'<div class="setRow"><span>'+t("lang")+'</span><button class="toggle on" id="sLang">'+(S.lang==="pt"?"PT":"EN")+'</button></div>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("theme")+'</b></p><div class="themes">'+th("baia","th_baia")+th("contraste","th_contraste")+th("noite","th_noite2")+th("jardim","th_jardim2")+'</div>'
++'<p style="text-align:left;margin-top:14px"><b>'+t("tilesL")+'</b></p><div class="themes">'+["baia","frutas","bichos"].map(id=>'<button data-ts="'+id+'" class="'+(S.tileSet===id?'cur':'')+'"><span class="em">'+TILESETS[id][0]+'</span> '+t("ts_"+id)+(tsOwned(id)?'':' 🔒')+'</button>').join("")+'</div>'
 +'<div class="links"><button id="lRestore2">'+t("restore")+'</button><button id="lManage2">'+t("manage")+'</button><button id="lTerms2">'+t("terms")+'</button><button id="lPriv2">'+t("privacy")+'</button><button id="lSup2">'+t("support")+'</button></div>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("jumpL")+'</b></p><div class="jump"><input id="jIn" type="number" min="1" max="'+MAX_LEVEL+'" value="'+Math.min(S.level,MAX_LEVEL)+'"><button id="jGo">'+t("go")+'</button></div>'
 +'<button class="sec" id="sReset">'+t("reset")+'</button>'+(S.premium?'<button class="sec" id="sCancel">'+t("cancelP")+'</button>':'')
@@ -505,12 +534,14 @@ modal('<h2>'+t("setT")+'</h2>'
 bind("sHl",()=>{S.hl=!S.hl;save();applyPrefs();openSettings();});
 bind("sLang",()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();openSettings();});
 document.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{const id=b.dataset.th;
-if(!themeOwned(id)){toast(t("locked"));openStore();return;} S.theme=id;save();applyPrefs();openSettings();});
+S.theme=id;save();applyPrefs();openSettings();});
+document.querySelectorAll("[data-ts]").forEach(b=>b.onclick=()=>{const id=b.dataset.ts;
+if(!tsOwned(id)){toast(t("tsLocked"));openStore();return;} S.tileSet=id;save();openSettings();});
 bind("lRestore2",()=>toast(t("restored"))); bind("lManage2",()=>toast(t("manageSim"))); bind("lTerms2",()=>toast(t("linkSim"))); bind("lPriv2",()=>toast(t("linkSim"))); bind("lSup2",()=>toast(t("linkSim")));
 bind("jGo",()=>{ const v=Math.max(1,Math.min(MAX_LEVEL,parseInt($("jIn").value,10)||1)); S.level=Math.max(S.level,v); save(); closeModal(); startLevel(v); });
 bind("sReset",()=>{modal('<h2>'+t("confirmReset")+'</h2><button class="big" id="cY" style="background:var(--danger)">'+t("yes")+'</button><button class="sec" id="cN">'+t("no")+'</button>');
 bind("cY",()=>{const lang=S.lang;S=defState();S.lang=lang;save();applyPrefs();closeModal();toast(t("resetDone"));}); bind("cN",openSettings);});
-bind("sCancel",()=>{S.premium=false;S.plan="";if(!themeOwned(S.theme))S.theme="baia";save();applyPrefs();openSettings();});
+bind("sCancel",()=>{S.premium=false;S.plan="";baseFaces();save();applyPrefs();openSettings();});
 bind("mClose",closeModal);
 }
 function applyPrefs(){
@@ -523,7 +554,7 @@ const lv=Math.min(S.level,MAX_LEVEL), c=Math.ceil(lv/PER_CHAPTER), p=((lv-1)%PER
 const fin=S.level>MAX_LEVEL;
 $("chap").innerHTML='<b><span class="em">'+CH_EMOJI[c-1]+'</span> '+t("chapter")+' '+c+' · '+t("ch")[c-1]+'</b><small>'+(fin?t("allDone"):t("level")+' '+p+'/'+PER_CHAPTER+' · '+S.album.length+'/30 📮')+'</small><div class="bar"><i style="width:'+(fin?100:((p-1)/PER_CHAPTER*100))+'%"></i></div>';
 $("bPlay").textContent=fin?(t("play")+" · "+MAX_LEVEL+"/"+MAX_LEVEL+" ✓"):(t("play")+" · "+t("level")+" "+lv);
-$("bDaily").textContent=S.dailyDone===today()?t("dailyDone"):t("daily");
+{ const st=curStreak(); $("bDaily").textContent=(S.dailyDone===today()?t("dailyDone"):t("daily"))+(st?" · 🔥 "+st:""); }
 $("bAlbum").textContent=t("album");
 $("bStore").innerHTML=S.premium?'<span class="premiumTag">'+t("active")+'</span>':t("store");
 $("bSettings").textContent=t("settings"); $("tProto").textContent=t("proto");
@@ -534,19 +565,34 @@ function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.to
 function goHome(){ if(G) G.sel=-1; show("home"); applyPrefs(); }
 function startLevel(n){
 rollDay(); n=Math.max(1,Math.min(MAX_LEVEL,n));
-FACES=SET_BAIA; show("game");
+FACES=baseFaces(); show("game");
 const prm=levelParams(n), seed=1000+n*7919, b=buildPositions(prm,seed);
 newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=n; G.mode="level"; G.kind=prm.kind; G.shape=b.shape; render();
 }
+function playDaily(kind,k){
+closeModal(); rollDay(); FACES=baseFaces(); show("game");
+const key=dateStr(k||0), seed=hashStr(kind==="extra"?key+"x":key), prm={n:60+seed%40,target:76,L:3,fmin:18,fmax:24,kind:(seed%2?"special":"normal")};
+const b=buildPositions(prm,seed); newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=0; G.mode="daily"; G.dkind=kind; G.dkey=key;
+G.dtitle=kind==="extra"?t("extraT"):kind==="arch"?(t("archT")+" · "+dateShort(k)):t("dailyT"); render();
+}
 function startDaily(){
 rollDay();
-if(S.dailyDone===today()&&!S.premium){ modal('<h2>'+t("dailyT")+'</h2><p>'+t("dailyAlready")+'</p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); return; }
-FACES=SET_BAIA; show("game");
-const seed=hashStr(today()), prm={n:60+seed%40,target:76,L:3,fmin:18,fmax:24,kind:(seed%2?"special":"normal")};
-const b=buildPositions(prm,seed); newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=0; G.mode="daily"; render();
+if(S.dailyDone!==today()){ playDaily("today",0); return; }
+const st=curStreak();
+let h='<h2>'+t("dailyT")+'</h2><p>'+t("dailyAlready")+'</p>'+(st?'<p>'+streakTxt(st)+'</p>':'');
+if(!S.premium){ h+='<div class="free4all">'+t("passPitch")+'</div><button class="big" id="mPass">⭐ '+t("seePass")+'</button>'; }
+else {
+h+=S.extraDone===today()?'<p><b>'+t("extraDone")+'</b></p>':'<button class="big" id="mExtra">'+t("playExtra")+'</button>';
+h+='<h3>'+t("archT")+'</h3><p style="text-align:left">'+t("archP")+'</p><div class="days">';
+for(let k=1;k<=30;k++) h+='<button data-k="'+k+'" class="'+(S.archDone.includes(dateStr(k))?'done':'')+'">'+dateShort(k)+'</button>';
+h+='</div>';
+}
+h+='<button class="sec" id="mClose">'+t("close")+'</button>';
+modal(h); bind("mClose",closeModal); bind("mPass",openStore); bind("mExtra",()=>playDaily("extra",0));
+document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>playDaily("arch",+b.dataset.k));
 }
 function startPack(id,k){
-rollDay(); FACES=id==="carnaval"?SET_CARNAVAL:SET_MAR; show("game");
+rollDay(); FACES=PACKSET[id]||SET_MAR; show("game");
 const seed=hashStr(id)+k*104729, prm=levelParams(20+k*3); if(k%10===0)prm.kind="special";
 const b=buildPositions(prm,seed); newBoard(b.pos,seed,Math.min(prm.fmin,FACES.length-4),Math.min(prm.fmax,FACES.length));
 G.level=k; G.mode="pack"; G.pack=id; render();
@@ -559,7 +605,7 @@ $("bBack").onclick=goHome; $("bHint").onclick=useHint; $("bUndo").onclick=useUnd
 window.addEventListener("resize",()=>{ if(G && $("game").classList.contains("on")) render(); });
 applyPrefs();
 window.__mj={get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
-isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();}};
+isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>
 </body>
