@@ -102,6 +102,24 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 .thumbs img{width:30px; height:30px; object-fit:cover; border-radius:5px; margin-right:3px; vertical-align:middle}
 .excl{border:2px solid #8e44ad; background:rgba(142,68,173,.07)}
 .privacy{font-size:13px; color:var(--muted); text-align:left; margin:2px 0 8px}
+.av{display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; background:#6aa9bd; color:#fff; font-weight:800; font-size:17px; border:3px solid transparent; flex:none}
+.av.fr-fundador{border-color:#d4a017; box-shadow:0 0 0 2px #fff1b8}
+.av.fr-campeao{border-color:#8e44ad; box-shadow:0 0 0 2px #ead6f5}
+.rk{display:flex; align-items:center; gap:8px; padding:7px 6px; border-radius:10px; text-align:left; border-left:4px solid transparent}
+.rk.me{background:rgba(242,177,52,.25); font-weight:800}
+.rk.up{border-left-color:var(--ok)} .rk.down{border-left-color:var(--danger)}
+.rk .pos{width:28px; font-weight:800; text-align:right; flex:none}
+.rk .nm{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:16px}
+.rk .nm small{display:block; color:var(--muted); font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.rk .pt{font-weight:800; font-size:15px; flex:none}
+.rk .mn{background:none; min-height:40px; min-width:32px; font-size:20px; color:var(--muted); flex:none}
+.rksep{text-align:center; color:var(--muted); margin:4px 0}
+.tabs{display:flex; gap:6px; margin:6px 0} .tabs button{flex:1; min-height:46px; border-radius:10px; background:rgba(0,0,0,.06); font-weight:700} .tabs button.cur{background:var(--accent); color:#fff}
+#prof{display:flex; align-items:center; gap:10px; width:100%; max-width:340px; background:var(--panel); border-radius:14px; padding:8px 12px; text-align:left; box-shadow:0 2px 0 rgba(0,0,0,.1)}
+#prof .pn{flex:1; min-width:0} #prof b{display:block; font-size:17px} #prof small{color:var(--muted); font-size:13px}
+.shimg{width:100%; border-radius:12px; margin-top:8px; box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.ckrow{display:flex; align-items:center; gap:10px; text-align:left; margin:10px 0; font-size:16px} .ckrow input{width:24px; height:24px}
+.nickin{width:100%; min-height:50px; border-radius:12px; border:2px solid rgba(0,0,0,.15); padding:0 12px; font-size:18px; background:var(--panel); color:var(--ink)}
 .themes{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px}
 .themes button{min-height:52px; border-radius:12px; background:var(--panel); border:2px solid rgba(0,0,0,.12); font-weight:700; font-size:16px}
 .themes button.cur{border-color:var(--accent)}
@@ -122,9 +140,11 @@ ul.ben{text-align:left; padding-left:20px; margin:8px 0; color:var(--ink); line-
 <h1 id="tTitle">Mahjong da Baía</h1>
 <div class="sub" id="tSub">Relaxe e combine as peças</div>
 <div class="badge" id="tNoAds">100% sem anúncios</div>
+<div id="prof"></div>
 <div class="chap" id="chap"></div>
 <button class="big" id="bPlay">Jogar</button>
 <button class="sec" id="bDaily">Desafio do dia</button>
+<button class="sec" id="bRank">🏆 Ranking</button>
 <div class="row">
 <button class="sec" id="bAlbum">📮 Álbum</button>
 <button class="sec" id="bStore">⭐ Loja</button>
@@ -183,6 +203,19 @@ setT:"Ajustes",hl:"Escurecer peças presas",theme:"Tema",th_baia:"Baía",th_cont
 reset:"Apagar progresso (teste)",cancelP:"Cancelar Passe (teste)",resetDone:"Progresso apagado.",jumpL:"Ir para a fase (teste)",go:"Ir",
 dailyT:"Desafio do dia",dailyAlready:"Você já fez o desafio de hoje. Volte amanhã!",dailyWon:"Desafio do dia concluído!",extraT:"Desafio extra",extraWon:"Desafio extra concluído!",archT:"Arquivo",archP:"Escolha um dia dos últimos 30:",playExtra:"Jogar o desafio extra",extraDone:"Desafio extra de hoje ✓",passPitch:"Com o Passe você joga um desafio extra por dia e o arquivo dos últimos 30 dias.",seePass:"Ver o Passe",streakL:"dias seguidos",streak1:"dia seguido",protected:"Sua sequência foi protegida pelo Passe.",confirmReset:"Apagar tudo?",yes:"Sim, apagar",no:"Cancelar",
 colWon:"Fase da coleção concluída!",colEnd:"Coleção completa!",
+rank:"🏆 Ranking",rankT:"Ranking",weekly:"Semanal",monthly:"Mensal",leagues:["Liga Concha","Liga Coral","Liga Pérola","Liga Baleia"],
+rankRule:"Só o desafio do dia conta, com o mesmo tabuleiro para todos. Se usar dica, o desafio não pontua.",rankPrivacy:"🔒 Fotos da família nunca aparecem no ranking.",
+promo:"Os 5 primeiros sobem de liga no domingo. Os 5 últimos descem.",pts:"pts",monthTop:"Top do Brasil em {m}",monthYou:"Sua posição no mês: nº {p} de 48.000",
+champInfo:"Os 100 primeiros do mês ganham a moldura \"Campeão de {m}\", que nunca mais volta. Ela não está à venda.",report:"Denunciar apelido",block:"Bloquear jogador",reported:"Denúncia enviada. Obrigado!",blockedT:"Jogador bloqueado.",
+scoreL:"Pontos no ranking",noScoreHint:"Você usou dica, então este desafio não pontua no ranking.",leaguePos:"Você está em {p}º lugar na {l}.",
+share:"📲 Compartilhar no WhatsApp",shareT:"Compartilhar",sharePhotos:"Incluir minhas fotos no cartão",shareSave:"No iPhone, toque e segure a imagem para salvar ou enviar.",shareOpen:"Abrir o WhatsApp",shareSend:"Enviar",
+shareTxtD:"Fiz o desafio do dia no Mahjong da Baía! 🔥 {s} dias seguidos.",shareTxtC:"Completei o capítulo {c} no Mahjong da Baía e ganhei o postal {n}!",
+cardDaily:"Desafio do dia concluído",cardStreak:"dias seguidos",cardChap:"Capítulo {c} concluído",cardFoot:"Mahjong da Baía · sem anúncios",
+profT:"Perfil",nickL:"Apelido (aparece no ranking)",saveB:"Salvar",nickBad:"Escolha outro apelido (3 a 16 letras, sem palavrões).",nickOk:"Apelido salvo.",frameL:"Moldura",
+fr_none:"Sem moldura",fr_fundador:"Fundador",fr_campeao:"Campeão",founderT:"Edição Fundadora",founderS:"Moldura dourada numerada no ranking e no cartão do WhatsApp. Só 5.000 no mundo. Quando acabar, não volta.",
+founderTag:"tiragem limitada",founderNo:"Fundador nº {n} de 5.000",founderLeft:"Restam {r} de 5.000",champSim:"Ganhar moldura de campeão (teste)",champGot:"Você ganhou a moldura Campeão de {m}!",
+profTap:"Toque para editar seu perfil",
+months:["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"],
 ch:["Praia da Baleia","Cais dos Pescadores","Feira da Vila","Ilha do Farol","Coqueiral","Recife de Coral","Mangue","Vila dos Pescadores","Festa Junina","Mirante",
 "Dunas","Cachoeira","Jardim da Vó Dita","A Pousada","Regata","Noite de Lua","Rio Azul","Pomar","Mercado de Peixe","Ilha das Tartarugas",
 "Gruta das Conchas","Carnaval","Porto Antigo","Baía das Estrelas","Morro do Vento","Fundo do Mar","Ilha dos Papagaios","Noite de Fogos","Caminho das Baleias","Cidade da Jubarte"]},
@@ -213,14 +246,27 @@ setT:"Settings",hl:"Dim blocked tiles",theme:"Theme",th_baia:"Bay",th_contraste:
 reset:"Erase progress (test)",cancelP:"Cancel Pass (test)",resetDone:"Progress erased.",jumpL:"Go to level (test)",go:"Go",
 dailyT:"Daily challenge",dailyAlready:"You already played today's challenge. Come back tomorrow!",dailyWon:"Daily challenge complete!",extraT:"Extra challenge",extraWon:"Extra challenge complete!",archT:"Archive",archP:"Pick a day from the last 30:",playExtra:"Play the extra challenge",extraDone:"Today's extra challenge ✓",passPitch:"With the Pass you play an extra challenge every day and the last 30 days archive.",seePass:"See the Pass",streakL:"day streak",streak1:"day streak",protected:"Your streak was protected by the Pass.",confirmReset:"Erase everything?",yes:"Yes, erase",no:"Cancel",
 colWon:"Collection level complete!",colEnd:"Collection complete!",
+rank:"🏆 Leaderboard",rankT:"Leaderboard",weekly:"Weekly",monthly:"Monthly",leagues:["Shell League","Coral League","Pearl League","Whale League"],
+rankRule:"Only the daily challenge counts, with the same board for everyone. If you use a hint, that challenge does not score.",rankPrivacy:"🔒 Family photos never appear on the leaderboard.",
+promo:"Top 5 move up a league on Sunday. Bottom 5 move down.",pts:"pts",monthTop:"Top in the US in {m}",monthYou:"Your rank this month: #{p} of 48,000",
+champInfo:"The top 100 of the month earn the \"{m} Champion\" frame, which never comes back. It is not for sale.",report:"Report nickname",block:"Block player",reported:"Report sent. Thank you!",blockedT:"Player blocked.",
+scoreL:"Leaderboard points",noScoreHint:"You used a hint, so this challenge does not score.",leaguePos:"You are #{p} in the {l}.",
+share:"📲 Share on WhatsApp",shareT:"Share",sharePhotos:"Include my photos on the card",shareSave:"On iPhone, touch and hold the image to save or send it.",shareOpen:"Open WhatsApp",shareSend:"Send",
+shareTxtD:"I finished the daily challenge in Bay Mahjong! 🔥 {s} day streak.",shareTxtC:"I finished chapter {c} in Bay Mahjong and earned the {n} postcard!",
+cardDaily:"Daily challenge complete",cardStreak:"day streak",cardChap:"Chapter {c} complete",cardFoot:"Bay Mahjong · no ads",
+profT:"Profile",nickL:"Nickname (shown on the leaderboard)",saveB:"Save",nickBad:"Pick another nickname (3 to 16 letters, no bad words).",nickOk:"Nickname saved.",frameL:"Frame",
+fr_none:"No frame",fr_fundador:"Founder",fr_campeao:"Champion",founderT:"Founder Edition",founderS:"Numbered gold frame on the leaderboard and on your WhatsApp card. Only 5,000 in the world. When it is gone, it never comes back.",
+founderTag:"limited run",founderNo:"Founder #{n} of 5,000",founderLeft:"{r} of 5,000 left",champSim:"Get a champion frame (test)",champGot:"You earned the {m} Champion frame!",
+profTap:"Tap to edit your profile",
+months:["January","February","March","April","May","June","July","August","September","October","November","December"],
 ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm Grove","Coral Reef","Mangrove","Fishing Village","June Festival","Lookout Point",
 "Dunes","Waterfall","Grandma's Garden","The Inn","Regatta","Moonlit Night","Blue River","Orchard","Fish Market","Turtle Island",
 "Shell Cave","Carnival","Old Harbor","Starry Bay","Windy Hill","Deep Sea","Parrot Island","Fireworks Night","Whale Trail","Humpback City"]}
 };
 const CH_EMOJI=["🏖️","⚓","🍍","🌅","🌴","🐠","🦀","🛶","🎉","🔭","☀️","💧","🌺","🏡","⛵","🌙","🌊","🍋","🐟","🐢","🐚","🎭","🚢","⭐","🎈","🐙","🦜","🎆","🐳","🐋"];
 const PRICES={
-pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90"},
-en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99"}
+pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90"},
+en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99"}
 };
 const KEY="mahjongBaia_v2";
 function today(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
@@ -230,10 +276,12 @@ function dateStr(k){const d=new Date(Date.now()-k*86400000);return d.getFullYear
 function dateShort(k){const d=new Date(Date.now()-k*86400000);return d.getDate()+"/"+(d.getMonth()+1);}
 function defState(){return {level:1,premium:false,plan:"",lang:(navigator.language||"pt").toLowerCase().startsWith("pt")?"pt":"en",hl:true,theme:"baia",
 day:today(),hints:FREE_HINTS,shuffles:FREE_SHUFFLES,bankH:0,bankS:0,dailyDone:"",album:[],themes:[],packs:[],packProg:{},install:dayNum(),welcome:false,
-tileSets:[],tileSet:"baia",photoOwned:false,streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
+tileSets:[],tileSet:"baia",photoOwned:false,
+nick:"",frame:"none",founderNo:0,champ:[],weekPts:{},monthPts:{},league:1,blocked:[],streak:0,lastDailyN:-99,extraDone:"",archDone:[]};}
 let S=defState();
 try{const raw=localStorage.getItem(KEY); if(raw){S=Object.assign(defState(),JSON.parse(raw));}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+if(!S.nick){ S.nick=(S.lang==="pt"?"Jogador ":"Player ")+(1000+Math.floor(Math.random()*9000)); }
 function rollDay(){if(S.day!==today()){S.day=today();S.hints=FREE_HINTS;S.shuffles=FREE_SHUFFLES;save();}}
 rollDay();
 const t=k=>(T[S.lang]&&T[S.lang][k]!==undefined?T[S.lang][k]:T.pt[k]);
@@ -444,12 +492,12 @@ return false;
 function useHint(){
 const fp=freePairs(); if(fp.length===0){ stuck(); return; }
 if(!spend("h")){ outOf("outHints"); return; }
-G.used++; refresh(); fp[0].forEach(i=>G.tiles[i].el.classList.add("hint"));
+G.used++; G.hinted=true; refresh(); fp[0].forEach(i=>G.tiles[i].el.classList.add("hint"));
 }
 function useShuffle(free){
 if(!free && !spend("s")){ outOf("outShuffle"); return; }
 if(!reshuffle((Date.now()&0xffffff)+G.tiles.length)){ toast("…"); return; }
-if(!free) G.used++;
+if(!free) G.used++; G.shuf=true;
 G.sel=-1; render();
 }
 function useUndo(){ const u=G.undo.pop(); if(!u){toast(t("nothingUndo"));return;} u.forEach(i=>G.tiles[i].alive=true); G.sel=-1; refresh(); }
@@ -464,12 +512,16 @@ function win(){
 if(G.mode==="daily"){ let note="", title=t("dailyWon");
 if(G.dkind==="today"){ const gap=dayLocal()-S.lastDailyN;
 if(gap===0){} else if(gap===1) S.streak++; else if(gap===2&&S.premium){ S.streak++; note='<p>🛡️ '+t("protected")+'</p>'; } else S.streak=1;
-S.lastDailyN=dayLocal(); S.dailyDone=today(); }
+S.lastDailyN=dayLocal(); S.dailyDone=today();
+if(!G.hinted){ const sec=(Date.now()-G.t0)/1000, pts=Math.max(200,Math.round(1000-sec*2))+(G.shuf?0:150);
+S.weekPts[weekKey()]=(S.weekPts[weekKey()]||0)+pts; S.monthPts[monthKey()]=(S.monthPts[monthKey()]||0)+pts;
+note+='<p><b>'+t("scoreL")+': +'+pts+' '+t("pts")+'</b></p><p>'+t("leaguePos").replace("{p}",myLeaguePos()).replace("{l}",t("leagues")[S.league])+'</p>'; }
+else note+='<p>'+t("noScoreHint")+'</p>'; }
 else if(G.dkind==="extra"){ S.extraDone=today(); title=t("extraWon"); }
 else { if(!S.archDone.includes(G.dkey)) S.archDone.push(G.dkey); }
 save();
-modal(starsHtml()+'<h2>'+title+'</h2><p>'+t("wonP")+'</p>'+(curStreak()?'<p>'+streakTxt(curStreak())+'</p>':'')+note+'<button class="big" id="mHome">'+t("home")+'</button>');
-bind("mHome",()=>{closeModal();goHome();}); return; }
+modal(starsHtml()+'<h2>'+title+'</h2><p>'+t("wonP")+'</p>'+(curStreak()?'<p>'+streakTxt(curStreak())+'</p>':'')+note+'<button class="big" id="mShare">'+t("share")+'</button>'+(G.dkind==="today"?'<button class="sec" id="mRank">'+t("rank")+'</button>':'')+'<button class="sec" id="mHome">'+t("home")+'</button>');
+bind("mShare",()=>openShare("daily")); bind("mRank",()=>openRank("w")); bind("mHome",()=>{closeModal();goHome();}); return; }
 if(G.mode==="pack"){ S.packProg[G.pack]=Math.max(S.packProg[G.pack]||1,G.level+1); save();
 const end=G.level>=30;
 modal(starsHtml()+'<h2>'+(end?t("colEnd"):t("colWon"))+'</h2>'+(end?'':'<button class="big" id="mNext">'+t("next")+' ('+(G.level+1)+'/30)</button>')+'<button class="sec" id="mHome">'+t("home")+'</button>');
@@ -480,8 +532,8 @@ if(n%PER_CHAPTER===0){ const c=n/PER_CHAPTER; if(!S.album.includes(c)) S.album.p
 extra='<p><b>'+t("chDone")+'</b></p><p>'+t("chDoneP")+'</p><div class="pc" style="max-width:160px;margin:6px auto"><span class="em">'+CH_EMOJI[c-1]+'</span>'+t("ch")[c-1]+'</div>'; }
 save();
 const more=n<MAX_LEVEL;
-modal(starsHtml()+'<h2>'+t("won")+'</h2>'+(extra||'<p>'+t("wonP")+'</p>')+(more?'<button class="big" id="mNext">'+t("next")+' ('+(n+1)+')</button>':'<p><b>'+t("allDone")+'</b></p><p>'+t("allDoneP")+'</p>')+'<button class="sec" id="mHome">'+t("home")+'</button>');
-bind("mNext",()=>{closeModal();startLevel(n+1);}); bind("mHome",()=>{closeModal();goHome();});
+modal(starsHtml()+'<h2>'+t("won")+'</h2>'+(extra||'<p>'+t("wonP")+'</p>')+(more?'<button class="big" id="mNext">'+t("next")+' ('+(n+1)+')</button>':'<p><b>'+t("allDone")+'</b></p><p>'+t("allDoneP")+'</p>')+(extra?'<button class="sec" id="mShare">'+t("share")+'</button>':'')+'<button class="sec" id="mHome">'+t("home")+'</button>');
+bind("mNext",()=>{closeModal();startLevel(n+1);}); bind("mHome",()=>{closeModal();goHome();}); bind("mShare",()=>openShare("chapter",n/PER_CHAPTER));
 }
 function stuck(){ modal('<h2>'+t("stuck")+'</h2><p>'+t("stuckP")+'</p><button class="big" id="mShuf">🔀 '+t("shuffleFree")+'</button>'); bind("mShuf",()=>{closeModal();useShuffle(true);}); }
 function outOf(k){ modal('<h2>'+t(k)+'</h2><p>'+t("outP")+'</p><button class="big" id="mStore">⭐ '+t("seeStore")+'</button><button class="sec" id="mClose">'+t("close")+'</button>'); bind("mStore",openStore); bind("mClose",closeModal); }
@@ -506,6 +558,9 @@ h+=row("pMonth",t("month"),t("monthS"),P("month"),t("subscribe"));
 h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
 }
 h+='<div class="free4all">'+t("freeAll")+'</div>';
+h+='<h3>'+t("founderT")+'</h3>';
+h+=S.founderNo? row("fdBuy",t("founderT"),avatarHtml(S.nick,"fundador")+' '+t("founderNo").replace("{n}",fmtNo(S.founderNo)),"",t("owned"),{owned:1,tag:t("founderTag")})
+: row("fdBuy",t("founderT"),t("founderS")+'<br><b>'+t("founderLeft").replace("{r}",founderLeft())+'</b>',P("founder"),t("buy"),{tag:t("founderTag")});
 if(welcomeAvailable()){ h+='<h3>'+t("offersT")+'</h3>'+row("oWelcome",t("welcome"),t("welcomeS"),P("welcome"),t("buy")); }
 if(!S.premium){
 h+='<h3>'+t("helpT")+'</h3>'+row("oH10",t("h10"),"",P("h10"),t("buy"))+row("oH50",t("h50"),"",P("h50"),t("buy"));
@@ -532,6 +587,7 @@ bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.tileSets.inclu
 bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
 bind("oH50",()=>{S.bankH+=50;S.bankS+=25;done();});
 PACKS.forEach(id=>bind("pk_"+id,()=>{ if(S.premium||S.packs.includes(id)){closeModal();startPack(id,Math.min(30,S.packProg[id]||1));} else {S.packs.push(id);done();} }));
+bind("fdBuy",()=>{ if(!S.founderNo){ S.founderNo=5000-founderLeft()+1; S.frame="fundador"; done(); } });
 bind("phBuy",()=>{ if(!photoAccess()){ S.photoOwned=true; done(); return; } pickPhotos(); });
 ["frutas","bichos"].forEach(id=>bind("ts_"+id,()=>{ if(!tsOwned(id)){S.tileSets.push(id);S.tileSet=id;done();} else {S.tileSet=id;save();toast(t("inUse")+": "+t("ts_"+id));openStore();} }));
 bind("lRestore",()=>toast(t("restored"))); bind("lManage",()=>toast(t("manageSim")));
@@ -548,7 +604,7 @@ modal('<h2>'+t("setT")+'</h2>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("tilesL")+'</b></p><div class="themes">'+["baia","frutas","bichos","fotos"].map(id=>'<button data-ts="'+id+'" class="'+(S.tileSet===id?'cur':'')+'">'+(id==="fotos"?(PHOTOS.length?'<span class="thumbs"><img src="'+PHOTOS[0]+'" alt=""></span>':'📷'):'<span class="em">'+TILESETS[id][0]+'</span>')+' '+t("ts_"+id)+(tsOwned(id)?'':' 🔒')+'</button>').join("")+'</div>'
 +'<div class="links"><button id="lRestore2">'+t("restore")+'</button><button id="lManage2">'+t("manage")+'</button><button id="lTerms2">'+t("terms")+'</button><button id="lPriv2">'+t("privacy")+'</button><button id="lSup2">'+t("support")+'</button></div>'
 +'<p style="text-align:left;margin-top:14px"><b>'+t("jumpL")+'</b></p><div class="jump"><input id="jIn" type="number" min="1" max="'+MAX_LEVEL+'" value="'+Math.min(S.level,MAX_LEVEL)+'"><button id="jGo">'+t("go")+'</button></div>'
-+'<button class="sec" id="sReset">'+t("reset")+'</button>'+(S.premium?'<button class="sec" id="sCancel">'+t("cancelP")+'</button>':'')
++'<button class="sec" id="sChamp">'+t("champSim")+'</button><button class="sec" id="sReset">'+t("reset")+'</button>'+(S.premium?'<button class="sec" id="sCancel">'+t("cancelP")+'</button>':'')
 +'<button class="big" id="mClose">'+t("close")+'</button>');
 bind("sHl",()=>{S.hl=!S.hl;save();applyPrefs();openSettings();});
 bind("sLang",()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();openSettings();});
@@ -560,6 +616,7 @@ bind("lRestore2",()=>toast(t("restored"))); bind("lManage2",()=>toast(t("manageS
 bind("jGo",()=>{ const v=Math.max(1,Math.min(MAX_LEVEL,parseInt($("jIn").value,10)||1)); S.level=Math.max(S.level,v); save(); closeModal(); startLevel(v); });
 bind("sReset",()=>{modal('<h2>'+t("confirmReset")+'</h2><button class="big" id="cY" style="background:var(--danger)">'+t("yes")+'</button><button class="sec" id="cN">'+t("no")+'</button>');
 bind("cY",()=>{const lang=S.lang;S=defState();S.lang=lang;PHOTOS.length=0;try{localStorage.removeItem(PKEY);}catch(e){}save();applyPrefs();closeModal();toast(t("resetDone"));}); bind("cN",openSettings);});
+bind("sChamp",()=>{ const m=t("months")[new Date().getMonth()]+" "+new Date().getFullYear(); if(!S.champ.includes(m)) S.champ.push(m); S.frame="campeao"; save(); applyPrefs(); modal('<h2>🏆</h2><div style="margin:8px auto">'+avatarHtml(S.nick,"campeao",56)+'</div><p><b>'+t("champGot").replace("{m}",m)+'</b></p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); });
 bind("sCancel",()=>{S.premium=false;S.plan="";baseFaces();save();applyPrefs();openSettings();});
 bind("mClose",closeModal);
 }
@@ -573,6 +630,8 @@ const lv=Math.min(S.level,MAX_LEVEL), c=Math.ceil(lv/PER_CHAPTER), p=((lv-1)%PER
 const fin=S.level>MAX_LEVEL;
 $("chap").innerHTML='<b><span class="em">'+CH_EMOJI[c-1]+'</span> '+t("chapter")+' '+c+' · '+t("ch")[c-1]+'</b><small>'+(fin?t("allDone"):t("level")+' '+p+'/'+PER_CHAPTER+' · '+S.album.length+'/30 📮')+'</small><div class="bar"><i style="width:'+(fin?100:((p-1)/PER_CHAPTER*100))+'%"></i></div>';
 $("bPlay").textContent=fin?(t("play")+" · "+MAX_LEVEL+"/"+MAX_LEVEL+" ✓"):(t("play")+" · "+t("level")+" "+lv);
+$("bRank").textContent=t("rank");
+{ const st=curStreak(); $("prof").innerHTML=avatarHtml(S.nick,S.frame)+'<div class="pn"><b>'+esc(S.nick)+'</b><small>'+frameLabel()+(badgesFor(meRow())?' · '+badgesFor(meRow()):'')+'</small></div><span style="color:var(--muted)">✏️</span>'; }
 { const st=curStreak(); $("bDaily").textContent=(S.dailyDone===today()?t("dailyDone"):t("daily"))+(st?" · 🔥 "+st:""); }
 $("bAlbum").textContent=t("album");
 $("bStore").innerHTML=S.premium?'<span class="premiumTag">'+t("active")+'</span>':t("store");
@@ -592,6 +651,7 @@ function playDaily(kind,k){
 closeModal(); rollDay(); FACES=baseFaces(); show("game");
 const key=dateStr(k||0), seed=hashStr(kind==="extra"?key+"x":key), prm={n:60+seed%40,target:76,L:3,fmin:18,fmax:24,kind:(seed%2?"special":"normal")};
 const b=buildPositions(prm,seed); newBoard(b.pos,seed,prm.fmin,prm.fmax); G.level=0; G.mode="daily"; G.dkind=kind; G.dkey=key;
+G.t0=Date.now(); G.hinted=false; G.shuf=false;
 G.dtitle=kind==="extra"?t("extraT"):kind==="arch"?(t("archT")+" · "+dateShort(k)):t("dailyT"); render();
 }
 function startDaily(){
@@ -617,12 +677,103 @@ const b=buildPositions(prm,seed); newBoard(b.pos,seed,Math.min(prm.fmin,FACES.le
 G.level=k; G.mode="pack"; G.pack=id; render();
 }
 $("bPlay").onclick=()=>{ if(S.level>MAX_LEVEL){ modal('<h2>'+t("allDone")+'</h2><p>'+t("allDoneP")+'</p><button class="big" id="mClose">'+t("close")+'</button>'); bind("mClose",closeModal); return; } startLevel(S.level); };
-$("bDaily").onclick=startDaily; $("bAlbum").onclick=openAlbum;
+$("bDaily").onclick=startDaily; $("bRank").onclick=()=>openRank("w"); $("prof").onclick=openProfile; $("bAlbum").onclick=openAlbum;
 $("bStore").onclick=openStore; $("bGStore").onclick=openStore; $("bSettings").onclick=openSettings;
 $("bLang").onclick=()=>{S.lang=S.lang==="pt"?"en":"pt";save();applyPrefs();};
 $("bBack").onclick=goHome; $("bHint").onclick=useHint; $("bUndo").onclick=useUndo; $("bShuffle").onclick=()=>useShuffle(false);
 window.addEventListener("resize",()=>{ if(G && $("game").classList.contains("on")) render(); });
-applyPrefs();
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtNo=n=>String(n).padStart(4,"0");
+function founderLeft(){ return 5000-(4100+Math.floor((dayNum()-20400)%300)); }
+function weekKey(){ const d=new Date(), k=(d.getDay()+6)%7, m=new Date(d.getFullYear(),d.getMonth(),d.getDate()-k); return m.getFullYear()+"-"+(m.getMonth()+1)+"-"+m.getDate(); }
+function weekDay(){ return (new Date().getDay()+6)%7+1; }
+function monthKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1); }
+function avatarHtml(nick,frame,size){ size=size||38; const ini=(String(nick).trim()[0]||"?").toUpperCase();
+return '<span class="av fr-'+(frame||"none")+'" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.45)+'px">'+esc(ini)+'</span>'; }
+function frameLabel(){ if(S.frame==="fundador"&&S.founderNo) return '🥇 '+t("founderNo").replace("{n}",fmtNo(S.founderNo)); if(S.frame==="campeao"&&S.champ.length) return '🏆 '+t("fr_campeao")+' · '+S.champ[S.champ.length-1]; return t("profTap"); }
+function meRow(){ return {nick:S.nick,frame:S.frame,photo:PHOTOS.length>=12,streak:curStreak(),pts:S.weekPts[weekKey()]||0,me:true,fno:S.founderNo}; }
+function badgesFor(r){ return (r.photo?'📷':'')+(r.streak?(r.photo?' ':'')+'🔥'+r.streak:''); }
+const BOTN={pt:["Ana Lú","Seu Zé","Vovó Cida","Marquinhos","Dona Fátima","Tio Beto","Lurdinha","Joãozinho","Cris B.","Rosa M.","Paulão","Neide","Silvinha","Carlão","Tânia R.","Dudu","Vera L.","Toninho","Glória","Rê","Mila","Nonô","Biazinha","Juca","Lena","Beto Praia","Cidinha","Márcia F.","Zezé","Lia","Odete","Valdir","Sônia","Gil"],
+en:["Grandma Sue","Bob K.","Linda M.","Joe","Patty","Mike R.","Carol","Dave","Nancy B.","Tom","Judy","Rick","Barb","Gary","Sandy","Larry","Deb","Ron","Kathy","Jim","Pam","Steve","Donna","Ed","Sharon","Bill","Ruth","Hank","Peggy","Walt","Joan","Fred","Lois","Al"]};
+function bots(){ const R=rng(hashStr(weekKey()+":"+S.league+":"+S.lang)), names=BOTN[S.lang]||BOTN.pt, wd=weekDay(), out=[];
+for(let i=0;i<29;i++){ const avg=320+R()*720+S.league*60, act=0.35+R()*0.65, days=Math.min(wd,Math.max(0,Math.round(wd*act+R()*0.6-0.3)));
+const fr=R()<0.09?"fundador":(R()<0.07?"campeao":"none");
+out.push({nick:names[i],frame:fr,photo:R()<0.28,streak:Math.floor(R()*45),pts:Math.round(avg*days),fno:1+Math.floor(R()*4100)}); }
+return out.filter(b=>!S.blocked.includes(b.nick)); }
+function leagueRows(){ return [...bots(),meRow()].sort((a,b)=>b.pts-a.pts||(a.me?-1:b.me?1:0)); }
+function myLeaguePos(){ return leagueRows().findIndex(r=>r.me)+1; }
+function rowHtml(r,pos,total,zones){ const cls='rk'+(r.me?' me':'')+(zones&&pos<=5?' up':'')+(zones&&pos>total-5?' down':'');
+const sub=(r.frame==="fundador"?'🥇 '+t("fr_fundador")+' nº '+fmtNo(r.fno):r.frame==="campeao"?'🏆 '+t("fr_campeao"):'')+(badgesFor(r)?((r.frame!=="none")?' · ':'')+badgesFor(r):'');
+return '<div class="'+cls+'"><span class="pos">'+pos+'</span>'+avatarHtml(r.nick,r.frame)+'<span class="nm">'+esc(r.nick)+(sub?'<small>'+sub+'</small>':'')+'</span><span class="pt">'+r.pts.toLocaleString(S.lang==="pt"?"pt-BR":"en-US")+'</span>'+(r.me?'<span style="width:32px"></span>':'<button class="mn" data-nick="'+esc(r.nick)+'" aria-label="'+t("report")+'">⋯</button>')+'</div>'; }
+function openRank(tab){
+const mName=t("months")[new Date().getMonth()];
+let h='<h2>'+t("rankT")+'</h2><div class="tabs"><button id="tW" class="'+(tab==="w"?"cur":"")+'">'+t("weekly")+'</button><button id="tM" class="'+(tab==="m"?"cur":"")+'">'+t("monthly")+'</button></div>';
+if(tab==="w"){ const rows=leagueRows();
+h+='<p style="margin:4px 0"><b>'+t("leagues")[S.league]+'</b></p><p style="font-size:14px;margin:0 0 6px">'+t("promo")+'</p>';
+rows.forEach((r,i)=>{ h+=rowHtml(r,i+1,rows.length,true); }); }
+else { const R=rng(hashStr(monthKey()+":"+S.lang)), dom=new Date().getDate(), names=BOTN[S.lang]||BOTN.pt, top=[];
+for(let i=0;i<10;i++){ const fr=i<3?"campeao":(R()<0.3?"fundador":"none"); top.push({nick:names[(i*7+3)%names.length],frame:fr,photo:R()<0.4,streak:dom+Math.floor(R()*60),pts:Math.round(dom*1150*(1-i*0.012)),fno:1+Math.floor(R()*900)}); }
+const me=meRow(); me.pts=S.monthPts[monthKey()]||0; const min=top[9].pts;
+let pos; if(me.pts>=min){ top.push(me); top.sort((a,b)=>b.pts-a.pts); pos=top.findIndex(r=>r.me)+1; top.length=10; if(!top.some(r=>r.me)) pos=11; }
+else { const ratio=Math.min(1,me.pts/(dom*1150)); pos=Math.max(11,Math.min(48000,Math.round(48000*Math.pow(1-ratio,2.2)))); }
+h+='<p style="margin:4px 0"><b>'+t("monthTop").replace("{m}",mName)+'</b></p>';
+top.filter(r=>!S.blocked.includes(r.nick)||r.me).forEach((r,i)=>{ h+=rowHtml(r,i+1,10,false); });
+if(pos>10){ h+='<div class="rksep">⋮</div>'+rowHtml(me,pos,0,false).replace('<span class="pos">'+pos+'</span>','<span class="pos">⋯</span>'); }
+h+='<p><b>'+t("monthYou").replace("{p}",pos.toLocaleString(S.lang==="pt"?"pt-BR":"en-US"))+'</b></p><div class="free4all">🏆 '+t("champInfo").replace("{m}",mName)+'</div>'; }
+h+='<p style="font-size:14px;text-align:left">'+t("rankRule")+'</p><div class="privacy">'+t("rankPrivacy")+'</div><button class="big" id="mClose">'+t("close")+'</button>';
+modal(h); bind("tW",()=>openRank("w")); bind("tM",()=>openRank("m")); bind("mClose",closeModal);
+document.querySelectorAll("[data-nick]").forEach(b=>b.onclick=()=>{ const nk=b.dataset.nick;
+modal('<h2>'+esc(nk)+'</h2><button class="sec" id="mRep">🚩 '+t("report")+'</button><button class="sec" id="mBlk">🚫 '+t("block")+'</button><button class="big" id="mBack">'+t("close")+'</button>');
+bind("mRep",()=>{toast(t("reported"));openRank(tab);}); bind("mBlk",()=>{ if(!S.blocked.includes(nk)) S.blocked.push(nk); save(); toast(t("blockedT")); openRank(tab); }); bind("mBack",()=>openRank(tab)); });
+}
+const BAD=["merda","porra","caralho","puta","buceta","viado","cu ","fdp","shit","fuck","bitch","dick","cunt","nigg"];
+function nickOk(n){ n=n.trim(); if(n.length<3||n.length>16) return false; if(!/^[\p{L}\p{N} ._-]+$/u.test(n)) return false; const l=(" "+n.toLowerCase()+" "); return !BAD.some(w=>l.includes(w)); }
+function openProfile(){
+const frames=["none"].concat(S.founderNo?["fundador"]:[]).concat(S.champ.length?["campeao"]:[]);
+let h='<h2>'+t("profT")+'</h2><div style="margin:6px auto">'+avatarHtml(S.nick,S.frame,64)+'</div><p style="text-align:left;margin-bottom:4px"><b>'+t("nickL")+'</b></p><input class="nickin" id="nkIn" maxlength="16" value="'+esc(S.nick)+'"><button class="big" id="nkSave">'+t("saveB")+'</button>';
+h+='<p style="text-align:left;margin-top:14px"><b>'+t("frameL")+'</b></p><div class="themes">'+frames.map(f=>'<button data-fr="'+f+'" class="'+(S.frame===f?'cur':'')+'">'+avatarHtml(S.nick,f,28)+' '+t("fr_"+f)+'</button>').join("")+'</div>';
+if(!S.founderNo) h+='<button class="sec" id="mFd">🥇 '+t("founderT")+' · '+P("founder")+'</button>';
+h+='<div class="privacy">'+t("rankPrivacy")+'</div><button class="sec" id="mClose">'+t("close")+'</button>';
+modal(h); bind("mClose",closeModal); bind("mFd",openStore);
+bind("nkSave",()=>{ const v=$("nkIn").value.trim(); if(!nickOk(v)){ toast(t("nickBad")); return; } S.nick=v; save(); applyPrefs(); toast(t("nickOk")); openProfile(); });
+document.querySelectorAll("[data-fr]").forEach(b=>b.onclick=()=>{ S.frame=b.dataset.fr; save(); applyPrefs(); openProfile(); });
+}
+function loadImg(src){ return new Promise(r=>{ const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=src; }); }
+async function makeCard(kind,c,withPhotos){
+const W=1080,H=1350,cv=document.createElement("canvas"); cv.width=W; cv.height=H; const g=cv.getContext("2d");
+const gr=g.createLinearGradient(0,0,0,H); gr.addColorStop(0,"#e8f6fb"); gr.addColorStop(1,"#9fd6e6"); g.fillStyle=gr; g.fillRect(0,0,W,H);
+const EM='"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif', TX='-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+g.textAlign="center"; g.fillStyle="#123047"; g.font="800 64px "+TX; g.fillText(t("title"),W/2,120);
+const wp=withPhotos&&PHOTOS.length>=6;
+g.font="110px "+EM; g.fillText(kind==="chapter"?CH_EMOJI[c-1]:"🐋",W/2,270);
+g.fillStyle="#123047"; g.font="800 66px "+TX; g.fillText(kind==="chapter"?t("cardChap").replace("{c}",c):t("cardDaily"),W/2,380);
+g.font="700 54px "+TX; g.fillStyle="#0e7c86"; g.fillText(kind==="chapter"?t("ch")[c-1]:(curStreak()?("🔥 "+curStreak()+" "+t("cardStreak")):"⭐ "+dateShort(0)),W/2,455);
+let y=wp?500:540;
+if(wp){ const ims=await Promise.all(PHOTOS.slice(0,6).map(loadImg)); const sz=230,gap=20,x0=(W-(3*sz+2*gap))/2;
+ims.forEach((im,i)=>{ if(!im) return; const x=x0+(i%3)*(sz+gap), yy=y+Math.floor(i/3)*(sz+gap); g.save(); g.beginPath(); g.roundRect(x,yy,sz,sz,28); g.clip(); g.drawImage(im,x,yy,sz,sz); g.restore(); }); y+=2*230+20+50; }
+else { g.font="150px "+EM; g.fillText(kind==="chapter"?"📮":"⭐⭐⭐",W/2,y+190); y+=300; }
+const fr=S.frame, ring=fr==="fundador"?"#d4a017":fr==="campeao"?"#8e44ad":"#ffffff";
+g.fillStyle="rgba(255,255,255,.85)"; g.beginPath(); g.roundRect(90,y,W-180,190,36); g.fill();
+g.beginPath(); g.arc(200,y+95,62,0,Math.PI*2); g.fillStyle="#6aa9bd"; g.fill(); g.lineWidth=12; g.strokeStyle=ring; g.stroke();
+g.fillStyle="#fff"; g.font="800 64px "+TX; g.fillText((S.nick.trim()[0]||"?").toUpperCase(),200,y+118);
+g.textAlign="left"; g.fillStyle="#123047"; g.font="800 52px "+TX; g.fillText(S.nick.slice(0,16),290,y+85);
+g.font="600 38px "+TX; g.fillStyle="#4d6b80";
+g.fillText(fr==="fundador"&&S.founderNo?"🥇 "+t("founderNo").replace("{n}",fmtNo(S.founderNo)):fr==="campeao"&&S.champ.length?"🏆 "+t("fr_campeao")+" · "+S.champ[S.champ.length-1]:t("leagues")[S.league]+" · "+myLeaguePos()+"º",290,y+140);
+g.textAlign="center"; g.fillStyle="#123047"; g.font="700 40px "+TX; g.fillText(t("cardFoot"),W/2,H-70);
+return cv;
+}
+async function openShare(kind,c){
+const has=PHOTOS.length>=6; let withP=false;
+const txt=kind==="chapter"?t("shareTxtC").replace("{c}",c).replace("{n}",t("ch")[c-1]):t("shareTxtD").replace("{s}",curStreak());
+async function draw(){ const cv=await makeCard(kind,c,withP); const url=cv.toDataURL("image/jpeg",0.88);
+modal('<h2>'+t("shareT")+'</h2>'+(has?'<label class="ckrow"><input type="checkbox" id="shP"'+(withP?' checked':'')+'> '+t("sharePhotos")+'</label>':'')+'<img class="shimg" id="shImg" src="'+url+'" alt="">'
++'<p style="font-size:14px">'+t("shareSave")+'</p><button class="big" id="shSend">📲 '+t("shareSend")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
+bind("mClose",closeModal); const ck=$("shP"); if(ck) ck.onchange=()=>{ withP=ck.checked; draw(); };
+bind("shSend",async()=>{ try{ const blob=await new Promise(r=>cv.toBlob(r,"image/jpeg",0.88)); const f=new File([blob],"mahjong-da-baia.jpg",{type:"image/jpeg"});
+if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f],text:txt}); return; } }catch(e){ if(e&&e.name==="AbortError") return; }
+window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }); }
+modal('<h2>'+t("shareT")+'</h2><p>…</p>'); await draw();
+}
 function fileToTile(f){ return new Promise(res=>{ const url=URL.createObjectURL(f), im=new Image();
 im.onload=()=>{ const c=document.createElement("canvas"); c.width=c.height=160; const s=Math.min(im.naturalWidth,im.naturalHeight);
 c.getContext("2d").drawImage(im,(im.naturalWidth-s)/2,(im.naturalHeight-s)/2,s,s,0,0,160,160); URL.revokeObjectURL(url); res(c.toDataURL("image/jpeg",0.78)); };
@@ -643,8 +794,9 @@ return true;
 }
 function pickPhotos(){ const i=$("phIn"); i.value=""; i.click(); }
 $("phIn").addEventListener("change",e=>{ usePhotoFiles(e.target.files); });
+applyPrefs();
 window.__mj={get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
-isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
+isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>
 </body>
