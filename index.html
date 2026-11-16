@@ -217,6 +217,7 @@ body.ts1 #home, body.ts1 .card{zoom:1.12} body.ts2 #home, body.ts2 .card{zoom:1.
 <div id="prof"></div>
 <div class="chap" id="chap"></div>
 <div class="chap" id="subBan" role="button" tabindex="0" style="display:none"></div>
+<div class="chap" id="campBan" role="button" tabindex="0" style="display:none;cursor:pointer"></div>
 <div class="chap" id="bday" style="display:none"></div>
 <div class="chap" id="evt"></div>
 <button class="big" id="bPlay">Jogar</button>
@@ -313,7 +314,7 @@ paceHint:"Relaxado: tabuleiros menores. Desafiador: mais peças e camadas. Você
 achT:"Conquistas",achGot:"🏅 Conquista: {a} (+5 ⭐)",medalsT:"Medalhas do mês",medalsP:"Faça o desafio do dia: {n} dias em {m}.",
 medal:["Bronze","Prata","Ouro","Diamante","Perfeita"],medalReq:["7 dias","14 dias","21 dias","28 dias","Todos os dias"],
 ach:{lv1:"Primeira fase",lv10:"10 fases",lv50:"50 fases",lv100:"100 fases",ch1:"Primeiro postal",ch5:"5 postais",three10:"10 fases com 3 estrelas",combo5:"Combo x5",daily7:"7 desafios do dia",daily30:"30 desafios do dia",bay1:"Primeira reforma",bayAll:"Baía completa",photos:"Minha Família",chalS:"Desafiou a família",chalW:"Venceu um desafio",evt:"Evento concluído",st7:"7 dias seguidos",st30:"30 dias seguidos",col:"Coleção completa",gift:"Deu um presente"},
-phNone:"Nenhuma foto foi escolhida. Tente de novo.",phProg:"Preparando foto {i} de {n}…",phFew:"Conseguimos preparar só {n} foto(s). Escolha pelo menos 12 fotos (de 24 a 32 fica melhor).",phBad:"{n} arquivo(s) não abriram e foram ignorados.",phMixed:"💡 Ficou bom! Com 24 a 32 fotos fica ainda melhor: as fotos se repetem menos no tabuleiro.",phTip:"💡 Escolha de 12 a 32 fotos. De 24 a 32 fica melhor. Varie pessoas, lugares e cores, prefira rostos próximos e deixe quem importa no centro da foto.",phOld:"📷 Seu conjunto tem {n} fotos. Agora o mínimo é 12 (de 24 a 32 fica melhor). Toque em Loja › Trocar as fotos.",phTipT:"Antes de escolher",phTipGo:"📷 Escolher fotos",phRetry:"📷 Escolher fotos de novo",phPack:"📦 Imagem da família reconhecida: {n} fotos.",famRecv:"📥 Usar fotos recebidas",famRecvS:"Escolha a imagem de fotos que a família mandou no WhatsApp",recvNeed:"Para usar fotos recebidas, ative primeiro as Peças com suas fotos.",packT:"Fotos de {from} para {to}",sendShare:"📲 Enviar para {to} no WhatsApp",sendDl:"⬇️ Baixar a imagem",sendHow:"Depois, {to} abre o Mahjong Family, toca em Família › Usar fotos recebidas e escolhe essa imagem.",sendDlHow:"Baixe a imagem e mande para {to} pelo WhatsApp.",sendShareTxt:"Fotos para o nosso Mahjong Family! Abra o jogo, toque em Família › Usar fotos recebidas e escolha esta imagem.",sendReady:"✅ Pronto! Agora mande a imagem para {to}",tourB:"❓ Como funciona o Passe e os preços",tourStep:"Passo {i} de {n}",tourNext:"Próximo →",tourPrev:"← Voltar",tourDone:"Entendi",tourSkip:"Pular",tourEq:"equivale a {v}/mês",
+phNone:"Nenhuma foto foi escolhida. Tente de novo.",phProg:"Preparando foto {i} de {n}…",phFew:"Conseguimos preparar só {n} foto(s). Escolha pelo menos 12 fotos (de 24 a 32 fica melhor).",phBad:"{n} arquivo(s) não abriram e foram ignorados.",phMixed:"💡 Ficou bom! Com 24 a 32 fotos fica ainda melhor: as fotos se repetem menos no tabuleiro.",phTip:"💡 Escolha de 12 a 32 fotos. De 24 a 32 fica melhor. Varie pessoas, lugares e cores, prefira rostos próximos e deixe quem importa no centro da foto.",phOld:"📷 Seu conjunto tem {n} fotos. Agora o mínimo é 12 (de 24 a 32 fica melhor). Toque em Loja › Trocar as fotos.",phTipT:"Antes de escolher",phTipGo:"📷 Escolher fotos",phRetry:"📷 Escolher fotos de novo",phPack:"📦 Imagem da família reconhecida: {n} fotos.",famRecv:"📥 Usar fotos recebidas",famRecvS:"Escolha a imagem de fotos que a família mandou no WhatsApp",recvNeed:"Para usar fotos recebidas, ative primeiro as Peças com suas fotos.",packT:"Fotos de {from} para {to}",sendShare:"📲 Enviar para {to} no WhatsApp",sendDl:"⬇️ Baixar a imagem",sendHow:"Depois, {to} abre o Mahjong Family, toca em Família › Usar fotos recebidas e escolhe essa imagem.",sendDlHow:"Baixe a imagem e mande para {to} pelo WhatsApp.",sendShareTxt:"Fotos para o nosso Mahjong Family! Abra o jogo, toque em Família › Usar fotos recebidas e escolha esta imagem.",sendReady:"✅ Pronto! Agora mande a imagem para {to}",siteT:"💚 Mais barato no site com Pix",siteS:"Pagamento único com Pix, sem cadastro. Você recebe um código e ativa aqui no jogo.",siteBuy:"Comprar no site",siteGiftT:"🎁 Dar de presente pelo site",siteGiftS:"Com cartão personalizado para enviar no WhatsApp. 10% mais barato.",siteGiftB:"Montar presente",siteP:"Passe da Baía · 1 ano (não renova)",siteOpen:"Abrindo a loja no site…",campB:"{e} {t}{d}: dê o Passe de presente",campD:" · faltam {n} dias",campD1:" · falta 1 dia",campToday:" · é hoje",campS:"Presente com cartão e mensagem, pago com Pix →",camp_natal:"Natal",camp_avos:"Dia dos Avós",camp_maes:"Dia das Mães",camp_pais:"Dia dos Pais",giftMsgFrom:"💌 {nk} te mandou um presente",giftSelfT:"✅ Sua compra no site",giftSelfP:"Toque para ativar no seu jogo.",giftSelfB:"Ativar agora",tourB:"❓ Como funciona o Passe e os preços",tourStep:"Passo {i} de {n}",tourNext:"Próximo →",tourPrev:"← Voltar",tourDone:"Entendi",tourSkip:"Pular",tourEq:"equivale a {v}/mês",
 tour1T:"O jogo é grátis",tour1P:"Você joga tudo sem pagar nada e sem anúncios:",tour1L:["600 fases e capítulo novo toda semana","Desafio do dia, ranking e ligas da família","3 dicas e 3 embaralhamentos grátis por dia","Embaralhar é sempre grátis quando você trava"],tour1F:"Pagar é opcional: acelera e enfeita, nunca bloqueia.",
 tour2T:"Os planos do Passe",tour2P:"Escolha um. Os preços são estes, sem taxa escondida:",tour2Y:"Anual",tour2Yd:"{v} por ano · equivale a {m}/mês · 7 dias grátis",tour2M:"Mensal",tour2Md:"{v} por mês",tour2L:"Vitalício",tour2Ld:"{v} uma vez só · nunca mais cobra",tour2F:"Família (iPhone)",tour2Fd:"{v} por ano · até 6 pessoas",
 tour3T:"O que o Passe libera",tour3L:["Coleção nova todo mês, liberada na hora","Todas as coleções já lançadas e todos os conjuntos de peças","Peças com suas fotos","Dicas e ajuda automática ilimitadas","Proteção de sequência: perder 1 dia não zera","Desafio extra e arquivo dos últimos 30 dias","Mente Ativa: relatório semanal"],
@@ -474,7 +475,7 @@ ch:["Whale Beach","Fishermen's Pier","Village Market","Lighthouse Island","Palm 
 };
 const CH_EMOJI=["🏖️","⚓","🍍","🌅","🌴","🐠","🦀","🛶","🎉","🔭","☀️","💧","🌺","🏡","⛵","🌙","🌊","🍋","🐟","🐢","🐚","🎭","🚢","⭐","🎈","🐙","🦜","🎆","🐳","🐋"];
 const PRICES={
-pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90",colAll:"R$ 39,90",helper:"R$ 9,90",fam:"R$ 79,90/ano",half:"R$ 4,95",wb:"R$ 4,95"},
+pt:{year:"R$ 49,90/ano",month:"R$ 9,90/mês",life:"R$ 99,90",welcome:"R$ 9,90",h10:"R$ 4,90",h50:"R$ 14,90",col:"R$ 9,90",theme:"R$ 6,90",photo:"R$ 19,90",founder:"R$ 14,90",colAll:"R$ 39,90",helper:"R$ 9,90",siteP:"R$ 44,90",siteF:"R$ 17,90",siteC:"R$ 35,90",fam:"R$ 79,90/ano",half:"R$ 4,95",wb:"R$ 4,95"},
 en:{year:"US$ 14.99/yr",month:"US$ 2.99/mo",life:"US$ 34.99",welcome:"US$ 1.99",h10:"US$ 0.99",h50:"US$ 3.99",col:"US$ 2.99",theme:"US$ 1.99",photo:"US$ 4.99",founder:"US$ 3.99",colAll:"US$ 9.99",helper:"US$ 2.99",fam:"US$ 24.99/yr",half:"US$ 1.49",wb:"US$ 1.49"}
 };
 const KEY="mahjongBaia_v2";
@@ -745,6 +746,15 @@ if(!free) G.used++; G.shuf=true;
 G.sel=-1; render();
 }
 function useUndo(){ ahAct(); const u=G.undo.pop(); if(!u){toast(t("nothingUndo"));return;} u.forEach(i=>G.tiles[i].alive=true); G.sel=-1; refresh(); }
+function siteOn(){ return S.lang==="pt"; }
+function openSite(params){ const u=new URL("loja.html",location.href); Object.entries(params||{}).forEach(([k,v])=>{ if(v) u.searchParams.set(k,v); }); const url=u.toString(); window.__lastSite=url; toast(t("siteOpen")); const w=window.open(url,"_blank"); if(!w&&!window.__noNav) location.href=url; return url; }
+function nthSunday(y,m,n){ const d=new Date(y,m,1); const add=(7-d.getDay())%7; return new Date(y,m,1+add+7*(n-1)); }
+function campaignNow(now){ now=now||subNow(); const y=now.getFullYear(), base=new Date(y,now.getMonth(),now.getDate());
+const L=[["natal","🎄",new Date(y,11,25),40],["avos","👵",new Date(y,6,26),21],["maes","🌷",nthSunday(y,4,2),21],["pais","👔",nthSunday(y,7,2),21]];
+for(const [id,e,d,win] of L){ const diff=Math.round((d-base)/86400000); if(diff>=0&&diff<=win) return {id,e,days:diff}; } return null; }
+function campBanner(){ const b=$("campBan"); const c=siteOn()?campaignNow():null; if(!c){ b.style.display="none"; return; }
+b.style.display=""; b.innerHTML='<b>'+t("campB").replace("{e}",c.e).replace("{t}",t("camp_"+c.id)).replace("{d}",c.days>1?t("campD").replace("{n}",c.days):c.days===1?t("campD1"):t("campToday"))+'</b><small>'+t("campS")+'</small>';
+b.onclick=()=>openSite({for:"gift",camp:c.id}); }
 function tourSteps(){ const y=numP("year"), m=numP("month"), l=numP("life"), fam=numP("fam"), L=k=>t(k);
 const li=a=>'<ul class="ben">'+a.map(x=>'<li>'+x+'</li>').join("")+'</ul>';
 const kv=(a,b,c)=>'<div class="kv"><span><b>'+a+'</b>'+(c?'<small>'+c+'</small>':'')+'</span><b>'+b+'</b></div>';
@@ -944,6 +954,9 @@ h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
 h+=row("pFam",t("pfamT"),t("pfamS"),'<small>'+P("fam")+'</small>',t("subscribe"));
 if(S.sub.st!=="none") h+='<button class="sec" id="spOpen">'+t("spBtn")+'</button>';
 }
+if(siteOn()){ const sr=(k,name,app)=>'<div class="plan"><div class="pn"><b>'+name+'</b><small><span class="oldp">'+P(app).split("/")[0]+' no app</span></small></div><div class="price">'+P("site"+k)+'</div><button data-site="'+k+'">'+t("siteBuy")+'</button></div>';
+h+='<h3>'+t("siteT")+'</h3><p style="font-size:14px;margin:2px 0 6px">'+t("siteS")+'</p>'+(S.premium?'':sr("P",t("siteP"),"year"))+(photoAccess()?'':sr("F",t("give_F"),"photo"))+(PACKS.every(id=>S.packs.includes(id))||S.premium?'':sr("C",t("give_C"),"colAll"))
++'<div class="plan best"><div class="pn"><b>'+t("siteGiftT")+'</b><small>'+t("siteGiftS")+'</small></div><button id="siteGift">'+t("siteGiftB")+'</button></div>'; }
 h+='<div class="free4all">'+t("freeAll")+'</div>';
 h+='<h3>'+t("founderT")+'</h3>';
 h+=S.founderNo? row("fdBuy",t("founderT"),avatarHtml(S.nick,"fundador",38,myAv())+' '+t("founderNo").replace("{n}",fmtNo(S.founderNo)),"",t("owned"),{owned:1,tag:t("founderTag")})
@@ -971,7 +984,7 @@ bind("pMonth",()=>{subStart("month");done();});
 bind("pLife",()=>{subStart("life");done();});
 bind("pFam",()=>{subStart("fam");done();});
 bind("pWb",()=>{S.sub.wbUsed=true; subStart("month"); S.sub.half=1; save(); toast(t("wbOk")); openStore(); applyPrefs();});
-bind("spOpen",openPass); bind("tourOpen",()=>openTour(0,openStore));
+bind("spOpen",openPass); bind("siteGift",()=>openSite({for:"gift"})); document.querySelectorAll("[data-site]").forEach(b=>b.onclick=()=>openSite({for:"me",item:b.dataset.site})); bind("tourOpen",()=>openTour(0,openStore));
 bind("oWelcome",()=>{S.welcome=true;S.bankH+=20;S.bankS+=10;if(!S.tileSets.includes("frutas"))S.tileSets.push("frutas");done();});
 bind("oHelper",()=>{ if(S.helper||S.premium) return; S.helper=true; done(); });
 bind("oH10",()=>{S.bankH+=10;S.bankS+=5;done();});
@@ -1051,7 +1064,7 @@ $("chap").innerHTML='<b><span class="em">'+CH_EMOJI[c-1]+'</span> '+t("chapter")
 $("bPlay").textContent=fin?(t("play")+" · "+MAX_LEVEL+"/"+MAX_LEVEL+" ✓"):(t("play")+" · "+t("level")+" "+lv);
 $("bRank").textContent=t("rank"); $("bFam").textContent=t("fam");
 { const nx=newsItems().find(x=>x.d>0); $("bNews").textContent=t("newsBtn")+(nx?" · "+t("newsNext").replace("{d}",nx.d):""); }
-subTick(); subBanner();
+subTick(); subBanner(); campBanner();
 { const bd=todayBdays(); $("bday").style.display=bd.length?"":"none"; if(bd.length) $("bday").innerHTML='<b>'+t("bdayBan").replace("{n}",esc(bd.join(", ")))+'</b><small>'+t("bdayPlay")+' →</small>'; }
 document.body.classList.toggle("ts1",S.tsz===1); document.body.classList.toggle("ts2",S.tsz===2); $("bBay").textContent="🏝️ "+t("bayShort")+" · ⭐"+S.stars; $("bGift").textContent="🎁 "+t("giftShort")+(giftAvailable()?" !":" ✓");
 { const e=evtState(), nm=t("evts")[evtIdx()], pc=Math.min(100,Math.round(e.n/EVT_GOAL*100));
@@ -1299,8 +1312,8 @@ function parseCode(c){ c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,""); i
 const body=c.slice(0,7), item=c[0]; if(!"PFC".includes(item)||[...c].some(ch=>!B32.includes(ch))||codeSum(body)!==c[7]) return null; return {item,norm:"MF-"+c.slice(0,4)+"-"+c.slice(4)}; }
 const GIVE_PRICE={P:"year",F:"photo",C:"colAll"};
 function openGive(){
-modal('<h2>🎁 '+t("giveT")+'</h2><p>'+t("giveP")+'</p>'+["P","F","C"].map(k=>'<div class="plan"><div class="pn"><b>'+t("give_"+k)+'</b></div><div class="price">'+PD(GIVE_PRICE[k])+'</div><button data-give="'+k+'">'+t("buy")+'</button></div>').join("")+'<p style="font-size:13px">'+t("proto")+'</p><button class="sec" id="mClose">'+t("close")+'</button>');
-bind("mClose",closeModal);
+modal('<h2>🎁 '+t("giveT")+'</h2>'+(siteOn()?'<div class="plan best"><div class="pn"><b>'+t("siteGiftT")+'</b><small>'+t("siteGiftS")+'</small></div><button id="giveSite">'+t("siteGiftB")+'</button></div>':'')+'<p>'+t("giveP")+'</p>'+["P","F","C"].map(k=>'<div class="plan"><div class="pn"><b>'+t("give_"+k)+'</b></div><div class="price">'+PD(GIVE_PRICE[k])+'</div><button data-give="'+k+'">'+t("buy")+'</button></div>').join("")+'<p style="font-size:13px">'+t("proto")+'</p><button class="sec" id="mClose">'+t("close")+'</button>');
+bind("mClose",closeModal); bind("giveSite",()=>openSite({for:"gift"}));
 document.querySelectorAll("[data-give]").forEach(b=>b.onclick=()=>{ const k=b.dataset.give, code=makeCode(k); S.stats.giftS++; save(); checkAch();
 const url=baseUrl()+"?"+new URLSearchParams({gift:code,nk:S.nick}).toString(); window.__lastGift={code,url};
 modal('<h2>'+t("giveCodeT")+'</h2><p>'+t("giveCodeP")+'</p><div class="giftcode" id="gCode">'+code+'</div><p><b>'+t("give_"+k)+'</b></p><button class="big" id="gSend">'+t("giveSend")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
@@ -1313,8 +1326,10 @@ function openRedeem(pre){
 modal('<h2>🎟️ '+t("redeemT")+'</h2><p>'+t("redeemP")+'</p><input class="nickin" id="rdIn" maxlength="14" value="'+esc(pre||"")+'" style="text-transform:uppercase;text-align:center;letter-spacing:2px"><button class="big" id="rdGo">'+t("redeemB")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
 bind("mClose",closeModal); bind("rdGo",()=>{ const r=redeemCode($("rdIn").value); toast(r.msg); if(r.ok){ closeModal(); if(!S.classic) celebrateMini(); } }); }
 function celebrateMini(){ [784,988,1175].forEach((f,i)=>setTimeout(()=>tone(f,0.2,"triangle"),i*100)); }
-function showGiftInvite(code,from){ const c=parseCode(code); if(!c){ toast(t("redeemBad")); return; }
-modal('<h2>🎁 '+t("giftInvT")+'</h2>'+(from?'<p>'+esc(from)+'</p>':'')+'<p><b>'+t("give_"+c.item)+'</b></p><div class="giftcode">'+c.norm+'</div><button class="big" id="giGo">'+t("giftInvB")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
+function showGiftInvite(code,from,msg,self){ const c=parseCode(code); if(!c){ toast(t("redeemBad")); return; }
+if(self){ modal('<h2>'+t("giftSelfT")+'</h2><p>'+t("giftSelfP")+'</p><p><b>'+t("give_"+c.item)+'</b></p><div class="giftcode">'+c.norm+'</div><button class="big" id="giGo">'+t("giftSelfB")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
+bind("mClose",closeModal); bind("giGo",()=>{ const r=redeemCode(c.norm); toast(r.msg); closeModal(); if(r.ok&&!S.classic) celebrateMini(); }); return; }
+modal('<h2>🎁 '+t("giftInvT")+'</h2>'+(from?'<p>'+t("giftMsgFrom").replace("{nk}",esc(from))+'</p>':'')+(msg?'<p style="font-style:italic">“'+esc(msg)+'”</p>':'')+'<p><b>'+t("give_"+c.item)+'</b></p><div class="giftcode">'+c.norm+'</div><button class="big" id="giGo">'+t("giftInvB")+'</button><button class="sec" id="mClose">'+t("close")+'</button>');
 bind("mClose",closeModal); bind("giGo",()=>{ const r=redeemCode(c.norm); toast(r.msg); closeModal(); }); }
 function todayBdays(){ const d=new Date(); return S.famDates.filter(x=>x.d===d.getDate()&&x.m===d.getMonth()+1).map(x=>x.n); }
 function openDates(){
@@ -1616,12 +1631,12 @@ applyPrefs();
 setInterval(()=>{ if(S.timer&&G&&$("game").classList.contains("on")&&!$("modal").classList.contains("on")) refresh(); },1000);
 { const q=new URLSearchParams(location.search), gc=q.get("gift"), fam=q.get("fam"), lg=q.get("liga"), ch=readChallenge();
 if(gc||fam||lg){ try{ history.replaceState(null,"",location.pathname); }catch(e){} }
-if(gc) setTimeout(()=>showGiftInvite(gc,(q.get("nk")||"").slice(0,16)),300);
+if(gc) setTimeout(()=>showGiftInvite(gc,(q.get("nk")||"").slice(0,24),(q.get("msg")||"").slice(0,140),q.get("self")==="1"),300);
 else if(fam) setTimeout(()=>openFamSend((q.get("to")||"").slice(0,16)||"?"),300);
 else if(lg) setTimeout(()=>showLgInvite(lg,(q.get("ln")||"").slice(0,24),q.get("le")||"",(q.get("by")||"").slice(0,16)),300);
 else if(ch){ try{ history.replaceState(null,"",location.pathname); }catch(e){} setTimeout(()=>showChallengeInvite(ch),300); }
 else if(!window.__NOGIFT && giftAvailable()) setTimeout(()=>openGift(true),400); }
-window.__mj={openTour,tourSteps,openPass,openManage,openRetain,openSurvey,openMind,subStart,subSimMonth,subTick,earlyPack,isEarly,packOwned,claimSubGift,PD,newsItems,weekKeyOf,pickPhotosTip,readPack,usePhotoFiles,recvPhotos,tilesBack,ahAct,ahUnl,myAv,avCrop,avLoad,avatarHtml,openProfile,openSettings,openStore,openPriv,openLeague,joinLeague,lgRows,lgParse,lgCode,lgRoll,showLgInvite,toggleMute,musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
+window.__mj={openSite,campaignNow,campBanner,showGiftInvite,redeemCode,openTour,tourSteps,openPass,openManage,openRetain,openSurvey,openMind,subStart,subSimMonth,subTick,earlyPack,isEarly,packOwned,claimSubGift,PD,newsItems,weekKeyOf,pickPhotosTip,readPack,usePhotoFiles,recvPhotos,tilesBack,ahAct,ahUnl,myAv,avCrop,avLoad,avatarHtml,openProfile,openSettings,openStore,openPriv,openLeague,joinLeague,lgRows,lgParse,lgCode,lgRoll,showLgInvite,toggleMute,musicState,musicSync,musicStop,get G(){return G;},get S(){return S;},freePairs,startLevel,startDaily,startPack,onTile,useUndo,useShuffle,useHint,levelParams,buildPositions,
 isFreeNow:i=>isFree(i,aliveArr()),setInstall:d=>{S.install=d;save();},playDaily,curStreak,dayLocal,photos:()=>PHOTOS.length,applyPace,openAch,openFamily,openNews,newsItems,openRecap,openDates,openGive,redeemCode,makeCode,checkAch,todayBdays,openBday,medalFor,openGift,openBay,openEvt,checkIn,startChallenge,readChallenge,shareChallenge,giftAvailable,evtState,setSession:ms=>{SESSION0=Date.now()-ms;},openCollections,PACKS,PACKSET,TILESETS,TSLIST,openRank,openShare,leagueRows,myLeaguePos,nickOk,setLastDaily:(n,st)=>{S.lastDailyN=n;S.streak=st;S.dailyDone="";save();applyPrefs();}};
 })();
 </script>

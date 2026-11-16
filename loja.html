@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loja Mahjong Family · Pix (protótipo)</title>
+<style>
+:root{--bg1:#e8f6fb;--bg2:#cfeaf4;--ink:#123047;--muted:#4d6b80;--accent:#0e7c86;--accent2:#f2b134;--panel:#fff;--ok:#1e9e5a;--pix:#32bcad}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2));font-size:18px;min-height:100vh}
+main{max-width:520px;margin:0 auto;padding:16px 14px 40px}
+h1{font-size:26px;margin:6px 0 2px;text-align:center}
+h2{font-size:21px;margin:0 0 8px}
+p{line-height:1.45;margin:6px 0}
+.sub{text-align:center;color:var(--muted);margin:0 0 10px;font-size:16px}
+.proto{background:#fff4d6;border:2px dashed #e0a526;border-radius:12px;padding:8px 10px;font-size:14px;text-align:center;margin:8px 0}
+.card{background:var(--panel);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.hero{background:linear-gradient(135deg,#0e7c86,#16a3a0);color:#fff}
+.hero b{font-size:20px;display:block}
+.steps{display:flex;gap:6px;justify-content:center;margin:6px 0 2px;padding:0;list-style:none}
+.steps li{flex:1;text-align:center;font-size:13px;color:var(--muted);font-weight:700}
+.steps li span{display:flex;margin:0 auto 3px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.1);align-items:center;justify-content:center;color:var(--ink)}
+.steps li.on{color:var(--accent)} .steps li.on span{background:var(--accent);color:#fff} .steps li.done span{background:var(--ok);color:#fff}
+button,.btn{font:inherit;border:0;border-radius:14px;min-height:52px;padding:0 16px;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.big{background:var(--accent);color:#fff;font-size:19px;margin-top:10px}
+.sec{background:#fff;color:var(--ink);border:2px solid rgba(0,0,0,.12);margin-top:8px}
+.pix{background:var(--pix);color:#fff;font-size:19px;margin-top:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{background:#fff;border:3px solid rgba(0,0,0,.1);border-radius:16px;padding:14px 10px;min-height:96px;flex-direction:column;gap:4px;color:var(--ink)}
+.choice .em{font-size:32px}
+.choice.cur{border-color:var(--accent);background:#e8f6f7}
+.prod{display:flex;gap:10px;align-items:center;border:3px solid rgba(0,0,0,.1);border-radius:14px;padding:10px;margin:8px 0;background:#fff;text-align:left;min-height:84px;font-weight:600;justify-content:flex-start}
+.prod.cur{border-color:var(--accent);background:#e8f6f7}
+.prod .em{font-size:30px;flex:none}
+.prod .tx{flex:1} .prod .tx b{display:block;font-size:17px} .prod .tx small{display:block;color:var(--muted);font-size:14px;font-weight:500}
+.prod .pr{text-align:right;flex:none} .prod .pr s{display:block;font-size:13px;color:var(--muted);font-weight:500} .prod .pr b{font-size:19px;color:var(--ok)}
+label{display:block;font-weight:700;font-size:16px;margin:10px 0 4px}
+input,textarea{font:inherit;width:100%;border:2px solid rgba(0,0,0,.15);border-radius:12px;padding:10px;font-size:18px;background:#fff;color:var(--ink)}
+textarea{min-height:84px;resize:vertical}
+.hint{font-size:14px;color:var(--muted)}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.qr{width:200px;height:200px;margin:10px auto;border-radius:12px;border:3px dashed var(--pix);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:15px;padding:12px;background:repeating-linear-gradient(45deg,#f4fbfa,#f4fbfa 10px,#e6f6f4 10px,#e6f6f4 20px)}
+.code{font-size:26px;font-weight:900;letter-spacing:3px;text-align:center;background:#f3f8fa;border-radius:12px;padding:12px;margin:10px 0}
+.themes{display:flex;gap:8px;flex-wrap:wrap} .themes button{width:auto;min-height:44px;flex:1 0 30%;background:#fff;border:2px solid rgba(0,0,0,.12);font-weight:700;font-size:15px;color:var(--ink)}
+.themes button.cur{border-color:var(--accent);background:#e8f6f7}
+canvas{width:100%;height:auto;border-radius:14px;display:block;margin:8px 0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.err{color:#b3261e;font-weight:700;font-size:15px;min-height:20px;margin-top:6px}
+.how{margin:0;padding-left:20px} .how li{margin:4px 0}
+.ok{color:var(--ok)}
+[hidden]{display:none!important}
+@media (max-width:420px){ .prod{flex-wrap:wrap} .prod .tx{flex:1 1 60%} .prod .pr{width:100%;display:flex;justify-content:flex-end;align-items:baseline;gap:10px;border-top:1px solid rgba(0,0,0,.08);padding-top:6px} .prod .pr s{display:inline} }
+</style>
+</head>
+<body>
+<main>
+<h1>🀄 Loja Mahjong Family</h1>
+<p class="sub">Pague com Pix · mais barato que dentro do app</p>
+<div class="proto">🧪 Protótipo: o pagamento é simulado. Nenhum valor é cobrado.</div>
+
+<div class="card hero" id="hero"></div>
+
+<ol class="steps" id="steps" aria-label="Etapas da compra">
+ <li id="st1"><span>1</span>Para quem</li><li id="st2"><span>2</span>Produto</li><li id="st3"><span>3</span>Cartão</li><li id="st4"><span>4</span>Pix</li><li id="st5"><span>5</span>Pronto</li>
+</ol>
+
+<!-- passo 1 -->
+<section class="card" id="p1">
+ <h2>1. Para quem é a compra?</h2>
+ <div class="two">
+  <button class="choice" id="forMe"><span class="em" aria-hidden="true">🙋</span>Para mim</button>
+  <button class="choice" id="forGift"><span class="em" aria-hidden="true">🎁</span>De presente</button>
+ </div>
+ <p class="hint">De presente: a pessoa recebe um cartão com um código pelo WhatsApp e ativa no jogo dela. Não precisa ter cadastro.</p>
+</section>
+
+<!-- passo 2 -->
+<section class="card" id="p2" hidden>
+ <h2>2. Escolha o produto</h2>
+ <div id="prods"></div>
+ <p class="hint">Pagamento único. Nada renova sozinho. O código vale uma vez.</p>
+ <button class="big" id="go2">Continuar</button><button class="sec" id="back2">← Voltar</button>
+ <div class="err" id="err2" role="alert"></div>
+</section>
+
+<!-- passo 3 (presente) -->
+<section class="card" id="p3" hidden>
+ <h2>3. Monte o cartão de presente</h2>
+ <label for="toName">Para quem? (nome)</label><input id="toName" maxlength="24" autocomplete="off" placeholder="Ex.: Vó Cida">
+ <label for="fromName">De quem? (seu nome)</label><input id="fromName" maxlength="24" autocomplete="off" placeholder="Ex.: Ana">
+ <label for="msg">Mensagem (opcional)</label><textarea id="msg" maxlength="140" placeholder="Ex.: Para você jogar com as fotos da família. Te amo!"></textarea>
+ <p class="hint"><span id="msgN">0</span>/140</p>
+ <label>Tema do cartão</label><div class="themes" id="themes"></div>
+ <canvas id="cv" width="1080" height="1350" aria-label="Prévia do cartão de presente"></canvas>
+ <button class="big" id="go3">Continuar</button><button class="sec" id="back3">← Voltar</button>
+ <div class="err" id="err3" role="alert"></div>
+</section>
+
+<!-- passo 4 -->
+<section class="card" id="p4" hidden>
+ <h2>4. Pague com Pix</h2>
+ <div id="sum"></div>
+ <div class="qr" role="img" aria-label="Espaço do QR Code Pix, simulação">QR Code Pix<br>(simulação no protótipo)</div>
+ <ol class="how"><li>Abra o app do seu banco e escolha <b>Pix › Ler QR Code</b>.</li><li>Confira o valor e confirme.</li><li>O código aparece aqui na hora.</li></ol>
+ <button class="pix" id="pay">✓ Simular pagamento aprovado</button><button class="sec" id="back4">← Voltar</button>
+</section>
+
+<!-- passo 5 -->
+<section class="card" id="p5" hidden>
+ <h2 class="ok">✅ Pagamento aprovado!</h2>
+ <div id="done"></div>
+</section>
+
+<section class="card">
+ <h2>Como funciona</h2>
+ <ol class="how">
+  <li>Você escolhe <b>para você</b> ou <b>de presente</b> e o produto.</li>
+  <li>Paga com <b>Pix</b>, sem cadastro.</li>
+  <li>Recebe um <b>código</b> (ex.: MF-P7K2-9QXA).</li>
+  <li>No jogo, o código é ativado com um toque pelo link, ou em <b>Família › Resgatar presente</b>.</li>
+ </ol>
+ <p class="hint">O Passe de 1 ano comprado aqui começa a contar na ativação e <b>não renova sozinho</b>. Dúvidas: no jogo, em Ajustes › Suporte.</p>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+// mesma regra de código do jogo
+const B32="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function codeSum(body){ let x=7; for(const c of body) x=(x*31+B32.indexOf(c)+1)%32; return B32[x]; }
+function makeCode(item){ let r=""; for(let i=0;i<6;i++) r+=B32[Math.floor(Math.random()*32)]; const body=item+r; const full=body+codeSum(body); return "MF-"+full.slice(0,4)+"-"+full.slice(4); }
+// preços: app x site (10% mais barato)
+const PROD={P:{em:"⭐",name:"Passe da Baía · 1 ano",desc:"Todas as coleções, peças com fotos, ajudas ilimitadas. Não renova sozinho.",app:49.90,site:44.90},
+ F:{em:"📷",name:"Peças com fotos da família",desc:"De 12 a 32 fotos viram as peças do jogo. Para sempre.",app:19.90,site:17.90},
+ C:{em:"🗂️",name:"Todas as coleções",desc:"As 10 coleções de 30 fases. Para sempre.",app:39.90,site:35.90}};
+const money=v=>"R$ "+v.toFixed(2).replace(".",",");
+// campanhas por data
+function nthSunday(y,m,n){ const d=new Date(y,m,1); const add=(7-d.getDay())%7; return new Date(y,m,1+add+7*(n-1)); }
+function campaign(now){ now=now||new Date(); const y=now.getFullYear(), day=864e5;
+ const list=[["natal","🎄","Natal","Dê de presente o Passe para quem você ama neste Natal.",new Date(y,11,25),40],
+  ["avos","👵","Dia dos Avós (26/07)","Presenteie seus avós com o jogo das fotos da família.",new Date(y,6,26),21],
+  ["maes","🌷","Dia das Mães","Um presente que a mãe usa todo dia: o Passe e as fotos da família.",nthSunday(y,4,2),21],
+  ["pais","👔","Dia dos Pais","Presenteie o pai com o Passe da Baía.",nthSunday(y,7,2),21]];
+ for(const [id,em,t,txt,d,win] of list){ const diff=Math.ceil((d-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/day); if(diff>=0&&diff<=win) return {id,em,t,txt,days:diff}; }
+ return {id:"geral",em:"🎁",t:"Presente para quem você ama",txt:"Filhos e netos: deem o jogo com as fotos da família.",days:-1}; }
+const q=new URLSearchParams(location.search);
+const camp=campaign(q.get("now")?(()=>{const [y,m,d]=q.get("now").split("-").map(Number);return new Date(y,m-1,d);})():new Date());
+const TH={natal:{bg:"#b3261e",bg2:"#7d1a14",em:"🎄",title:"Feliz Natal!"},avos:{bg:"#0e7c86",bg2:"#0a5a61",em:"👵",title:"Feliz Dia dos Avós!"},maes:{bg:"#c2477a",bg2:"#8e2f57",em:"🌷",title:"Feliz Dia das Mães!"},pais:{bg:"#2f5d9c",bg2:"#1f3f6c",em:"👔",title:"Feliz Dia dos Pais!"},aniv:{bg:"#e0861a",bg2:"#a35f0f",em:"🎂",title:"Feliz aniversário!"},geral:{bg:"#0e7c86",bg2:"#0a5a61",em:"🎁",title:"Um presente para você!"}};
+let S={for:q.get("for")==="gift"?"gift":(q.get("for")==="me"?"me":""),item:("PFC".includes(q.get("item")||"x")?q.get("item"):""),theme:TH[camp.id]?camp.id:"geral",code:""};
+$("hero").innerHTML='<b>'+camp.em+' '+camp.t+(camp.days>1?' · faltam '+camp.days+' dias':camp.days===1?' · falta 1 dia':camp.days===0?' · é hoje!':'')+'</b><span>'+camp.txt+'</span>';
+function show(n){ for(let i=1;i<=5;i++){ $("p"+i).hidden=i!==n; const li=$("st"+i); li.className=i<n?"done":i===n?"on":""; } if(S.for==="me") $("st3").style.opacity=.35; else $("st3").style.opacity=1; window.scrollTo(0,0); window.__step=n; }
+function prods(){ $("prods").innerHTML=Object.entries(PROD).map(([k,p])=>'<button class="prod'+(S.item===k?' cur':'')+'" data-k="'+k+'"><span class="em" aria-hidden="true">'+p.em+'</span><span class="tx"><b>'+p.name+'</b><small>'+p.desc+'</small></span><span class="pr"><s>'+money(p.app)+' no app</s><b>'+money(p.site)+'</b></span></button>').join("");
+ document.querySelectorAll(".prod").forEach(b=>b.onclick=()=>{ S.item=b.dataset.k; prods(); $("err2").textContent=""; }); }
+function pick(f){ S.for=f; $("forMe").classList.toggle("cur",f==="me"); $("forGift").classList.toggle("cur",f==="gift"); prods(); show(2); }
+$("forMe").onclick=()=>pick("me"); $("forGift").onclick=()=>pick("gift");
+$("back2").onclick=()=>show(1);
+$("go2").onclick=()=>{ if(!S.item){ $("err2").textContent="Escolha um produto."; return; } if(S.for==="gift"){ themes(); draw(); show(3); } else { summary(); show(4); } };
+function themes(){ const ids=[camp.id!=="geral"?camp.id:null,"aniv","geral"].filter((v,i,a)=>v&&a.indexOf(v)===i);
+ $("themes").innerHTML=ids.map(id=>'<button data-t="'+id+'" class="'+(S.theme===id?'cur':'')+'">'+TH[id].em+' '+TH[id].title.replace("Feliz ","").replace("!","")+'</button>').join("");
+ document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.t; themes(); draw(); }); }
+function clean(v,n){ return String(v||"").replace(/[<>]/g,"").trim().slice(0,n); }
+function wrap(g,text,x,y,maxW,lh){ const words=text.split(/\s+/); let line="", lines=[]; for(const w of words){ const t=line?line+" "+w:w; if(g.measureText(t).width>maxW&&line){ lines.push(line); line=w; } else line=t; } if(line) lines.push(line); lines.slice(0,5).forEach((l,i)=>g.fillText(l,x,y+i*lh)); return lines.length; }
+function draw(){ const c=$("cv"), g=c.getContext("2d"), th=TH[S.theme], p=PROD[S.item]||PROD.P, to=clean($("toName").value,24)||"Você", fr=clean($("fromName").value,24)||"Alguém especial", msg=clean($("msg").value,140);
+ const gr=g.createLinearGradient(0,0,0,1350); gr.addColorStop(0,th.bg); gr.addColorStop(1,th.bg2); g.fillStyle=gr; g.fillRect(0,0,1080,1350);
+ g.fillStyle="rgba(255,255,255,.96)"; g.beginPath(); g.roundRect?g.roundRect(70,70,940,1210,48):g.rect(70,70,940,1210); g.fill();
+ g.textAlign="center"; g.fillStyle=th.bg2; g.font="160px serif"; g.fillText(th.em,540,280);
+ g.font="800 68px system-ui,sans-serif"; g.fillText(th.title,540,400);
+ g.fillStyle="#123047"; g.font="700 54px system-ui,sans-serif"; g.fillText("Para "+to,540,500);
+ g.font="italic 44px system-ui,sans-serif"; g.fillStyle="#3c5466"; const n=msg?wrap(g,"“"+msg+"”",540,590,800,58):0;
+ const y0=600+Math.max(1,n)*58+20; g.fillStyle=th.bg; g.font="800 50px system-ui,sans-serif"; g.fillText(p.em+" "+p.name,540,y0+40);
+ g.fillStyle="#123047"; g.font="600 40px system-ui,sans-serif"; g.fillText("no jogo Mahjong Family",540,y0+100);
+ g.fillStyle="#f3f8fa"; g.fillRect(170,y0+150,740,120); g.fillStyle="#123047"; g.font="900 58px ui-monospace,Menlo,monospace"; g.fillText(S.code||"MF-XXXX-XXXX",540,y0+232);
+ g.font="600 36px system-ui,sans-serif"; g.fillStyle="#4d6b80"; g.fillText("Com carinho, "+fr,540,1220); }
+["toName","fromName","msg"].forEach(id=>$(id).oninput=()=>{ $("msgN").textContent=$("msg").value.length; draw(); });
+$("back3").onclick=()=>show(2);
+$("go3").onclick=()=>{ if(!clean($("toName").value,24)){ $("err3").textContent="Escreva o nome de quem vai receber."; return; } if(!clean($("fromName").value,24)){ $("err3").textContent="Escreva o seu nome."; return; } $("err3").textContent=""; summary(); show(4); };
+function summary(){ const p=PROD[S.item]; $("sum").innerHTML='<div class="kv"><span>'+p.em+' '+p.name+'</span><b>'+money(p.site)+'</b></div>'+(S.for==="gift"?'<div class="kv"><span>Presente para</span><b>'+clean($("toName").value,24).replace(/&/g,"&amp;")+'</b></div>':'')+'<div class="kv"><span>Você economiza</span><b class="ok">'+money(p.app-p.site)+'</b></div><div class="kv"><span><b>Total no Pix</b></span><b>'+money(p.site)+'</b></div>'; }
+$("back4").onclick=()=>show(S.for==="gift"?3:2);
+function gameUrl(params){ const u=new URL("index.html",location.href); Object.entries(params).forEach(([k,v])=>{ if(v) u.searchParams.set(k,v); }); return u.toString(); }
+$("pay").onclick=()=>{ S.code=makeCode(S.item); window.__code=S.code; const p=PROD[S.item];
+ if(S.for==="me"){ const url=gameUrl({gift:S.code,self:"1"}); window.__gameUrl=url;
+  $("done").innerHTML='<p>Seu código:</p><div class="code" id="code">'+S.code+'</div><p><b>'+p.em+' '+p.name+'</b></p><a class="btn big" id="open" href="'+url+'">Abrir o jogo e ativar</a><p class="hint">Se o jogo estiver em outro celular, abra lá e use <b>Família › Resgatar presente</b> com o código acima.</p>'; }
+ else { const to=clean($("toName").value,24), fr=clean($("fromName").value,24), msg=clean($("msg").value,140); draw();
+  const url=gameUrl({gift:S.code,nk:fr,msg}); window.__gameUrl=url;
+  const txt="🎁 "+to+", "+fr+" te deu de presente: "+p.name+" no Mahjong Family!"+(msg?"\n\n“"+msg+"”":"")+"\n\nToque para ativar: "+url+"\n\nCódigo: "+S.code; window.__shareTxt=txt;
+  $("done").innerHTML='<p>O presente está pronto. Agora é só enviar para <b>'+to.replace(/&/g,"&amp;")+'</b>:</p><div class="code" id="code">'+S.code+'</div>';
+  const cv=$("cv"); $("done").appendChild(cv);
+  const a=document.createElement("button"); a.className="big"; a.id="send"; a.textContent="📲 Enviar pelo WhatsApp"; $("done").appendChild(a);
+  const dl=document.createElement("a"); dl.className="btn sec"; dl.id="dl"; dl.textContent="⬇️ Baixar o cartão"; dl.download="presente-mahjong-family.png"; dl.href=cv.toDataURL("image/png"); $("done").appendChild(dl);
+  const h=document.createElement("p"); h.className="hint"; h.innerHTML="Quem recebe toca no link e o presente é ativado no jogo. Se preferir, a pessoa digita o código em <b>Família › Resgatar presente</b>."; $("done").appendChild(h);
+  a.onclick=async()=>{ window.__shared=txt; try{ const blob=await new Promise(r=>cv.toBlob(r,"image/png")); const file=new File([blob],"presente-mahjong-family.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:txt}); return; } }catch(e){ if(e&&e.name==="AbortError") return; } window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }; }
+ show(5); };
+// entrada direta
+if(S.for) { pick(S.for); } else show(1);
+window.__loja={campaign,makeCode,PROD,S};
+</script>
+</body>
+</html>
