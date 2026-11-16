@@ -3,194 +3,767 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Loja Mahjong Family · Pix (protótipo)</title>
+<meta name="theme-color" content="#06171a">
+<title>Mahjong Family · Loja com Pix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg1:#e8f6fb;--bg2:#cfeaf4;--ink:#123047;--muted:#4d6b80;--accent:#0e7c86;--accent2:#f2b134;--panel:#fff;--ok:#1e9e5a;--pix:#32bcad}
+/* Paleta do produto: mesa de mahjong (verde-jade escuro), peças de marfim e o dourado do jogo (#f2b134).
+   Principal (dourado): botões de compra, rastros e partículas finais. Destaque (turquesa da Baía): pincel e efeito de clique. */
+:root{--bg:#06171a;--bg2:#0a2226;--surf:#0f2e33;--surf2:#143b41;--line:rgba(244,239,227,.12);--tx:#f4efe3;--tx2:#a9c3bf;--pri:#f2b134;--pri2:#ffd98a;--priTx:#2a1a00;--acc:#3fd6c9;--ivory:#f7f1e3;--ok:#4ade80;--warn:#facc15;--err:#f87171;--pix:#32bcad;--shadow:0 20px 60px rgba(0,0,0,.45)}
+[data-theme=light]{--bg:#f5f1e6;--bg2:#ece5d3;--surf:#ffffff;--surf2:#f3eee2;--line:rgba(10,40,44,.14);--tx:#0b2427;--tx2:#46625f;--pri:#c98a0c;--pri2:#e7a92a;--priTx:#1d1200;--acc:#0e7c86;--ivory:#fffaf0;--ok:#15803d;--warn:#a16207;--err:#b91c1c;--shadow:0 16px 40px rgba(20,40,40,.15)}
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2));font-size:18px;min-height:100vh}
-main{max-width:520px;margin:0 auto;padding:16px 14px 40px}
-h1{font-size:26px;margin:6px 0 2px;text-align:center}
-h2{font-size:21px;margin:0 0 8px}
-p{line-height:1.45;margin:6px 0}
-.sub{text-align:center;color:var(--muted);margin:0 0 10px;font-size:16px}
-.proto{background:#fff4d6;border:2px dashed #e0a526;border-radius:12px;padding:8px 10px;font-size:14px;text-align:center;margin:8px 0}
-.card{background:var(--panel);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 2px 0 rgba(0,0,0,.08)}
-.hero{background:linear-gradient(135deg,#0e7c86,#16a3a0);color:#fff}
-.hero b{font-size:20px;display:block}
-.steps{display:flex;gap:6px;justify-content:center;margin:6px 0 2px;padding:0;list-style:none}
-.steps li{flex:1;text-align:center;font-size:13px;color:var(--muted);font-weight:700}
-.steps li span{display:flex;margin:0 auto 3px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.1);align-items:center;justify-content:center;color:var(--ink)}
-.steps li.on{color:var(--accent)} .steps li.on span{background:var(--accent);color:#fff} .steps li.done span{background:var(--ok);color:#fff}
-button,.btn{font:inherit;border:0;border-radius:14px;min-height:52px;padding:0 16px;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.big{background:var(--accent);color:#fff;font-size:19px;margin-top:10px}
-.sec{background:#fff;color:var(--ink);border:2px solid rgba(0,0,0,.12);margin-top:8px}
-.pix{background:var(--pix);color:#fff;font-size:19px;margin-top:10px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.choice{background:#fff;border:3px solid rgba(0,0,0,.1);border-radius:16px;padding:14px 10px;min-height:96px;flex-direction:column;gap:4px;color:var(--ink)}
-.choice .em{font-size:32px}
-.choice.cur{border-color:var(--accent);background:#e8f6f7}
-.prod{display:flex;gap:10px;align-items:center;border:3px solid rgba(0,0,0,.1);border-radius:14px;padding:10px;margin:8px 0;background:#fff;text-align:left;min-height:84px;font-weight:600;justify-content:flex-start}
-.prod.cur{border-color:var(--accent);background:#e8f6f7}
-.prod .em{font-size:30px;flex:none}
-.prod .tx{flex:1} .prod .tx b{display:block;font-size:17px} .prod .tx small{display:block;color:var(--muted);font-size:14px;font-weight:500}
-.prod .pr{text-align:right;flex:none} .prod .pr s{display:block;font-size:13px;color:var(--muted);font-weight:500} .prod .pr b{font-size:19px;color:var(--ok)}
-label{display:block;font-weight:700;font-size:16px;margin:10px 0 4px}
-input,textarea{font:inherit;width:100%;border:2px solid rgba(0,0,0,.15);border-radius:12px;padding:10px;font-size:18px;background:#fff;color:var(--ink)}
-textarea{min-height:84px;resize:vertical}
-.hint{font-size:14px;color:var(--muted)}
-.kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.08)}
-.qr{width:200px;height:200px;margin:10px auto;border-radius:12px;border:3px dashed var(--pix);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:15px;padding:12px;background:repeating-linear-gradient(45deg,#f4fbfa,#f4fbfa 10px,#e6f6f4 10px,#e6f6f4 20px)}
-.code{font-size:26px;font-weight:900;letter-spacing:3px;text-align:center;background:#f3f8fa;border-radius:12px;padding:12px;margin:10px 0}
-.themes{display:flex;gap:8px;flex-wrap:wrap} .themes button{width:auto;min-height:44px;flex:1 0 30%;background:#fff;border:2px solid rgba(0,0,0,.12);font-weight:700;font-size:15px;color:var(--ink)}
-.themes button.cur{border-color:var(--accent);background:#e8f6f7}
-canvas{width:100%;height:auto;border-radius:14px;display:block;margin:8px 0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.err{color:#b3261e;font-weight:700;font-size:15px;min-height:20px;margin-top:6px}
-.how{margin:0;padding-left:20px} .how li{margin:4px 0}
-.ok{color:var(--ok)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:Unbounded,"Arial Black",system-ui,sans-serif;line-height:1.12;margin:0 0 .4em;letter-spacing:-.01em}
+h1{font-size:clamp(34px,7.4vw,68px);font-weight:800}
+h2{font-size:clamp(26px,4.6vw,44px);font-weight:700}
+h3{font-size:20px;font-weight:700}
+p{margin:.5em 0}
+a{color:inherit}
+.gold{background:linear-gradient(100deg,var(--pri2),var(--pri) 45%,#e98b2a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eye{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);font-weight:700}
+.muted{color:var(--tx2)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{position:relative;padding:88px 0}
+.center{text-align:center}
 [hidden]{display:none!important}
-@media (max-width:420px){ .prod{flex-wrap:wrap} .prod .tx{flex:1 1 60%} .prod .pr{width:100%;display:flex;justify-content:flex-end;align-items:baseline;gap:10px;border-top:1px solid rgba(0,0,0,.08);padding-top:6px} .prod .pr s{display:inline} }
+/* barra de progresso */
+#prog{position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--acc),var(--pri));z-index:60}
+/* cabeçalho */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:10px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Unbounded,sans-serif;font-weight:800;font-size:17px;text-decoration:none;margin-right:auto;white-space:nowrap}
+.logo i{width:34px;height:42px;border-radius:8px;background:linear-gradient(160deg,var(--ivory),#e3d6b8);box-shadow:0 3px 0 #b9a77e,0 6px 14px rgba(0,0,0,.35);display:grid;place-items:center;font-style:normal;font-size:20px;color:#0e7c86}
+.hb{font:700 14px Manrope,sans-serif;border:1.5px solid color-mix(in srgb,var(--pri) 70%,transparent);color:var(--tx);background:transparent;border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.hb.icon{padding:8px 11px}
+/* botões */
+.cta{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;font:800 18px Manrope,sans-serif;border:0;border-radius:999px;padding:17px 28px;min-height:56px;cursor:pointer;color:var(--priTx);background:linear-gradient(100deg,var(--pri2),var(--pri));box-shadow:0 10px 30px color-mix(in srgb,var(--pri) 40%,transparent);text-decoration:none;overflow:hidden;transition:transform .2s ease}
+.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:shine 3.6s ease-in-out infinite}
+.cta .ar{transition:transform .25s} .cta:hover .ar{transform:translateX(5px)}
+@keyframes shine{0%,60%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+.ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 17px Manrope,sans-serif;border:1.5px solid var(--line);background:color-mix(in srgb,var(--surf) 60%,transparent);color:var(--tx);border-radius:999px;padding:15px 24px;min-height:54px;cursor:pointer;text-decoration:none}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.full{width:100%}
+/* hero */
+.hero{padding:56px 0 70px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero p.lead{font-size:clamp(17px,2.2vw,20px);color:var(--tx2);max-width:560px}
+#spark{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.8}
+.camp{display:inline-flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--pri) 14%,transparent);border:1px solid color-mix(in srgb,var(--pri) 45%,transparent);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;margin-bottom:18px}
+.camp b{color:var(--pri)}
+.note{font-size:13.5px;color:var(--tx2);margin-top:14px}
+.stage{position:relative;height:440px}
+.tile{position:absolute;width:118px;height:150px;border-radius:16px;background:linear-gradient(160deg,var(--ivory),#e7dcc1);box-shadow:0 6px 0 #c3b187,0 10px 0 #0e7c86,0 26px 40px rgba(0,0,0,.45);display:grid;place-items:center;font-size:56px;animation:float 6s ease-in-out infinite}
+.tile.ph{background:var(--ph,linear-gradient(160deg,#f6c28b,#d9785b));font-size:66px}
+.tile small{position:absolute;bottom:8px;font:700 10px "JetBrains Mono",monospace;color:#5b4a2a;letter-spacing:.08em}
+@keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+.notif{position:absolute;display:flex;gap:10px;align-items:center;background:color-mix(in srgb,var(--surf) 88%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:16px;padding:10px 14px;box-shadow:var(--shadow);font-size:13.5px;max-width:250px;animation:float 7s ease-in-out infinite}
+.notif .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--acc) 22%,transparent);flex:none;font-size:18px}
+.notif b{display:block;font-size:14px}
+/* seção do caos */
+#chaos{height:260vh;padding:0}
+#chaos .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+#cv1{position:absolute;inset:0;width:100%;height:100%}
+#chaos .txt{position:absolute;z-index:2;top:84px;left:0;right:0;margin:0 auto;text-align:center;pointer-events:none;max-width:680px;padding:0 20px}
+#chaos .txt p{max-width:560px;margin-left:auto;margin-right:auto}
+.meter{position:absolute;z-index:2;bottom:7vh;left:50%;transform:translateX(-50%);width:min(420px,86vw);text-align:center}
+.meter .bar{height:10px;border-radius:999px;background:var(--surf2);overflow:hidden;margin-top:8px}
+.meter .bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--err),var(--warn));transform-origin:0 50%}
+.meter b{font-family:"JetBrains Mono",monospace;font-size:20px}
+.adbox{position:absolute;z-index:1;font:800 12px "JetBrains Mono",monospace;padding:8px 10px;border-radius:8px;background:var(--err);color:#200;letter-spacing:.06em;box-shadow:0 8px 20px rgba(0,0,0,.4);pointer-events:none}
+/* cartões genéricos */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.panel{background:linear-gradient(180deg,var(--surf),var(--bg2));border:1px solid var(--line);border-radius:26px;padding:26px;box-shadow:var(--shadow)}
+/* mini-jogo */
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:440px;margin:0 auto}
+.mt{aspect-ratio:3/4;border-radius:14px;border:0;background:linear-gradient(160deg,var(--ivory),#e3d6b8);box-shadow:0 4px 0 #bba979,0 7px 0 #0e7c86,0 12px 20px rgba(0,0,0,.35);font-size:clamp(30px,7vw,44px);cursor:pointer;transition:transform .15s,opacity .35s,box-shadow .15s}
+.mt.sel{transform:translateY(-6px);box-shadow:0 0 0 4px var(--pri),0 7px 0 #0e7c86,0 18px 24px rgba(0,0,0,.4)}
+.mt.gone{opacity:0;transform:scale(.6) rotate(10deg);pointer-events:none}
+.mt.no{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.gstat{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--tx2);max-width:440px;margin:0 auto 12px}
+.win{margin-top:16px;text-align:center}
+/* antes e depois */
+.ba{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);user-select:none;touch-action:pan-y;background:#0b2a2e}
+.ba .layer{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:22px;background:radial-gradient(circle at 30% 20%,#155a52,#0a2d2b)}
+.ba .layer.after{position:absolute;inset:0;clip-path:inset(0 0 0 var(--cut,50%))}
+.bt{aspect-ratio:3/4;border-radius:12px;background:linear-gradient(160deg,var(--ivory),#e2d4b4);box-shadow:0 3px 0 #b39f6f,0 5px 0 #0e7c86;display:grid;place-items:center;font:700 clamp(20px,4vw,34px) "Noto Serif SC",serif;color:#1d5b4f;position:relative;overflow:hidden}
+.bt.p{font-size:clamp(26px,5.4vw,46px)}
+.bt.p::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 4px rgba(255,255,255,.55)}
+.handle{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:4px;margin-left:-2px;background:var(--acc);box-shadow:0 0 22px var(--acc);cursor:ew-resize}
+.handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);width:58px;height:58px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-size:28px;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.balbl{position:absolute;top:12px;font:700 12px "JetBrains Mono",monospace;letter-spacing:.1em;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff}
+.seal{display:inline-block;font:700 11.5px "JetBrains Mono",monospace;color:var(--tx2);border:1px dashed var(--line);border-radius:999px;padding:4px 10px;margin-top:10px}
+/* peças que montam o Passe */
+.build{position:relative;height:460px;max-width:720px;margin:0 auto}
+.build svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.build path{fill:none;stroke:var(--pri);stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 6px var(--pri));stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1s ease}
+.build path.on{stroke-dashoffset:0}
+.piece{position:absolute;width:170px;padding:14px;border-radius:18px;background:var(--surf);border:1.5px solid var(--line);cursor:pointer;text-align:left;color:var(--tx);font:600 14px Manrope,sans-serif;transition:border-color .3s,transform .2s;box-shadow:var(--shadow)}
+.piece b{display:block;font-size:15.5px;margin-top:4px}
+.piece .em{font-size:26px}
+.piece.on{border-color:var(--pri)}
+.piece:hover{transform:translateY(-3px)}
+.pass{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;padding:20px;border-radius:24px;text-align:center;background:linear-gradient(160deg,var(--surf2),var(--surf));border:2px solid color-mix(in srgb,var(--pri) 40%,transparent)}
+.pass ul{list-style:none;padding:0;margin:10px 0 0;text-align:left;font-size:13.5px}
+.pass li{opacity:.28;transition:opacity .5s;padding:3px 0}
+.pass li.on{opacity:1}
+.pass li.on::before{content:"✓ ";color:var(--pri);font-weight:800}
+.pass .pct{font:700 13px "JetBrains Mono",monospace;color:var(--pri)}
+/* gerador / cartão */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:700 14.5px Manrope,sans-serif;border:1.5px solid var(--line);background:var(--surf2);color:var(--tx);border-radius:999px;padding:10px 14px;min-height:44px;cursor:pointer}
+.chip.cur{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 18%,var(--surf2))}
+label{display:block;font-weight:700;font-size:15px;margin:14px 0 6px}
+input,textarea{font:600 17px Manrope,sans-serif;width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;background:var(--bg2);color:var(--tx)}
+input:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:1px}
+textarea{min-height:84px;resize:vertical}
+.hint{font-size:13.5px;color:var(--tx2)}
+canvas.card{width:100%;max-width:400px;height:auto;border-radius:20px;display:block;margin:0 auto;box-shadow:var(--shadow);transition:transform .3s}
+/* simulador */
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.sim .col{padding:22px;border-radius:22px;border:1px solid var(--line);background:var(--surf)}
+.sim .clock{font:700 34px "JetBrains Mono",monospace}
+.sim ul{list-style:none;padding:0;margin:12px 0 0}
+.sim li{padding:7px 0;border-bottom:1px solid var(--line);transition:color .3s,opacity .3s}
+.sim li.cut{text-decoration:line-through;opacity:.45}
+.sim li.ok{color:var(--ok);font-weight:700}
+/* ofertas */
+.offers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;perspective:900px}
+.offer{position:relative;padding:24px;border-radius:24px;background:linear-gradient(180deg,var(--surf),var(--bg2));border:1.5px solid var(--line);transform-style:preserve-3d;transition:transform .15s ease,border-color .3s;display:flex;flex-direction:column}
+.offer.best{border-color:var(--pri)}
+.offer .tag{position:absolute;top:-12px;left:22px;font:800 11px "JetBrains Mono",monospace;letter-spacing:.1em;background:var(--pri);color:var(--priTx);padding:5px 10px;border-radius:999px}
+.offer .em{font-size:34px}
+.offer .price{font:800 34px Unbounded,sans-serif;margin:8px 0 0}
+.offer .app{font-size:13.5px;color:var(--tx2)}
+.offer{text-align:left}.offer ul{padding-left:18px;margin:12px 0 18px;font-size:14.5px;flex:1}
+.toggle{display:inline-flex;background:var(--surf);border:1px solid var(--line);border-radius:999px;padding:4px;margin:6px 0 26px}
+.toggle button{font:700 15px Manrope,sans-serif;border:0;background:transparent;color:var(--tx2);border-radius:999px;padding:10px 18px;cursor:pointer;min-height:44px}
+.toggle button.cur{background:var(--pri);color:var(--priTx)}
+/* checkout */
+#comprar .panel{max-width:620px;margin:0 auto}
+.steps{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 18px}
+.steps li{flex:1;height:6px;border-radius:999px;background:var(--surf2)}
+.steps li.on{background:var(--pri)}
+.prod{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;background:var(--bg2);color:var(--tx);cursor:pointer;font:600 15px Manrope,sans-serif;min-height:72px}
+.prod.cur{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 10%,var(--bg2))}
+.prod .em{font-size:28px;flex:none}
+.prod .tx{flex:1} .prod .tx b{display:block;font-size:16px}
+.prod .pr{text-align:right;flex:none} .prod .pr s{display:block;font-size:12.5px;color:var(--tx2);font-weight:500} .prod .pr b{font-size:18px;color:var(--pri)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{display:flex;flex-direction:column;align-items:center;gap:4px;border:1.5px solid var(--line);border-radius:18px;padding:16px 10px;background:var(--bg2);color:var(--tx);cursor:pointer;font:700 16px Manrope,sans-serif;min-height:96px}
+.choice .em{font-size:30px}
+.choice.cur{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 12%,var(--bg2))}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.err{color:var(--err);font-weight:700;font-size:14.5px;min-height:22px;margin-top:8px}
+.qrbox{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.qrbox svg{width:180px;height:180px;background:#fff;border-radius:14px;padding:10px;flex:none}
+.cc{font:600 12.5px "JetBrains Mono",monospace;word-break:break-all;background:var(--bg2);border:1px dashed var(--line);border-radius:12px;padding:10px;max-height:72px;overflow:hidden}
+.pulse{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.pulse i{width:10px;height:10px;border-radius:50%;background:var(--warn);animation:pl 1.2s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--warn) 60%,transparent)}100%{box-shadow:0 0 0 12px transparent}}
+.pixb{background:var(--pix);color:#022;box-shadow:none}
+.okt{color:var(--ok)}
+.emailbox{font:800 18px "JetBrains Mono",monospace;background:var(--bg2);border-radius:12px;padding:12px;text-align:center;word-break:break-all;margin:10px 0}
+/* como funciona */
+.how3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.how3 div{padding:22px;border-radius:22px;background:var(--surf);border:1px solid var(--line)}
+.how3 div::before{counter-increment:s;content:"0" counter(s);font:800 15px "JetBrains Mono",monospace;color:var(--pri)}
+/* faq */
+details{border-bottom:1px solid var(--line);padding:4px 0}
+summary{cursor:pointer;font-weight:800;font-size:17px;padding:14px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";color:var(--pri);font-size:22px;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--tx2);margin:0 0 14px}
+footer{border-top:1px solid var(--line);padding:40px 0 110px;font-size:14px;color:var(--tx2)}
+.ph{background:var(--warn);color:#000;padding:0 4px;border-radius:4px;font-weight:700}
+/* sobreposições */
+.ov{position:fixed;inset:0;z-index:80;background:rgba(2,10,12,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}
+.ov .panel{width:min(520px,100%);max-height:92vh;overflow:auto;position:relative}
+.x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surf2);color:var(--tx);font-size:18px;cursor:pointer}
+.box3d{font-size:84px;text-align:center;animation:bob 1.6s ease-in-out infinite;cursor:pointer}
+.box3d.open{animation:pop .6s forwards}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+@keyframes pop{40%{transform:scale(1.3) rotate(8deg)}100%{transform:scale(0);opacity:0}}
+#cookie{position:fixed;left:12px;right:12px;bottom:12px;z-index:70;max-width:640px;margin:0 auto;display:flex;gap:12px;align-items:center;background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow);font-size:13.5px}
+#cookie button{flex:none}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:90;width:100%;height:100%}
+.proto{font:700 12px "JetBrains Mono",monospace;background:color-mix(in srgb,var(--warn) 18%,transparent);border:1px dashed var(--warn);color:var(--tx);border-radius:10px;padding:8px 10px;margin:10px 0}
+/* bastidores */
+#bts .panel{width:min(760px,100%)}
+#bts table{width:100%;border-collapse:collapse;font-size:13.5px}
+#bts td,#bts th{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top}
+/* revelação */
+.rv{transition:opacity .7s ease,transform .7s ease}
+.rv.pre{opacity:0;transform:translateY(28px)}
+@media (max-width:860px){
+ .hero .wrap,.grid2{grid-template-columns:1fr}
+ .stage{height:330px;margin-top:10px}
+ .offers,.how3{grid-template-columns:1fr}
+ .build{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .build svg{display:none}
+ .piece{position:relative;width:auto;left:auto!important;top:auto!important;right:auto!important;bottom:auto!important}
+ .pass{position:relative;left:auto;top:auto;transform:none;width:auto;grid-column:1/-1;order:-1}
+ .sim{grid-template-columns:1fr}
+ section{padding:64px 0}
+}
+@media (max-width:480px){
+ header .wrap{gap:6px}.logo span{display:none}.hb{padding:8px 11px;font-size:13px}
+ .tile{width:92px;height:118px;font-size:44px}.tile.ph{font-size:50px}
+ .notif{max-width:205px;font-size:12px}
+ .prod{flex-wrap:wrap}.prod .pr{width:100%;display:flex;justify-content:flex-end;gap:10px;align-items:baseline}.prod .pr s{display:inline}
+ .qrbox svg{width:150px;height:150px}
+ .cta{font-size:17px;padding:16px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important}
+ #chaos{height:auto}#chaos .sticky{position:relative;height:90vh}
+ .rv.pre{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
-<main>
-<h1>🀄 Loja Mahjong Family</h1>
-<p class="sub">Pague com Pix · mais barato que dentro do app</p>
-<div class="proto">🧪 Protótipo: o pagamento é simulado. Nenhum valor é cobrado.</div>
+<div id="prog"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
 
-<div class="card hero" id="hero"></div>
+<header><div class="wrap">
+ <a class="logo" href="#topo" aria-label="Mahjong Family, início"><i aria-hidden="true">🀄</i><span>Mahjong Family</span></a>
+ <button class="hb" id="hPlans">Planos</button>
+ <button class="hb" id="hAcc">👤 Minha conta</button>
+ <button class="hb icon" id="hTheme" aria-label="Alternar tema claro e escuro">🌗</button>
+ <button class="hb icon" id="hBts" aria-label="Bastidores do protótipo" title="Bastidores (protótipo)">⚙️</button>
+</div></header>
 
-<ol class="steps" id="steps" aria-label="Etapas da compra">
- <li id="st1"><span>1</span>Para quem</li><li id="st2"><span>2</span>Produto</li><li id="st3"><span>3</span>Cartão</li><li id="st4"><span>4</span>Pix</li><li id="st5"><span>5</span>Pronto</li>
-</ol>
-
-<!-- passo 1 -->
-<section class="card" id="p1">
- <h2>1. Para quem é a compra?</h2>
- <div class="two">
-  <button class="choice" id="forMe"><span class="em" aria-hidden="true">🙋</span>Para mim</button>
-  <button class="choice" id="forGift"><span class="em" aria-hidden="true">🎁</span>De presente</button>
+<main id="topo">
+<!-- HERO -->
+<section class="hero">
+ <canvas id="spark" aria-hidden="true"></canvas>
+ <div class="wrap">
+  <div>
+   <div class="camp" id="camp"></div>
+   <div class="eye">Mahjong sem anúncios · pague com Pix</div>
+   <h1>O jogo que junta a família, <span class="gold">sem nenhum anúncio.</span></h1>
+   <p class="lead">As peças podem ganhar as fotos de quem você ama. Dê de presente em 1 minuto: você paga com Pix e manda um cartão pelo WhatsApp.</p>
+   <div class="btnrow" style="margin-top:22px">
+    <a class="cta mag" href="#cartao" id="ctaGift">🎁 Montar presente <span class="ar">→</span></a>
+    <a class="ghost" href="#planos" id="ctaMe">Comprar para mim</a>
+   </div>
+   <p class="note">Pagamento único, nada renova sozinho. 7 dias para desistir com devolução total.</p>
+   <div class="proto">🧪 Protótipo: o Pix é simulado e nenhum valor é cobrado.</div>
+  </div>
+  <div class="stage" aria-hidden="true">
+   <div class="tile" style="left:8%;top:12%;--r:-8deg">🐋<small>BAÍA</small></div>
+   <div class="tile ph" style="left:40%;top:2%;--r:6deg;--ph:linear-gradient(160deg,#ffd3a5,#e58a62);animation-delay:-2s">👵🏽<small>VÓ</small></div>
+   <div class="tile ph" style="left:58%;top:42%;--r:-4deg;--ph:linear-gradient(160deg,#a8e6cf,#3fa7a0);animation-delay:-4s">👧🏻<small>NETA</small></div>
+   <div class="tile" style="left:18%;top:52%;--r:9deg;animation-delay:-1s">🌸<small>FLOR</small></div>
+   <div class="notif" style="right:0;top:0;animation-delay:-3s"><span class="ic">✅</span><span><b>Pix aprovado</b>Passe da Baía ativo no jogo</span></div>
+   <div class="notif" style="left:0;bottom:2%;animation-delay:-5s"><span class="ic">📷</span><span><b>Foto nova virou peça</b>24 fotos da família no tabuleiro</span></div>
+  </div>
  </div>
- <p class="hint">De presente: a pessoa recebe um cartão com um código pelo WhatsApp e ativa no jogo dela. Não precisa ter cadastro.</p>
 </section>
 
-<!-- passo 2 -->
-<section class="card" id="p2" hidden>
- <h2>2. Escolha o produto</h2>
- <div id="prods"></div>
- <p class="hint">Pagamento único. Nada renova sozinho. O código vale uma vez.</p>
- <button class="big" id="go2">Continuar</button><button class="sec" id="back2">← Voltar</button>
- <div class="err" id="err2" role="alert"></div>
+<!-- MÓDULO 1: caos → ordem -->
+<section id="chaos" aria-label="Do anúncio ao jogo limpo">
+ <div class="sticky">
+  <canvas id="cv1" aria-hidden="true"></canvas>
+  <div class="txt">
+   <div class="eye">Role a página</div>
+   <h2>Anúncio a cada fase? <span class="gold">Aqui, nenhum.</span></h2>
+   <p class="muted">Muitos jogos de mahjong param a partida para mostrar propaganda. O Mahjong Family não tem anúncio, nem na versão grátis.</p>
+  </div>
+  <div id="ads"></div>
+  <div class="meter"><span class="muted">Anúncios na tela</span> <b id="mtr">100%</b><div class="bar"><i id="mbar"></i></div></div>
+ </div>
 </section>
 
-<!-- passo 3 (presente) -->
-<section class="card" id="p3" hidden>
- <h2>3. Monte o cartão de presente</h2>
- <label for="toName">Para quem? (nome)</label><input id="toName" maxlength="24" autocomplete="off" placeholder="Ex.: Vó Cida">
- <label for="fromName">De quem? (seu nome)</label><input id="fromName" maxlength="24" autocomplete="off" placeholder="Ex.: Ana">
- <label for="msg">Mensagem (opcional)</label><textarea id="msg" maxlength="140" placeholder="Ex.: Para você jogar com as fotos da família. Te amo!"></textarea>
- <p class="hint"><span id="msgN">0</span>/140</p>
- <label>Tema do cartão</label><div class="themes" id="themes"></div>
- <canvas id="cv" width="1080" height="1350" aria-label="Prévia do cartão de presente"></canvas>
- <button class="big" id="go3">Continuar</button><button class="sec" id="back3">← Voltar</button>
- <div class="err" id="err3" role="alert"></div>
+<!-- MÓDULO 4: mini-jogo -->
+<section id="jogar">
+ <div class="wrap grid2">
+  <div class="rv">
+   <div class="eye">Experimente agora</div>
+   <h2>Ache os pares. <span class="gold">É assim que se joga.</span></h2>
+   <p class="muted">Toque em duas peças iguais para tirá-las da mesa. No jogo são milhares de fases, com dicas, desfazer e embaralhar de graça.</p>
+   <p class="hint">Fontes grandes, peças grandes e ritmo calmo: feito para jogar sem pressa.</p>
+  </div>
+  <div class="panel rv">
+   <div class="gstat"><span id="gTime">⏱ 0,0 s</span><span id="gLeft">6 pares</span></div>
+   <div class="board" id="board" aria-label="Mini jogo de pares"></div>
+   <div class="win" id="gWin" hidden></div>
+  </div>
+ </div>
 </section>
 
-<!-- passo 4 -->
-<section class="card" id="p4" hidden>
- <h2>4. Pague com Pix</h2>
- <div id="sum"></div>
- <div class="qr" role="img" aria-label="Espaço do QR Code Pix, simulação">QR Code Pix<br>(simulação no protótipo)</div>
- <ol class="how"><li>Abra o app do seu banco e escolha <b>Pix › Ler QR Code</b>.</li><li>Confira o valor e confirme.</li><li>O código aparece aqui na hora.</li></ol>
- <button class="pix" id="pay">✓ Simular pagamento aprovado</button><button class="sec" id="back4">← Voltar</button>
+<!-- MÓDULO 3: antes e depois -->
+<section id="fotos">
+ <div class="wrap grid2">
+  <div class="ba rv" id="ba">
+   <div class="layer before" id="baB"></div>
+   <div class="layer after" id="baA"></div>
+   <span class="balbl" style="left:12px">PEÇAS DO JOGO</span><span class="balbl" style="right:12px">COM FOTOS DA FAMÍLIA</span>
+   <div class="handle" id="baH" role="slider" tabindex="0" aria-label="Arraste para comparar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span>🖌️</span></div>
+  </div>
+  <div class="rv">
+   <div class="eye">Arraste o pincel</div>
+   <h2>As peças viram <span class="gold">quem você ama.</span></h2>
+   <p class="muted">Escolha de 12 a 32 fotos do celular (de 24 a 32 fica melhor) e cada peça do tabuleiro ganha um rosto da família. Filhos e netos também podem mandar as fotos pelo WhatsApp.</p>
+   <span class="seal">Ilustração. No jogo, as peças usam as suas fotos.</span>
+  </div>
+ </div>
 </section>
 
-<!-- passo 5 -->
-<section class="card" id="p5" hidden>
- <h2 class="ok">✅ Pagamento aprovado!</h2>
- <div id="done"></div>
+<!-- MÓDULO 2: peças que montam o Passe -->
+<section id="passe">
+ <div class="wrap">
+  <div class="center rv"><div class="eye">Toque nas peças</div><h2>O que vem no <span class="gold">Passe da Baía</span></h2><p class="muted">Cada peça liga uma parte do Passe.</p></div>
+  <div class="build rv" id="build">
+   <svg id="bsvg" aria-hidden="true"></svg>
+   <div class="pass" id="passCard"><div class="eye">Passe da Baía</div><h3 style="margin:6px 0 0">1 ano</h3><div class="pct" id="passPct">0 de 4</div>
+    <ul><li data-i="0">Coleção nova todo mês</li><li data-i="1">Peças com fotos da família</li><li data-i="2">Ajuda automática ilimitada</li><li data-i="3">Ligas da família</li></ul></div>
+   <button class="piece" data-i="0" style="left:0;top:0"><span class="em">🗂️</span><b>Coleções</b>Todas as já lançadas e uma nova por mês</button>
+   <button class="piece" data-i="1" style="right:0;top:0"><span class="em">📷</span><b>Fotos</b>De 12 a 32 fotos viram peças</button>
+   <button class="piece" data-i="2" style="left:0;bottom:0"><span class="em">🤝</span><b>Ajuda</b>Se você parar, o jogo mostra um par</button>
+   <button class="piece" data-i="3" style="right:0;bottom:0"><span class="em">🏅</span><b>Ligas</b>Desafio do dia com quem você ama</button>
+  </div>
+ </div>
 </section>
 
-<section class="card">
- <h2>Como funciona</h2>
- <ol class="how">
-  <li>Você escolhe <b>para você</b> ou <b>de presente</b> e o produto.</li>
-  <li>Paga com <b>Pix</b>, sem cadastro.</li>
-  <li>Recebe um <b>código</b> (ex.: MF-P7K2-9QXA).</li>
-  <li>No jogo, o código é ativado com um toque pelo link, ou em <b>Família › Resgatar presente</b>.</li>
- </ol>
- <p class="hint">O Passe de 1 ano comprado aqui começa a contar na ativação e <b>não renova sozinho</b>. Dúvidas: no jogo, em Ajustes › Suporte.</p>
+<!-- MÓDULO 5: gerador do cartão -->
+<section id="cartao">
+ <div class="wrap grid2">
+  <div class="rv">
+   <div class="eye">Seu cartão, agora</div>
+   <h2>Monte o presente <span class="gold">e veja na hora.</span></h2>
+   <label>Ocasião</label><div class="chips" id="themes"></div>
+   <label for="toName">Para quem?</label><input id="toName" maxlength="24" autocomplete="off" placeholder="Ex.: Vó Cida">
+   <label for="fromName">De quem?</label><input id="fromName" maxlength="24" autocomplete="off" placeholder="Ex.: Ana e os netos">
+   <label for="msg">Mensagem (opcional)</label><textarea id="msg" maxlength="140" placeholder="Ex.: Agora as peças têm a nossa cara. Te amo!"></textarea>
+   <p class="hint"><span id="msgN">0</span>/140</p>
+   <button class="cta full mag" id="cardGo" style="margin-top:12px">Quero dar este presente <span class="ar">→</span></button>
+  </div>
+  <div class="rv"><canvas class="card" id="cv" width="1080" height="1350" aria-label="Prévia do cartão de presente"></canvas></div>
+ </div>
+</section>
+
+<!-- MÓDULO 6: simulador -->
+<section id="sim">
+ <div class="wrap">
+  <div class="center rv"><div class="eye" id="simEye">Presente de última hora</div><h2>Presente em loja <span class="gold">ou presente no Pix?</span></h2><p class="muted">Veja o relógio correndo.</p></div>
+  <div class="sim rv" id="simBox">
+   <div class="col"><div class="muted">Presente em loja</div><div class="clock" id="clkA">0h00</div><ul id="simA"><li>Sair de casa e pegar trânsito</li><li>Procurar o presente certo</li><li>Fila do caixa</li><li>Embrulhar</li><li>Entregar ou esperar o frete</li></ul></div>
+   <div class="col"><div class="muted">Presente pelo Pix</div><div class="clock" id="clkB">0h00</div><ul id="simB"><li>Montar o cartão</li><li>Pagar com Pix</li><li>Mandar pelo WhatsApp</li></ul></div>
+  </div>
+  <div class="center" style="margin-top:20px"><button class="ghost" id="simAgain">↻ Ver de novo</button></div>
+ </div>
+</section>
+
+<!-- PLANOS -->
+<section id="planos">
+ <div class="wrap center">
+  <div class="rv"><div class="eye">Preço do site</div><h2>Mais barato que <span class="gold">dentro do app.</span></h2>
+  <p class="muted">Os mesmos produtos do app, 10% mais baratos com Pix. Pagamento único.</p>
+  <div class="toggle" role="tablist"><button id="tMe" class="cur" role="tab">Para mim</button><button id="tGift" role="tab">De presente</button></div></div>
+  <div class="offers" id="offers"></div>
+  <p class="hint" style="margin-top:18px">Preço no app conforme a loja do jogo em 16/11/2026. O Passe comprado aqui vale 1 ano a partir da ativação e não renova sozinho.</p>
+ </div>
+</section>
+
+<!-- CHECKOUT -->
+<section id="comprar">
+ <div class="wrap">
+  <div class="panel">
+   <ol class="steps" id="steps"><li></li><li></li><li></li><li></li></ol>
+   <!-- passo 1 -->
+   <div id="p1">
+    <h3>1. Para quem é?</h3>
+    <div class="two"><button class="choice" id="forMe"><span class="em">🙋</span>Para mim</button><button class="choice" id="forGift"><span class="em">🎁</span>De presente</button></div>
+    <h3 style="margin-top:20px">Produto</h3>
+    <div id="prods"></div>
+    <button class="cta full" id="go1" style="margin-top:12px">Continuar <span class="ar">→</span></button>
+    <div class="err" id="err1" role="alert"></div>
+   </div>
+   <!-- passo 2 -->
+   <div id="p2" hidden>
+    <h3>2. Seu e-mail</h3>
+    <p class="muted" id="p2txt"></p>
+    <label for="email">E-mail</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="seuemail@exemplo.com">
+    <label for="cpf">CPF (pedido pelo Pix)</label><input id="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00">
+    <div id="giftSum"></div>
+    <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none;margin-top:2px"> <span>Li e aceito os <a href="#termos" class="tlink">Termos de uso</a> e a <a href="#privacidade" class="tlink">Política de privacidade</a>.</span></label>
+    <button class="cta full" id="go2" style="margin-top:12px">Gerar Pix <span class="ar">→</span></button>
+    <button class="ghost full" id="back2" style="margin-top:8px">← Voltar</button>
+    <div class="err" id="err2" role="alert"></div>
+   </div>
+   <!-- passo 3 -->
+   <div id="p3" hidden>
+    <h3>3. Pague com Pix</h3>
+    <div id="sum"></div>
+    <div class="qrbox"><svg id="qr" viewBox="0 0 29 29" role="img" aria-label="QR Code Pix ilustrativo"></svg>
+     <div style="flex:1;min-width:200px"><div class="pulse"><i></i><span id="pst">Aguardando pagamento</span></div><p class="hint">O código vale por <b id="pcd">30:00</b>. Abra o app do banco › Pix › Ler QR Code, ou copie o código abaixo.</p></div></div>
+    <div class="cc" id="cc"></div>
+    <button class="ghost full" id="copy" style="margin-top:8px">📋 Copiar código Pix</button>
+    <button class="cta full pixb" id="pay" style="margin-top:10px">✓ Simular pagamento aprovado</button>
+    <button class="ghost full" id="back3" style="margin-top:8px">← Voltar</button>
+    <p class="hint">Pagamento processado pelo Asaas (na versão final). A confirmação chega na hora e o produto entra na sua conta.</p>
+   </div>
+   <!-- passo 4 -->
+   <div id="p4" hidden><h3 class="okt">✅ Pagamento aprovado!</h3><div id="done"></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como">
+ <div class="wrap">
+  <div class="center rv"><div class="eye">Sem senha, sem código para digitar</div><h2>Como funciona</h2></div>
+  <div class="how3">
+   <div class="rv"><h3>Pague com Pix</h3><p class="muted">Escolha o produto e pague pelo app do seu banco. Leva menos de 1 minuto.</p></div>
+   <div class="rv"><h3>Guarde o e-mail</h3><p class="muted">A compra fica ligada ao e-mail que você informou. De presente, quem recebe escolhe o e-mail dela.</p></div>
+   <div class="rv"><h3>Entre no jogo</h3><p class="muted">No jogo, toque em Ajustes › Conta e entre com o mesmo e-mail. Pronto, está liberado.</p></div>
+  </div>
+ </div>
+</section>
+
+<!-- GARANTIA -->
+<section id="garantia">
+ <div class="wrap"><div class="panel rv center" style="max-width:760px;margin:0 auto">
+  <div style="font-size:46px">🛡️</div><h2>7 dias para desistir</h2>
+  <p class="muted">Pelo Código de Defesa do Consumidor (art. 49), você pode desistir em até 7 dias da compra e recebe todo o valor de volta no mesmo Pix. Peça em Minha conta › Pedir devolução ou pelo e-mail <span class="ph">[e-mail de suporte]</span>.</p>
+ </div></div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+ <div class="wrap" style="max-width:820px">
+  <div class="center rv"><div class="eye">Dúvidas</div><h2>Perguntas frequentes</h2></div>
+  <details class="rv"><summary>Preciso criar senha?</summary><p>Não. Você usa só o e-mail. Para entrar no jogo, mandamos um código de 6 números para esse e-mail.</p></details>
+  <details class="rv"><summary>Comprei de presente. Como a pessoa recebe?</summary><p>Você manda o cartão e o link pelo WhatsApp. A pessoa toca no link, escolhe o e-mail dela e depois entra no jogo com esse e-mail.</p></details>
+  <details class="rv"><summary>O Passe renova sozinho?</summary><p>No site, não. O Passe de 1 ano comprado aqui é pagamento único e acaba depois de 12 meses. Avisamos antes de acabar.</p></details>
+  <details class="rv"><summary>Funciona no iPhone e no Android?</summary><p>Sim. A compra fica na sua conta e vale nos dois.</p></details>
+  <details class="rv"><summary>Por que é mais barato que no app?</summary><p>No Pix pagamos menos taxas e repassamos parte da diferença. Dentro do app você também pode comprar pela loja do celular.</p></details>
+  <details class="rv"><summary>Tem anúncio?</summary><p>Não. Nem na versão grátis.</p></details>
+ </div>
+</section>
+
+<!-- CTA FINAL -->
+<section>
+ <div class="wrap center rv">
+  <h2>Um presente que a família <span class="gold">joga junta.</span></h2>
+  <div class="btnrow" style="justify-content:center;margin-top:18px"><a class="cta mag" href="#cartao">🎁 Montar presente <span class="ar">→</span></a><a class="ghost" href="#planos">Ver preços</a></div>
+ </div>
 </section>
 </main>
+
+<footer><div class="wrap">
+ <p><b>Thatai Brasil LTDA</b> · CNPJ 41.888.161/0001-40 · <span class="ph">[endereço]</span> · <span class="ph">[e-mail de suporte]</span></p>
+ <p id="termos"><b>Termos de uso:</b> <span class="ph">[link dos termos]</span> · <span id="privacidade"><b>Privacidade:</b> <span class="ph">[link da política]</span></span></p>
+ <p>Pagamentos por Pix processados pelo Asaas. A compra no site é feita com a Thatai Brasil, e não com a Apple ou o Google.</p>
+ <p class="hint">Imagens e peças com rostos são ilustrativas.</p>
+</div></footer>
+
+<div id="cookie"><span>Usamos só o armazenamento necessário para a loja funcionar (sua conta e sua compra). Sem rastreamento de anúncios.</span><button class="hb" id="ckOk">Entendi</button></div>
+
+<!-- sobreposição: resgatar presente -->
+<div class="ov" id="ovClaim" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="clT">
+ <button class="x" data-close aria-label="Fechar">✕</button>
+ <div id="clBody"></div>
+</div></div>
+<!-- sobreposição: conta -->
+<div class="ov" id="ovAcc" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="acT">
+ <button class="x" data-close aria-label="Fechar">✕</button>
+ <div id="acBody"></div>
+</div></div>
+<!-- sobreposição: bastidores -->
+<div class="ov" id="bts" hidden><div class="panel" role="dialog" aria-modal="true">
+ <button class="x" data-close aria-label="Fechar">✕</button>
+ <h3>⚙︎ Bastidores do protótipo</h3>
+ <p class="hint">Esta aba sai da versão publicada.</p>
+ <h4>Agentes</h4>
+ <table><tr><th>Papel</th><th>O que fez</th></tr>
+ <tr><td>Arquiteto de oferta</td><td>Mesmos produtos do app, 10% mais baratos no Pix; pagamento único; presente com cartão; garantia de 7 dias. Sem order bump nesta versão (decisão pendente).</td></tr>
+ <tr><td>Copywriter</td><td>Promessa sem garantia de resultado: "sem anúncio", "peças com as fotos da família". Sem depoimentos (aguardando depoimentos reais).</td></tr>
+ <tr><td>Conselho</td><td>Ver mudanças abaixo.</td></tr>
+ <tr><td>Construtor</td><td>Paleta da mesa de mahjong (jade escuro), marfim das peças e dourado do jogo.</td></tr></table>
+ <h4>Mudanças do Conselho</h4>
+ <ol style="font-size:13.5px">
+  <li>Sem código para digitar no app (Apple 3.1.1): a compra fica no e-mail e o app só lê a conta (3.1.3(b)); os mesmos itens também são vendidos por compra no app.</li>
+  <li>Resgate do presente acontece no site, não no app.</li>
+  <li>Nada de "de R$ X por R$ Y" inventado: o preço do app é o preço real da nossa loja.</li>
+  <li>Concorrentes não são citados na página (comparativa só aqui).</li>
+  <li>Aviso de que a compra é com a Thatai Brasil, e não com a Apple ou o Google.</li>
+  <li>CPF pedido só porque o Pix com cobrança exige; texto explica o uso.</li>
+  <li>Garantia com canal de pedido (Minha conta › Pedir devolução).</li>
+  <li>Ofertas sem caixa-surpresa ou prêmio aleatório (ECA Digital, Lei 15.211/2025).</li>
+  <li>Rodapé com razão social e CNPJ; endereço e e-mail em amarelo até você informar.</li>
+  <li>Imagens de rostos marcadas como ilustração.</li>
+ </ol>
+ <h4>Concorrentes (análise de 12/11/2026, no documento do projeto)</h4>
+ <table><tr><th>Jogo</th><th>Preço</th></tr><tr><td>Vita Mahjong (Brasil)</td><td>R$ 99,90/ano · R$ 29,90/mês</td></tr><tr><td>Microsoft Mahjong (EUA)</td><td>US$ 9,99/ano</td></tr><tr><td>Vita Mahjong (EUA)</td><td>US$ 19,99/ano</td></tr></table>
+ <h4>Decisões pendentes</h4>
+ <ol style="font-size:13.5px"><li>Paleta: jade e dourado (produto) ou vinho e dourado igual ao Clientaço.</li><li>Order bump "Peças com fotos" por R$ 9,90 no checkout do Passe?</li><li>Endereço e e-mail de suporte do rodapé.</li><li>Domínio do site (ex.: mahjongfamily.com.br).</li></ol>
+</div></div>
+
 <script>
+"use strict";
 const $=id=>document.getElementById(id);
-// mesma regra de código do jogo
+const q=new URLSearchParams(location.search);
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const MOB=matchMedia("(max-width:700px)").matches;
+const money=v=>"R$ "+v.toFixed(2).replace(".",",");
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clean=(v,n)=>String(v||"").replace(/[<>]/g,"").trim().slice(0,n);
+const emailOk=e=>/^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,}$/i.test(String(e||"").trim());
+// ---------- produtos (mesmos do app; preço do site 10% menor) ----------
+const PROD={P:{em:"⭐",name:"Passe da Baía · 1 ano",short:"Passe da Baía",desc:"Todas as coleções, uma nova por mês, peças com fotos, ajuda ilimitada e ligas. Não renova sozinho.",app:49.90,site:44.90,list:["Coleção nova todo mês","Todas as coleções já lançadas","Peças com fotos da família","Ajuda automática ilimitada","Ligas da família"]},
+ F:{em:"📷",name:"Peças com fotos da família",short:"Peças com fotos",desc:"De 12 a 32 fotos viram as peças do jogo. Para sempre.",app:19.90,site:17.90,list:["De 12 a 32 fotos","Família pode mandar fotos pelo WhatsApp","Volta às peças originais quando quiser","Seu para sempre"]},
+ C:{em:"🗂️",name:"Todas as coleções",short:"Coleções",desc:"As coleções de 30 fases já lançadas. Para sempre.",app:39.90,site:35.90,list:["Todas as coleções já lançadas","30 fases em cada","Seu para sempre"]}};
+// ---------- conta compartilhada com o jogo (protótipo: mesmo navegador; versão final: servidor) ----------
+const AKEY="mfAcc_v1";
+function accAll(){ try{ const d=JSON.parse(localStorage.getItem(AKEY)); if(d&&d.acc) return Object.assign({used:[]},d); }catch(e){} return {acc:{},used:[]}; }
+function accPut(d){ try{ localStorage.setItem(AKEY,JSON.stringify(d)); }catch(e){} }
+function accGet(email){ return accAll().acc[String(email).toLowerCase()]||null; }
+function accAdd(email,it){ const d=accAll(), k=String(email).trim().toLowerCase(); const a=d.acc[k]||(d.acc[k]={created:Date.now(),items:[]}); if(!a.items.some(x=>x.id===it.id)) a.items.push(Object.assign({at:Date.now()},it)); accPut(d); return a; }
+// ---------- códigos de presente (mesma regra do jogo) ----------
 const B32="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function codeSum(body){ let x=7; for(const c of body) x=(x*31+B32.indexOf(c)+1)%32; return B32[x]; }
 function makeCode(item){ let r=""; for(let i=0;i<6;i++) r+=B32[Math.floor(Math.random()*32)]; const body=item+r; const full=body+codeSum(body); return "MF-"+full.slice(0,4)+"-"+full.slice(4); }
-// preços: app x site (10% mais barato)
-const PROD={P:{em:"⭐",name:"Passe da Baía · 1 ano",desc:"Todas as coleções, peças com fotos, ajudas ilimitadas. Não renova sozinho.",app:49.90,site:44.90},
- F:{em:"📷",name:"Peças com fotos da família",desc:"De 12 a 32 fotos viram as peças do jogo. Para sempre.",app:19.90,site:17.90},
- C:{em:"🗂️",name:"Todas as coleções",desc:"As 10 coleções de 30 fases. Para sempre.",app:39.90,site:35.90}};
-const money=v=>"R$ "+v.toFixed(2).replace(".",",");
-// campanhas por data
+function parseCode(c){ c=String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,""); if(c.startsWith("MF")) c=c.slice(2); if(c.length!==8) return null; const body=c.slice(0,7), item=c[0]; if(!"PFC".includes(item)||[...c].some(ch=>!B32.includes(ch))||codeSum(body)!==c[7]) return null; return {item,norm:"MF-"+c.slice(0,4)+"-"+c.slice(4)}; }
+// ---------- campanhas ----------
 function nthSunday(y,m,n){ const d=new Date(y,m,1); const add=(7-d.getDay())%7; return new Date(y,m,1+add+7*(n-1)); }
-function campaign(now){ now=now||new Date(); const y=now.getFullYear(), day=864e5;
- const list=[["natal","🎄","Natal","Dê de presente o Passe para quem você ama neste Natal.",new Date(y,11,25),40],
-  ["avos","👵","Dia dos Avós (26/07)","Presenteie seus avós com o jogo das fotos da família.",new Date(y,6,26),21],
-  ["maes","🌷","Dia das Mães","Um presente que a mãe usa todo dia: o Passe e as fotos da família.",nthSunday(y,4,2),21],
-  ["pais","👔","Dia dos Pais","Presenteie o pai com o Passe da Baía.",nthSunday(y,7,2),21]];
- for(const [id,em,t,txt,d,win] of list){ const diff=Math.ceil((d-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/day); if(diff>=0&&diff<=win) return {id,em,t,txt,days:diff}; }
- return {id:"geral",em:"🎁",t:"Presente para quem você ama",txt:"Filhos e netos: deem o jogo com as fotos da família.",days:-1}; }
-const q=new URLSearchParams(location.search);
-const camp=campaign(q.get("now")?(()=>{const [y,m,d]=q.get("now").split("-").map(Number);return new Date(y,m-1,d);})():new Date());
-const TH={natal:{bg:"#b3261e",bg2:"#7d1a14",em:"🎄",title:"Feliz Natal!"},avos:{bg:"#0e7c86",bg2:"#0a5a61",em:"👵",title:"Feliz Dia dos Avós!"},maes:{bg:"#c2477a",bg2:"#8e2f57",em:"🌷",title:"Feliz Dia das Mães!"},pais:{bg:"#2f5d9c",bg2:"#1f3f6c",em:"👔",title:"Feliz Dia dos Pais!"},aniv:{bg:"#e0861a",bg2:"#a35f0f",em:"🎂",title:"Feliz aniversário!"},geral:{bg:"#0e7c86",bg2:"#0a5a61",em:"🎁",title:"Um presente para você!"}};
-let S={for:q.get("for")==="gift"?"gift":(q.get("for")==="me"?"me":""),item:("PFC".includes(q.get("item")||"x")?q.get("item"):""),theme:TH[camp.id]?camp.id:"geral",code:""};
-$("hero").innerHTML='<b>'+camp.em+' '+camp.t+(camp.days>1?' · faltam '+camp.days+' dias':camp.days===1?' · falta 1 dia':camp.days===0?' · é hoje!':'')+'</b><span>'+camp.txt+'</span>';
-function show(n){ for(let i=1;i<=5;i++){ $("p"+i).hidden=i!==n; const li=$("st"+i); li.className=i<n?"done":i===n?"on":""; } if(S.for==="me") $("st3").style.opacity=.35; else $("st3").style.opacity=1; window.scrollTo(0,0); window.__step=n; }
-function prods(){ $("prods").innerHTML=Object.entries(PROD).map(([k,p])=>'<button class="prod'+(S.item===k?' cur':'')+'" data-k="'+k+'"><span class="em" aria-hidden="true">'+p.em+'</span><span class="tx"><b>'+p.name+'</b><small>'+p.desc+'</small></span><span class="pr"><s>'+money(p.app)+' no app</s><b>'+money(p.site)+'</b></span></button>').join("");
- document.querySelectorAll(".prod").forEach(b=>b.onclick=()=>{ S.item=b.dataset.k; prods(); $("err2").textContent=""; }); }
-function pick(f){ S.for=f; $("forMe").classList.toggle("cur",f==="me"); $("forGift").classList.toggle("cur",f==="gift"); prods(); show(2); }
-$("forMe").onclick=()=>pick("me"); $("forGift").onclick=()=>pick("gift");
-$("back2").onclick=()=>show(1);
-$("go2").onclick=()=>{ if(!S.item){ $("err2").textContent="Escolha um produto."; return; } if(S.for==="gift"){ themes(); draw(); show(3); } else { summary(); show(4); } };
-function themes(){ const ids=[camp.id!=="geral"?camp.id:null,"aniv","geral"].filter((v,i,a)=>v&&a.indexOf(v)===i);
- $("themes").innerHTML=ids.map(id=>'<button data-t="'+id+'" class="'+(S.theme===id?'cur':'')+'">'+TH[id].em+' '+TH[id].title.replace("Feliz ","").replace("!","")+'</button>').join("");
+function campaign(now){ now=now||new Date(); const y=now.getFullYear(), day=864e5, t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ const list=[["natal","🎄","Natal",new Date(y,11,25),40],["avos","👵","Dia dos Avós",new Date(y,6,26),21],["maes","🌷","Dia das Mães",nthSunday(y,4,2),21],["pais","👔","Dia dos Pais",nthSunday(y,7,2),21]];
+ for(const [id,em,t,d,win] of list){ const diff=Math.round((d-t0)/day); if(diff>=0&&diff<=win) return {id,em,t,days:diff}; }
+ return {id:"geral",em:"🎁",t:"Presente para quem você ama",days:-1}; }
+const NOW=q.get("now")?(()=>{const [y,m,d]=q.get("now").split("-").map(Number);return new Date(y,m-1,d);})():new Date();
+const camp=campaign(NOW);
+const dleft=d=>d>1?"faltam "+d+" dias":d===1?"falta 1 dia":"é hoje";
+$("camp").innerHTML=camp.em+" "+(camp.days>=0?"<b>"+esc(camp.t)+"</b> · "+dleft(camp.days):"<b>Presente</b> pago com Pix, entregue pelo WhatsApp");
+$("simEye").textContent=camp.days>=0?camp.em+" "+camp.t+": "+dleft(camp.days):"Presente de última hora";
+// ---------- estado ----------
+const TH={natal:{bg:"#9e1f1a",bg2:"#5e110e",em:"🎄",title:"Feliz Natal!",chip:"Natal"},avos:{bg:"#0e7c86",bg2:"#073f44",em:"👵",title:"Feliz Dia dos Avós!",chip:"Dia dos Avós"},maes:{bg:"#b8406f",bg2:"#6d2241",em:"🌷",title:"Feliz Dia das Mães!",chip:"Dia das Mães"},pais:{bg:"#2f5d9c",bg2:"#16304f",em:"👔",title:"Feliz Dia dos Pais!",chip:"Dia dos Pais"},aniv:{bg:"#d07a12",bg2:"#7a4507",em:"🎂",title:"Feliz aniversário!",chip:"Aniversário"},geral:{bg:"#0e7c86",bg2:"#06373c",em:"🎁",title:"Um presente para você!",chip:"Sem data"}};
+const S={for:q.get("for")==="gift"?"gift":"me",item:("PFC".includes(q.get("item")||"x")&&q.get("item"))?q.get("item"):"P",theme:TH[camp.id]?camp.id:"geral",code:"",email:"",payId:""};
+window.__loja={S,PROD,campaign,makeCode,parseCode,accAll,accGet};
+// ---------- tema ----------
+function setTheme(t){ document.documentElement.dataset.theme=t; try{ localStorage.setItem("mfSiteTheme",t); }catch(e){} }
+try{ const t=localStorage.getItem("mfSiteTheme"); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+$("hTheme").onclick=()=>setTheme(document.documentElement.dataset.theme==="light"?"dark":"light");
+// ---------- cookies ----------
+try{ if(localStorage.getItem("mfCk")) $("cookie").hidden=true; }catch(e){}
+$("ckOk").onclick=()=>{ $("cookie").hidden=true; try{ localStorage.setItem("mfCk","1"); }catch(e){} };
+// ---------- progresso, revelação ----------
+function onScroll(){ const h=document.documentElement; const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1); $("prog").style.transform="scaleX("+p+")"; chaosStep(); }
+addEventListener("scroll",onScroll,{passive:true});
+const rvIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.remove("pre"); rvIO.unobserve(e.target); } }),{threshold:.12});
+if(!RM) document.querySelectorAll(".rv").forEach(el=>{ if(el.getBoundingClientRect().top>innerHeight){ el.classList.add("pre"); rvIO.observe(el); } });
+// ---------- efeito de clique (faíscas em dourado e turquesa) ----------
+const fx=$("fx"), fg=fx.getContext("2d"); let fxP=[], fxOn=false;
+function fxSize(){ fx.width=innerWidth*devicePixelRatio; fx.height=innerHeight*devicePixelRatio; fg.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); } fxSize(); addEventListener("resize",fxSize);
+function burst(x,y,n){ if(RM) return; const cs=getComputedStyle(document.documentElement); const c1=cs.getPropertyValue("--acc").trim(), c2=cs.getPropertyValue("--pri").trim();
+ for(let i=0;i<(n||14);i++){ const a=Math.random()*Math.PI*2, v=2+Math.random()*4; fxP.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,l:1,c:i%2?c1:c2,s:3+Math.random()*4,r:Math.random()*6}); }
+ if(!fxOn){ fxOn=true; requestAnimationFrame(fxLoop); } }
+function fxLoop(){ fg.clearRect(0,0,innerWidth,innerHeight); fxP=fxP.filter(p=>p.l>0); for(const p of fxP){ p.x+=p.vx; p.y+=p.vy; p.vy+=.18; p.l-=.025; p.r+=.1; fg.globalAlpha=Math.max(p.l,0); fg.fillStyle=p.c; fg.save(); fg.translate(p.x,p.y); fg.rotate(p.r); fg.fillRect(-p.s/2,-p.s*0.65,p.s,p.s*1.3); fg.restore(); }
+ fg.globalAlpha=1; if(fxP.length) requestAnimationFrame(fxLoop); else fxOn=false; }
+document.addEventListener("click",e=>{ const b=e.target.closest(".cta,.mt,.piece,.chip,.choice,.prod"); if(b) burst(e.clientX,e.clientY); });
+// CTA magnético
+if(!RM&&matchMedia("(hover:hover)").matches) document.querySelectorAll(".mag").forEach(b=>{ b.addEventListener("pointermove",e=>{ const r=b.getBoundingClientRect(); b.style.transform="translate("+((e.clientX-r.left-r.width/2)*.12)+"px,"+((e.clientY-r.top-r.height/2)*.22)+"px)"; }); b.addEventListener("pointerleave",()=>b.style.transform=""); });
+// ---------- faíscas do hero ----------
+(function(){ const c=$("spark"), g=c.getContext("2d"); let W,H,pts=[]; function sz(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; pts=Array.from({length:MOB?28:60},()=>({x:Math.random()*W,y:Math.random()*H,v:.2+Math.random()*.5,s:Math.random()*2+.5,p:Math.random()*6})); } sz(); addEventListener("resize",sz);
+ function lp(t){ g.clearRect(0,0,W,H); for(const p of pts){ p.y-=p.v; if(p.y<-5){ p.y=H+5; p.x=Math.random()*W; } g.globalAlpha=.35+.35*Math.sin(t/600+p.p); g.fillStyle="#ffd98a"; g.beginPath(); g.arc(p.x,p.y,p.s,0,7); g.fill(); } if(!RM) requestAnimationFrame(lp); } requestAnimationFrame(lp); })();
+// ---------- MÓDULO 1: caos → ordem ----------
+const c1=$("cv1"), g1=c1.getContext("2d"); let P1=[], W1=0, H1=0, ptr={x:-999,y:-999}, chaosP=0;
+function heartPts(n){ const o=document.createElement("canvas"), S2=200; o.width=o.height=S2; const g=o.getContext("2d"); g.fillStyle="#000";
+ // peça de mahjong (contorno) com coração dentro
+ g.lineWidth=12; g.strokeStyle="#000"; g.beginPath(); g.roundRect?g.roundRect(30,10,140,180,22):g.rect(30,10,140,180); g.stroke();
+ g.beginPath(); const cx=100, cy=104; for(let t=0;t<=Math.PI*2;t+=.02){ const x=16*Math.pow(Math.sin(t),3), y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)); g.lineTo(cx+x*3.1,cy+y*3.1); } g.fill();
+ const d=g.getImageData(0,0,S2,S2).data, cand=[]; for(let y=0;y<S2;y+=2) for(let x=0;x<S2;x+=2) if(d[(y*S2+x)*4+3]>128) cand.push([x/S2,y/S2]);
+ const out=[]; for(let i=0;i<n;i++) out.push(cand[Math.floor(Math.random()*cand.length)]); return out; }
+function chaosInit(){ W1=c1.width=c1.offsetWidth*devicePixelRatio; H1=c1.height=c1.offsetHeight*devicePixelRatio; const n=MOB?900:1600, T=heartPts(n), side=Math.min(W1*.82,H1*.5), ox=(W1-side)/2, oy=H1*.37;
+ P1=T.map((t,i)=>({cx:Math.random()*W1,cy:Math.random()*H1,tx:ox+t[0]*side,ty:oy+t[1]*side,s:(Math.random()*1.6+1)*devicePixelRatio,h:Math.random()})); drawChaos(); }
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function drawChaos(){ if(!W1) return; g1.clearRect(0,0,W1,H1); const e=ease(Math.min(1,Math.max(0,chaosP))); const cs=getComputedStyle(document.documentElement), pri=cs.getPropertyValue("--pri").trim(), err=cs.getPropertyValue("--err").trim();
+ const px=ptr.x*devicePixelRatio, py=ptr.y*devicePixelRatio;
+ for(const p of P1){ let x=p.cx+(p.tx-p.cx)*e, y=p.cy+(p.ty-p.cy)*e; const dx=x-px, dy=y-py, dd=dx*dx+dy*dy, R=90*devicePixelRatio; if(dd<R*R){ const f=(1-Math.sqrt(dd)/R)*26*devicePixelRatio; const m=Math.sqrt(dd)||1; x+=dx/m*f; y+=dy/m*f; }
+  g1.fillStyle=e>.6?pri:(p.h<e*1.4?pri:err); g1.globalAlpha=.55+.45*e; g1.fillRect(x,y,p.s,p.s); }
+ g1.globalAlpha=1; }
+const ADS=["ANÚNCIO 0:30","PULAR EM 5","VEJA O VÍDEO","ANÚNCIO","OFERTA!","ASSISTA PARA CONTINUAR"];
+function adsInit(){ const box=$("ads"); box.innerHTML=ADS.map((t,i)=>'<div class="adbox" style="left:'+(8+((i*37)%78))+'%;top:'+(34+((i*29)%46))+'%;transform:rotate('+((i%2?1:-1)*(4+i*2))+'deg)">'+t+'</div>').join(""); }
+function chaosStep(){ const sec=$("chaos"); const r=sec.getBoundingClientRect(); const total=sec.offsetHeight-innerHeight; chaosP=RM?1:Math.min(1,Math.max(0,-r.top/(total*.8||1)));
+ const pct=Math.round((1-chaosP)*100); $("mtr").textContent=pct+"%"; $("mbar").style.transform="scaleX("+(1-chaosP)+")";
+ document.querySelectorAll(".adbox").forEach((a,i)=>{ const o=Math.max(0,1-chaosP*1.8+i*.05); a.style.opacity=o; a.style.display=o<=0.01?"none":""; });
+ if(r.bottom>0&&r.top<innerHeight) drawChaos(); }
+c1.addEventListener("pointermove",e=>{ const r=c1.getBoundingClientRect(); ptr={x:e.clientX-r.left,y:e.clientY-r.top}; drawChaos(); });
+c1.addEventListener("pointerleave",()=>{ ptr={x:-999,y:-999}; drawChaos(); });
+adsInit(); chaosInit(); addEventListener("resize",()=>{ chaosInit(); chaosStep(); }); chaosStep();
+// ---------- MÓDULO 4: mini-jogo ----------
+const GEM=["🌸","🐋","🍊","⭐","🎈","🍀"]; let gSel=null, gLeft=6, gT0=0, gTimer=0;
+function gameNew(){ const arr=[...GEM,...GEM].sort(()=>Math.random()-.5); $("board").innerHTML=arr.map((e,i)=>'<button class="mt" data-e="'+e+'" aria-label="Peça '+e+'">'+e+'</button>').join(""); gSel=null; gLeft=6; gT0=0; clearInterval(gTimer); $("gTime").textContent="⏱ 0,0 s"; $("gLeft").textContent="6 pares"; $("gWin").hidden=true;
+ document.querySelectorAll(".mt").forEach(b=>b.onclick=()=>gTap(b)); }
+function gTap(b){ if(!gT0){ gT0=Date.now(); gTimer=setInterval(()=>{ $("gTime").textContent="⏱ "+((Date.now()-gT0)/1000).toFixed(1).replace(".",",")+" s"; },100); }
+ if(gSel===b){ b.classList.remove("sel"); gSel=null; return; }
+ if(!gSel){ gSel=b; b.classList.add("sel"); return; }
+ if(gSel.dataset.e===b.dataset.e){ const a=gSel; a.classList.remove("sel"); a.classList.add("gone"); b.classList.add("gone"); gSel=null; gLeft--; $("gLeft").textContent=gLeft+(gLeft===1?" par":" pares");
+  if(!gLeft){ clearInterval(gTimer); const s=((Date.now()-gT0)/1000).toFixed(1).replace(".",","); $("gWin").innerHTML='<h3>🎉 Mesa limpa em '+s+' s!</h3><p class="muted">No jogo tem milhares de fases como esta, sem anúncio.</p><div class="btnrow" style="justify-content:center"><a class="cta" href="#cartao">🎁 Dar de presente <span class="ar">→</span></a><button class="ghost" id="gAgain">↻ Jogar de novo</button></div>'; $("gWin").hidden=false; $("gAgain").onclick=gameNew; window.__gameWon=true; } }
+ else { const a=gSel; a.classList.remove("sel"); [a,b].forEach(x=>{ x.classList.add("no"); setTimeout(()=>x.classList.remove("no"),320); }); gSel=null; } }
+gameNew();
+// ---------- MÓDULO 3: antes e depois ----------
+const CL=["竹","萬","東","南","西","北","中","發","●","梅","蘭","菊"], PH=[["👵🏽","#ffd3a5","#e58a62"],["👴🏾","#c6b5f2","#7a63c9"],["👧🏻","#a8e6cf","#3fa7a0"],["🧒🏽","#ffe08a","#e2a12b"],["👩🏻‍🦳","#f8b4c8","#c75a7f"],["🐶","#d9c3a5","#9a7650"],["👨🏽","#9fd3f5","#3b82c4"],["👶🏻","#ffd6e0","#e88aa6"],["👵🏻","#fcd5a6","#d9824a"],["🧔🏿","#b6e3b6","#4c9a5a"],["👩🏾","#f2c4f2","#a356a3"],["🐱","#ffe7b3","#d6a043"]];
+$("baB").innerHTML=CL.map(c=>'<div class="bt">'+c+'</div>').join("");
+$("baA").innerHTML=PH.map(p=>'<div class="bt p" style="background:linear-gradient(160deg,'+p[1]+','+p[2]+')">'+p[0]+'</div>').join("");
+const ba=$("ba"); let baDrag=false, baTouched=false;
+function baSet(pct){ pct=Math.max(0,Math.min(100,pct)); ba.style.setProperty("--cut",pct+"%"); $("baH").setAttribute("aria-valuenow",Math.round(100-pct)); }
+function baMove(x){ const r=ba.getBoundingClientRect(); baSet((x-r.left)/r.width*100); }
+ba.addEventListener("pointerdown",e=>{ baDrag=true; baTouched=true; ba.setPointerCapture(e.pointerId); baMove(e.clientX); });
+ba.addEventListener("pointermove",e=>{ if(baDrag) baMove(e.clientX); });
+ba.addEventListener("pointerup",()=>baDrag=false); ba.addEventListener("pointercancel",()=>baDrag=false);
+$("baH").addEventListener("keydown",e=>{ const cur=parseFloat(ba.style.getPropertyValue("--cut"))||50; if(e.key==="ArrowLeft"){ baSet(cur-5); e.preventDefault(); } if(e.key==="ArrowRight"){ baSet(cur+5); e.preventDefault(); } });
+baSet(50);
+new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting&&!baTouched&&!RM){ o.disconnect(); let t0=performance.now(); (function sw(t){ const k=(t-t0)/2200; if(baTouched||k>1){ if(!baTouched) baSet(35); return; } baSet(50+40*Math.sin(k*Math.PI*2)*(1-k)); requestAnimationFrame(sw); })(t0); } }),{threshold:.5}).observe(ba);
+// ---------- MÓDULO 2: peças montam o Passe ----------
+const lit=new Set();
+function buildPaths(){ const b=$("build"), sv=$("bsvg"); if(getComputedStyle(sv).display==="none") return; const br=b.getBoundingClientRect(), pc=$("passCard").getBoundingClientRect(); const cx=pc.left+pc.width/2-br.left, cy=pc.top+pc.height/2-br.top;
+ sv.setAttribute("viewBox","0 0 "+br.width+" "+br.height);
+ sv.innerHTML=[...document.querySelectorAll(".piece")].map(p=>{ const r=p.getBoundingClientRect(), x=r.left+r.width/2-br.left, y=r.top+r.height/2-br.top; const mx=(x+cx)/2, my=y; return '<path data-i="'+p.dataset.i+'" d="M'+x+' '+y+' Q'+mx+' '+my+' '+cx+' '+cy+'"/>'; }).join("");
+ sv.querySelectorAll("path").forEach(p=>{ const L=p.getTotalLength(); p.style.setProperty("--len",L); if(lit.has(p.dataset.i)) p.classList.add("on"); }); }
+function light(i){ i=String(i); lit.add(i); document.querySelectorAll('.piece[data-i="'+i+'"],.pass li[data-i="'+i+'"],#bsvg path[data-i="'+i+'"]').forEach(e=>e.classList.add("on")); $("passPct").textContent=lit.size+" de 4"+(lit.size===4?" · completo":""); }
+document.querySelectorAll(".piece").forEach(p=>p.onclick=()=>light(p.dataset.i));
+setTimeout(buildPaths,50); addEventListener("resize",buildPaths);
+if(RM) [0,1,2,3].forEach(i=>light(i));
+let bTouched=false; $("build").addEventListener("pointerdown",()=>bTouched=true);
+new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting){ o.disconnect(); buildPaths(); setTimeout(()=>{ if(bTouched) return; [0,1,2,3].forEach((i,k)=>setTimeout(()=>light(i),RM?0:k*450)); },RM?0:2500); } }),{threshold:.4}).observe($("build"));
+// ---------- MÓDULO 5: cartão ----------
+function themes(){ const ids=[camp.id!=="geral"?camp.id:null,"natal","avos","maes","pais","aniv","geral"].filter((v,i,a)=>v&&a.indexOf(v)===i);
+ $("themes").innerHTML=ids.map(id=>'<button class="chip'+(S.theme===id?' cur':'')+'" data-t="'+id+'">'+TH[id].em+' '+TH[id].chip+'</button>').join("");
  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{ S.theme=b.dataset.t; themes(); draw(); }); }
-function clean(v,n){ return String(v||"").replace(/[<>]/g,"").trim().slice(0,n); }
-function wrap(g,text,x,y,maxW,lh){ const words=text.split(/\s+/); let line="", lines=[]; for(const w of words){ const t=line?line+" "+w:w; if(g.measureText(t).width>maxW&&line){ lines.push(line); line=w; } else line=t; } if(line) lines.push(line); lines.slice(0,5).forEach((l,i)=>g.fillText(l,x,y+i*lh)); return lines.length; }
-function draw(){ const c=$("cv"), g=c.getContext("2d"), th=TH[S.theme], p=PROD[S.item]||PROD.P, to=clean($("toName").value,24)||"Você", fr=clean($("fromName").value,24)||"Alguém especial", msg=clean($("msg").value,140);
+function wrapT(g,text,x,y,maxW,lh,max){ const words=text.split(/\s+/); let line="", lines=[]; for(const w of words){ const t=line?line+" "+w:w; if(g.measureText(t).width>maxW&&line){ lines.push(line); line=w; } else line=t; } if(line) lines.push(line); lines.slice(0,max||4).forEach((l,i)=>g.fillText(l,x,y+i*lh)); return Math.min(lines.length,max||4); }
+function draw(cv,data){ cv=cv||$("cv"); data=data||{to:clean($("toName").value,24),fr:clean($("fromName").value,24),msg:clean($("msg").value,140),item:S.item,theme:S.theme};
+ const g=cv.getContext("2d"), th=TH[data.theme]||TH.geral, p=PROD[data.item]||PROD.P, to=data.to||"Você", fr=data.fr||"Alguém especial", msg=data.msg;
  const gr=g.createLinearGradient(0,0,0,1350); gr.addColorStop(0,th.bg); gr.addColorStop(1,th.bg2); g.fillStyle=gr; g.fillRect(0,0,1080,1350);
- g.fillStyle="rgba(255,255,255,.96)"; g.beginPath(); g.roundRect?g.roundRect(70,70,940,1210,48):g.rect(70,70,940,1210); g.fill();
- g.textAlign="center"; g.fillStyle=th.bg2; g.font="160px serif"; g.fillText(th.em,540,280);
- g.font="800 68px system-ui,sans-serif"; g.fillText(th.title,540,400);
- g.fillStyle="#123047"; g.font="700 54px system-ui,sans-serif"; g.fillText("Para "+to,540,500);
- g.font="italic 44px system-ui,sans-serif"; g.fillStyle="#3c5466"; const n=msg?wrap(g,"“"+msg+"”",540,590,800,58):0;
- const y0=600+Math.max(1,n)*58+20; g.fillStyle=th.bg; g.font="800 50px system-ui,sans-serif"; g.fillText(p.em+" "+p.name,540,y0+40);
- g.fillStyle="#123047"; g.font="600 40px system-ui,sans-serif"; g.fillText("no jogo Mahjong Family",540,y0+100);
- g.fillStyle="#f3f8fa"; g.fillRect(170,y0+150,740,120); g.fillStyle="#123047"; g.font="900 58px ui-monospace,Menlo,monospace"; g.fillText(S.code||"MF-XXXX-XXXX",540,y0+232);
- g.font="600 36px system-ui,sans-serif"; g.fillStyle="#4d6b80"; g.fillText("Com carinho, "+fr,540,1220); }
-["toName","fromName","msg"].forEach(id=>$(id).oninput=()=>{ $("msgN").textContent=$("msg").value.length; draw(); });
-$("back3").onclick=()=>show(2);
-$("go3").onclick=()=>{ if(!clean($("toName").value,24)){ $("err3").textContent="Escreva o nome de quem vai receber."; return; } if(!clean($("fromName").value,24)){ $("err3").textContent="Escreva o seu nome."; return; } $("err3").textContent=""; summary(); show(4); };
-function summary(){ const p=PROD[S.item]; $("sum").innerHTML='<div class="kv"><span>'+p.em+' '+p.name+'</span><b>'+money(p.site)+'</b></div>'+(S.for==="gift"?'<div class="kv"><span>Presente para</span><b>'+clean($("toName").value,24).replace(/&/g,"&amp;")+'</b></div>':'')+'<div class="kv"><span>Você economiza</span><b class="ok">'+money(p.app-p.site)+'</b></div><div class="kv"><span><b>Total no Pix</b></span><b>'+money(p.site)+'</b></div>'; }
-$("back4").onclick=()=>show(S.for==="gift"?3:2);
+ g.fillStyle="rgba(255,217,138,.22)"; for(let i=0;i<40;i++){ g.beginPath(); g.arc((i*137)%1080,(i*251)%1350,2+(i%4),0,7); g.fill(); }
+ g.fillStyle="#fbf6ea"; g.beginPath(); g.roundRect?g.roundRect(70,70,940,1210,48):g.rect(70,70,940,1210); g.fill();
+ g.strokeStyle="#f2b134"; g.lineWidth=6; g.beginPath(); g.roundRect?g.roundRect(96,96,888,1158,36):g.rect(96,96,888,1158); g.stroke();
+ g.textAlign="center"; g.font="150px serif"; g.fillText(th.em,540,270);
+ g.fillStyle=th.bg2; g.font="800 64px Unbounded,system-ui,sans-serif"; wrapT(g,th.title,540,390,820,74,2);
+ g.fillStyle="#0b2427"; g.font="800 56px Manrope,system-ui,sans-serif"; g.fillText("Para "+to,540,540);
+ g.font="italic 600 42px Manrope,system-ui,sans-serif"; g.fillStyle="#3c5466"; const n=msg?wrapT(g,"“"+msg+"”",540,630,820,56,4):0;
+ const y0=650+Math.max(1,n)*56+30;
+ // peça com o presente
+ g.fillStyle="#f7f1e3"; g.shadowColor="rgba(0,0,0,.25)"; g.shadowBlur=20; g.beginPath(); g.roundRect?g.roundRect(440,y0,200,250,26):g.rect(440,y0,200,250); g.fill(); g.shadowBlur=0;
+ g.fillStyle="#0e7c86"; g.fillRect(440,y0+236,200,14); g.font="110px serif"; g.fillText(p.em,540,y0+160);
+ g.fillStyle=th.bg; g.font="800 46px Manrope,system-ui,sans-serif"; g.fillText(p.name,540,y0+320);
+ g.fillStyle="#0b2427"; g.font="700 36px Manrope,system-ui,sans-serif"; g.fillText("no jogo Mahjong Family",540,y0+372);
+ g.font="600 34px Manrope,system-ui,sans-serif"; g.fillStyle="#46625f"; g.fillText("Com carinho, "+fr,540,1215); }
+["toName","fromName","msg"].forEach(id=>$(id).addEventListener("input",()=>{ $("msgN").textContent=$("msg").value.length; draw(); }));
+$("cardGo").onclick=()=>{ setFor("gift"); document.getElementById("comprar").scrollIntoView({behavior:RM?"auto":"smooth"}); };
+themes(); draw(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>draw());
+// ---------- MÓDULO 6: simulador ----------
+let simRun=0;
+function sim(){ const id=++simRun; const A=[...$("simA").children], B=[...$("simB").children]; A.concat(B).forEach(l=>l.className=""); let m=0; const end=180;
+ const fmt=v=>Math.floor(v/60)+"h"+String(Math.floor(v%60)).padStart(2,"0");
+ (function tick(){ if(id!==simRun) return; m+=RM?end:3; const mb=Math.min(m,1);
+  $("clkA").textContent=fmt(Math.min(m,end)); $("clkB").textContent="0h0"+Math.ceil(mb*1)+"";
+  A.forEach((l,i)=>{ if(m>=(i+1)*end/A.length) l.className="cut"; }); B.forEach((l,i)=>{ if(m>=(i+1)*0.6) l.className="ok"; });
+  if(m<end) setTimeout(tick,40); else $("clkB").textContent="0h01"; })(); }
+new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting){ o.disconnect(); sim(); } }),{threshold:.4}).observe($("simBox"));
+$("simAgain").onclick=sim;
+// ---------- ofertas ----------
+let offFor="me";
+function offers(){ $("offers").innerHTML=["P","F","C"].map(k=>{ const p=PROD[k]; return '<div class="offer rv'+(k==="P"?" best":"")+'">'+(k==="P"?'<span class="tag">MAIS COMPLETO</span>':'')+'<span class="em">'+p.em+'</span><h3 style="margin-top:6px">'+p.name+'</h3><div class="price" data-v="'+p.site+'">'+money(p.site)+'</div><div class="app">'+money(p.app)+' no app · você economiza '+money(p.app-p.site)+'</div><ul>'+p.list.map(x=>'<li>'+x+'</li>').join("")+'</ul><button class="cta full" data-buy="'+k+'">'+(offFor==="gift"?"🎁 Dar de presente":"Comprar")+' <span class="ar">→</span></button></div>'; }).join("");
+ document.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{ S.item=b.dataset.buy; setFor(offFor); document.getElementById(offFor==="gift"?"cartao":"comprar").scrollIntoView({behavior:RM?"auto":"smooth"}); });
+ if(!RM&&matchMedia("(hover:hover)").matches) document.querySelectorAll(".offer").forEach(o=>{ o.addEventListener("pointermove",e=>{ const r=o.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5; o.style.transform="rotateY("+(x*8)+"deg) rotateX("+(-y*8)+"deg)"; }); o.addEventListener("pointerleave",()=>o.style.transform=""); }); }
+function countUp(){ document.querySelectorAll(".offer .price").forEach(el=>{ const v=parseFloat(el.dataset.v); if(RM){ el.textContent=money(v); return; } const t0=performance.now(); (function f(t){ const k=Math.min(1,(t-t0)/900); el.textContent=money(v*ease(k)); if(k<1) requestAnimationFrame(f); })(t0); }); }
+offers(); new IntersectionObserver((es,o)=>es.forEach(e=>{ if(e.isIntersecting){ o.disconnect(); countUp(); } }),{threshold:.3}).observe($("offers"));
+$("tMe").onclick=()=>{ offFor="me"; $("tMe").classList.add("cur"); $("tGift").classList.remove("cur"); offers(); };
+$("tGift").onclick=()=>{ offFor="gift"; $("tGift").classList.add("cur"); $("tMe").classList.remove("cur"); offers(); };
+$("hPlans").onclick=()=>$("planos").scrollIntoView({behavior:RM?"auto":"smooth"});
+// ---------- checkout ----------
+function show(n){ for(let i=1;i<=4;i++) $("p"+i).hidden=i!==n; [...$("steps").children].forEach((li,i)=>li.className=i<n?"on":""); window.__step=n; }
+function setFor(f){ S.for=f; $("forMe").classList.toggle("cur",f==="me"); $("forGift").classList.toggle("cur",f==="gift"); prods(); show(1); }
+function prods(){ $("prods").innerHTML=Object.entries(PROD).map(([k,p])=>'<button class="prod'+(S.item===k?' cur':'')+'" data-k="'+k+'"><span class="em">'+p.em+'</span><span class="tx"><b>'+p.name+'</b><small class="muted">'+p.desc+'</small></span><span class="pr"><s>'+money(p.app)+' no app</s><b>'+money(p.site)+'</b></span></button>').join("");
+ document.querySelectorAll(".prod").forEach(b=>b.onclick=()=>{ S.item=b.dataset.k; prods(); draw(); }); }
+$("forMe").onclick=()=>setFor("me"); $("forGift").onclick=()=>setFor("gift");
+$("go1").onclick=()=>{ if(S.for==="gift"&&!clean($("toName").value,24)){ $("err1").innerHTML='Para presente, primeiro monte o cartão com o nome de quem vai receber. <a href="#cartao">Montar cartão ↑</a>'; return; }
+ $("err1").textContent="";
+ $("p2txt").textContent=S.for==="gift"?"Usamos seu e-mail para enviar o comprovante. Quem recebe o presente escolhe o e-mail dela na hora de receber.":"A compra fica ligada a este e-mail. No jogo, você entra com ele em Ajustes › Conta.";
+ $("giftSum").innerHTML=S.for==="gift"?'<div class="kv" style="margin-top:12px"><span>Presente para</span><b>'+esc(clean($("toName").value,24))+'</b></div><div class="kv"><span>De</span><b>'+esc(clean($("fromName").value,24)||"(sem nome)")+'</b></div>':"";
+ show(2); };
+$("back2").onclick=()=>show(1);
+function cpfOk(v){ const c=String(v).replace(/\D/g,""); if(c.length!==11||/^(\d)\1+$/.test(c)) return false; let s=0; for(let i=0;i<9;i++) s+=+c[i]*(10-i); let d=(s*10)%11%10; if(d!==+c[9]) return false; s=0; for(let i=0;i<10;i++) s+=+c[i]*(11-i); d=(s*10)%11%10; return d===+c[10]; }
+$("cpf").addEventListener("input",e=>{ const d=e.target.value.replace(/\D/g,"").slice(0,11); e.target.value=d.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); });
+$("go2").onclick=()=>{ const em=$("email").value.trim(); if(!emailOk(em)){ $("err2").textContent="Confira o e-mail."; return; } if(!cpfOk($("cpf").value)){ $("err2").textContent="Confira o CPF."; return; } if(!$("agree").checked){ $("err2").textContent="Para continuar, aceite os Termos e a Política de privacidade."; return; }
+ $("err2").textContent=""; S.email=em.toLowerCase(); pixMake(); show(3); };
+let pixT=0;
+function pixMake(){ const p=PROD[S.item]; S.payId="pay_"+Math.random().toString(36).slice(2,12);
+ $("sum").innerHTML='<div class="kv"><span>'+p.em+' '+p.name+'</span><b>'+money(p.site)+'</b></div>'+(S.for==="gift"?'<div class="kv"><span>Presente para</span><b>'+esc(clean($("toName").value,24))+'</b></div>':'')+'<div class="kv"><span>Você economiza</span><b class="okt">'+money(p.app-p.site)+'</b></div><div class="kv"><span><b>Total no Pix</b></span><b>'+money(p.site)+'</b></div>';
+ // QR ilustrativo determinístico (o real vem da API do Asaas: encodedImage + payload)
+ let h=0; for(const ch of S.payId) h=(h*33+ch.charCodeAt(0))>>>0; const rnd=()=>{ h^=h<<13; h^=h>>>17; h^=h<<5; return (h>>>0)/4294967296; };
+ let sv=""; for(let y=0;y<29;y++) for(let x=0;x<29;x++){ const f=(x<8&&y<8)||(x>20&&y<8)||(x<8&&y>20); if(f) continue; if(rnd()<.5) sv+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>'; }
+ const fin=(x,y)=>'<rect x="'+x+'" y="'+y+'" width="7" height="7"/><rect x="'+(x+1)+'" y="'+(y+1)+'" width="5" height="5" fill="#fff"/><rect x="'+(x+2)+'" y="'+(y+2)+'" width="3" height="3"/>';
+ $("qr").innerHTML='<g fill="#06171a">'+sv+fin(0,0)+fin(22,0)+fin(0,22)+'</g>';
+ $("cc").textContent="00020101021226820014br.gov.bcb.pix2560pix.asaas.com/qr/cobv/SIMULACAO-"+S.payId.toUpperCase()+"5204000053039865406"+p.site.toFixed(2)+"5802BR5915THATAI BRASIL6009SAO PAULO62070503***6304SIMU";
+ $("pst").textContent="Aguardando pagamento"; let left=1800; clearInterval(pixT); pixT=setInterval(()=>{ left--; $("pcd").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); if(left<=0) clearInterval(pixT); },1000); }
+$("copy").onclick=async()=>{ try{ await navigator.clipboard.writeText($("cc").textContent); $("copy").textContent="✓ Código copiado"; }catch(e){ $("copy").textContent="Selecione e copie o código acima"; } setTimeout(()=>$("copy").textContent="📋 Copiar código Pix",2200); };
+$("back3").onclick=()=>{ clearInterval(pixT); show(2); };
 function gameUrl(params){ const u=new URL("index.html",location.href); Object.entries(params).forEach(([k,v])=>{ if(v) u.searchParams.set(k,v); }); return u.toString(); }
-$("pay").onclick=()=>{ S.code=makeCode(S.item); window.__code=S.code; const p=PROD[S.item];
- if(S.for==="me"){ const url=gameUrl({gift:S.code,self:"1"}); window.__gameUrl=url;
-  $("done").innerHTML='<p>Seu código:</p><div class="code" id="code">'+S.code+'</div><p><b>'+p.em+' '+p.name+'</b></p><a class="btn big" id="open" href="'+url+'">Abrir o jogo e ativar</a><p class="hint">Se o jogo estiver em outro celular, abra lá e use <b>Família › Resgatar presente</b> com o código acima.</p>'; }
- else { const to=clean($("toName").value,24), fr=clean($("fromName").value,24), msg=clean($("msg").value,140); draw();
-  const url=gameUrl({gift:S.code,nk:fr,msg}); window.__gameUrl=url;
-  const txt="🎁 "+to+", "+fr+" te deu de presente: "+p.name+" no Mahjong Family!"+(msg?"\n\n“"+msg+"”":"")+"\n\nToque para ativar: "+url+"\n\nCódigo: "+S.code; window.__shareTxt=txt;
-  $("done").innerHTML='<p>O presente está pronto. Agora é só enviar para <b>'+to.replace(/&/g,"&amp;")+'</b>:</p><div class="code" id="code">'+S.code+'</div>';
-  const cv=$("cv"); $("done").appendChild(cv);
-  const a=document.createElement("button"); a.className="big"; a.id="send"; a.textContent="📲 Enviar pelo WhatsApp"; $("done").appendChild(a);
-  const dl=document.createElement("a"); dl.className="btn sec"; dl.id="dl"; dl.textContent="⬇️ Baixar o cartão"; dl.download="presente-mahjong-family.png"; dl.href=cv.toDataURL("image/png"); $("done").appendChild(dl);
-  const h=document.createElement("p"); h.className="hint"; h.innerHTML="Quem recebe toca no link e o presente é ativado no jogo. Se preferir, a pessoa digita o código em <b>Família › Resgatar presente</b>."; $("done").appendChild(h);
-  a.onclick=async()=>{ window.__shared=txt; try{ const blob=await new Promise(r=>cv.toBlob(r,"image/png")); const file=new File([blob],"presente-mahjong-family.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:txt}); return; } }catch(e){ if(e&&e.name==="AbortError") return; } window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }; }
- show(5); };
-// entrada direta
-if(S.for) { pick(S.for); } else show(1);
-window.__loja={campaign,makeCode,PROD,S};
+function claimUrl(code,fr,msg,to,theme){ const u=new URL("loja.html",location.href); u.search=new URLSearchParams(Object.fromEntries(Object.entries({resgatar:code,de:fr,para:to,msg,tema:theme}).filter(([k,v])=>v))).toString(); return u.toString(); }
+async function shareCard(cv){ try{ const blob=await new Promise(r=>cv.toBlob(r,"image/png")); const file=new File([blob],"presente-mahjong-family.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file]}); return "share"; } }catch(e){ if(e&&e.name==="AbortError") return "abort"; } const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download="presente-mahjong-family.png"; document.body.appendChild(a); a.click(); a.remove(); return "download"; }
+$("pay").onclick=()=>{ clearInterval(pixT); const p=PROD[S.item]; $("pst").textContent="Pago";
+ // versão final: webhook PAYMENT_RECEIVED do Asaas grava a compra no servidor
+ if(S.for==="me"){ accAdd(S.email,{id:S.payId,k:S.item,src:"site"}); const url=gameUrl({login:S.email}); window.__gameUrl=url;
+  $("done").innerHTML='<p><b>'+p.em+' '+p.name+'</b> está na sua conta:</p><div class="emailbox" id="doneEmail">'+esc(S.email)+'</div><p>Agora abra o jogo e entre com esse e-mail em <b>Ajustes › Conta</b>.</p><a class="cta full" id="open" href="'+url+'">Abrir o jogo e entrar <span class="ar">→</span></a><p class="hint">Jogo em outro celular? Abra o Mahjong Family lá, toque em Ajustes › Conta e use o mesmo e-mail.</p>'; }
+ else { const to=clean($("toName").value,24), fr=clean($("fromName").value,24), msg=clean($("msg").value,140); S.code=makeCode(S.item); window.__code=S.code;
+  const url=claimUrl(S.code,fr,msg,to,S.theme); window.__claimUrl=url;
+  const txt="🎁 "+to+", "+(fr||"alguém especial")+" te deu de presente: "+p.name+" no jogo Mahjong Family!\n\nToque para receber: "+url; window.__shareTxt=txt;
+  $("done").innerHTML='<p>O presente para <b>'+esc(to)+'</b> está pronto. Envie em 2 passos:</p>';
+  const cv=document.createElement("canvas"); cv.width=1080; cv.height=1350; cv.className="card"; cv.style.maxWidth="280px"; draw(cv,{to,fr,msg,item:S.item,theme:S.theme}); $("done").appendChild(cv);
+  const b1=document.createElement("button"); b1.className="cta full"; b1.id="send1"; b1.style.marginTop="14px"; b1.innerHTML="1. 🖼️ Enviar o cartão"; $("done").appendChild(b1);
+  const b2=document.createElement("button"); b2.className="cta full"; b2.id="send2"; b2.style.marginTop="10px"; b2.innerHTML="2. 📲 Enviar o link de resgate"; $("done").appendChild(b2);
+  const h=document.createElement("p"); h.className="hint"; h.innerHTML="O WhatsApp no iPhone não junta imagem e texto numa mensagem só, por isso são 2 envios. Quem recebe toca no link, escolhe o e-mail e entra no jogo com ele. O link vale uma vez.<br>Comprovante enviado para "+esc(S.email)+"."; $("done").appendChild(h);
+  b1.onclick=async()=>{ window.__sent1=await shareCard(cv); };
+  b2.onclick=()=>{ window.__shared=txt; window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }; }
+ show(4); burst(innerWidth/2,innerHeight/2,40); };
+// ---------- conta (entrar com e-mail, sem senha) ----------
+function ovOpen(id){ $(id).hidden=false; document.body.style.overflow="hidden"; }
+function ovClose(id){ $(id).hidden=true; document.body.style.overflow=""; }
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>ovClose(b.closest(".ov").id));
+document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o) ovClose(o.id); }));
+addEventListener("keydown",e=>{ if(e.key==="Escape") document.querySelectorAll(".ov:not([hidden])").forEach(o=>ovClose(o.id)); });
+let accMail=""; try{ accMail=sessionStorage.getItem("mfSiteMail")||""; }catch(e){}
+function itemLine(it){ const p=PROD[it.k]; return '<div class="kv"><span>'+p.em+' '+p.short+(it.src==="presente"?' <small class="muted">(presente'+(it.from?' de '+esc(it.from):'')+')</small>':'')+'</span><small class="muted">'+new Date(it.at).toLocaleDateString("pt-BR")+'</small></div>'; }
+function openAcc(step,pre){ const B=$("acBody");
+ if(accMail&&step!=="login"){ const a=accGet(accMail); const items=a?a.items:[];
+  B.innerHTML='<h3 id="acT">👤 Minha conta</h3><div class="emailbox">'+esc(accMail)+'</div><h4>Suas compras</h4>'+(items.length?items.map(itemLine).join(""):'<p class="muted">Nenhuma compra neste e-mail ainda.</p>')+'<a class="cta full" style="margin-top:16px" href="'+gameUrl({login:accMail})+'">Abrir o jogo com este e-mail <span class="ar">→</span></a><button class="ghost full" id="acRef" style="margin-top:8px">↩︎ Pedir devolução (7 dias)</button><button class="ghost full" id="acOut" style="margin-top:8px">Sair</button><p class="hint" id="acMsg"></p>';
+  $("acOut").onclick=()=>{ accMail=""; try{ sessionStorage.removeItem("mfSiteMail"); }catch(e){} openAcc(); };
+  $("acRef").onclick=()=>{ $("acMsg").textContent="No protótipo, a devolução não é processada. Na versão final, compras de até 7 dias são estornadas no mesmo Pix pelo Asaas e o item sai da conta."; };
+  ovOpen("ovAcc"); return; }
+ B.innerHTML='<h3 id="acT">👤 Entrar na minha conta</h3><p class="muted">Sem senha. Mandamos um código de 6 números para o seu e-mail.</p><label for="acEm">E-mail</label><input id="acEm" type="email" inputmode="email" autocomplete="email" value="'+esc(pre||"")+'"><button class="cta full" id="acSend" style="margin-top:12px">Enviar código <span class="ar">→</span></button><div class="err" id="acErr"></div>';
+ $("acSend").onclick=()=>{ const em=$("acEm").value.trim().toLowerCase(); if(!emailOk(em)){ $("acErr").textContent="Confira o e-mail."; return; }
+  B.innerHTML='<h3>Digite o código</h3><p class="muted">Enviamos para <b>'+esc(em)+'</b>.</p><div class="proto">🧪 Protótipo: o código é 123456 (já preenchido).</div><input id="acCode" inputmode="numeric" maxlength="6" value="123456" style="text-align:center;letter-spacing:8px;font-size:24px"><button class="cta full" id="acGo" style="margin-top:12px">Entrar <span class="ar">→</span></button><div class="err" id="acErr"></div>';
+  $("acGo").onclick=()=>{ if($("acCode").value.replace(/\D/g,"")!=="123456"){ $("acErr").textContent="Código errado."; return; } accMail=em; try{ sessionStorage.setItem("mfSiteMail",em); }catch(e){} openAcc(); }; };
+ ovOpen("ovAcc"); }
+$("hAcc").onclick=()=>openAcc();
+// ---------- resgatar presente ----------
+function openClaim(code,fr,to,msg,theme){ const c=parseCode(code), B=$("clBody");
+ if(!c){ B.innerHTML='<h3 id="clT">Link de presente inválido</h3><p class="muted">Peça para quem te deu mandar o link de novo.</p>'; ovOpen("ovClaim"); return; }
+ const d=accAll(); if(d.used.includes(c.norm)){ B.innerHTML='<h3 id="clT">Este presente já foi recebido</h3><p class="muted">Ele já está em uma conta. Se foi você, abra o jogo e entre com o seu e-mail em Ajustes › Conta.</p><button class="ghost full" id="clAcc">👤 Minha conta</button>'; ovOpen("ovClaim"); $("clAcc").onclick=()=>{ ovClose("ovClaim"); openAcc(); }; return; }
+ const p=PROD[c.item];
+ B.innerHTML='<h3 id="clT" class="center">'+(fr?esc(fr)+' te mandou um presente':'Você ganhou um presente')+'</h3><div class="box3d" id="clBox" role="button" tabindex="0" aria-label="Abrir presente">🎁</div><p class="center muted" id="clTap">Toque no presente para abrir</p><div id="clIn" hidden></div>';
+ ovOpen("ovClaim");
+ const openIt=()=>{ $("clBox").classList.add("open"); burst(innerWidth/2,innerHeight/2,40); setTimeout(()=>{ $("clBox").remove(); $("clTap").remove(); const cv=document.createElement("canvas"); cv.width=1080; cv.height=1350; cv.className="card"; cv.style.maxWidth="260px"; draw(cv,{to,fr,msg,item:c.item,theme:TH[theme]?theme:"geral"});
+   const In=$("clIn"); In.hidden=false; In.appendChild(cv); In.insertAdjacentHTML("beforeend",'<p class="center" style="margin-top:12px"><b>'+p.em+' '+p.name+'</b></p><label for="clEm">Seu e-mail (para guardar o presente)</label><input id="clEm" type="email" inputmode="email" autocomplete="email" placeholder="seuemail@exemplo.com"><button class="cta full" id="clGo" style="margin-top:12px">Receber presente <span class="ar">→</span></button><div class="err" id="clErr"></div><p class="hint">Sem senha. Depois é só entrar no jogo com este e-mail em Ajustes › Conta.</p>');
+   $("clGo").onclick=()=>{ const em=$("clEm").value.trim().toLowerCase(); if(!emailOk(em)){ $("clErr").textContent="Confira o e-mail."; return; }
+    const d2=accAll(); if(d2.used.includes(c.norm)){ $("clErr").textContent="Este presente já foi recebido."; return; }
+    accAdd(em,{id:c.norm,k:c.item,src:"presente",from:fr||""}); const d3=accAll(); d3.used.push(c.norm); accPut(d3);
+    const url=gameUrl({login:em}); window.__gameUrl=url; accMail=em; try{ sessionStorage.setItem("mfSiteMail",em); }catch(e){}
+    In.innerHTML='<h3 class="okt center">✅ Presente guardado!</h3><p class="center"><b>'+p.em+' '+p.name+'</b> está no e-mail</p><div class="emailbox">'+esc(em)+'</div><p>Abra o Mahjong Family e entre com esse e-mail em <b>Ajustes › Conta</b>.</p><a class="cta full" id="clOpen" href="'+url+'">Abrir o jogo e entrar <span class="ar">→</span></a><p class="hint">Ainda não tem o jogo? Baixe na App Store ou no Google Play e entre com o mesmo e-mail.</p>'; burst(innerWidth/2,innerHeight/3,30); }; },RM?0:550); };
+ $("clBox").onclick=openIt; $("clBox").onkeydown=e=>{ if(e.key==="Enter"||e.key===" ") openIt(); }; }
+// ---------- bastidores ----------
+$("hBts").onclick=()=>ovOpen("bts");
+// ---------- entrada direta ----------
+setFor(S.for);
+if(q.get("resgatar")) openClaim(q.get("resgatar"),clean(q.get("de"),24),clean(q.get("para"),24),clean(q.get("msg"),140),q.get("tema"));
+else if(q.get("conta")) openAcc(null,clean(q.get("conta"),190).includes("@")?q.get("conta"):"");
+else if(q.get("for")){ setTimeout(()=>document.getElementById(S.for==="gift"?"cartao":"comprar").scrollIntoView(),60); }
+Object.assign(window.__loja,{openClaim,openAcc,show,setFor,draw,gameNew});
 </script>
 </body>
 </html>
