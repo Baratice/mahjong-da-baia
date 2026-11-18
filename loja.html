@@ -386,6 +386,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 110px;font-size:14px;colo
    <div id="p2" hidden>
     <h3>2. Seu e-mail</h3>
     <p class="muted" id="p2txt"></p>
+    <label for="buyerName">Nome completo</label><input id="buyerName" autocomplete="name" maxlength="80" placeholder="Como no seu documento">
     <label for="email">E-mail</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="seuemail@exemplo.com">
     <label for="cpf">CPF (pedido pelo Pix)</label><input id="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00">
     <div id="giftSum"></div>
@@ -506,6 +507,9 @@ footer{border-top:1px solid var(--line);padding:40px 0 110px;font-size:14px;colo
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
+// Modo real: com config.js + mf.js (Supabase e funções do servidor). Sem eles, a página roda o protótipo.
+const MFX=window.MF||null, REAL=!!(MFX&&MFX.real), CFG=window.MF_CONFIG||{};
+const fnUrl=n=>CFG.supabaseUrl.replace(/\/$/,"")+"/functions/v1/"+n;
 const q=new URLSearchParams(location.search);
 const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const MOB=matchMedia("(max-width:700px)").matches;
@@ -689,8 +693,8 @@ $("go1").onclick=()=>{ if(S.for==="gift"&&!clean($("toName").value,24)){ $("err1
 $("back2").onclick=()=>show(1);
 function cpfOk(v){ const c=String(v).replace(/\D/g,""); if(c.length!==11||/^(\d)\1+$/.test(c)) return false; let s=0; for(let i=0;i<9;i++) s+=+c[i]*(10-i); let d=(s*10)%11%10; if(d!==+c[9]) return false; s=0; for(let i=0;i<10;i++) s+=+c[i]*(11-i); d=(s*10)%11%10; return d===+c[10]; }
 $("cpf").addEventListener("input",e=>{ const d=e.target.value.replace(/\D/g,"").slice(0,11); e.target.value=d.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); });
-$("go2").onclick=()=>{ const em=$("email").value.trim(); if(!emailOk(em)){ $("err2").textContent="Confira o e-mail."; return; } if(!cpfOk($("cpf").value)){ $("err2").textContent="Confira o CPF."; return; } if(!$("agree").checked){ $("err2").textContent="Para continuar, aceite os Termos e a Política de privacidade."; return; }
- $("err2").textContent=""; S.email=em.toLowerCase(); pixMake(); show(3); };
+$("go2").onclick=()=>{ if(clean($("buyerName").value,80).length<3){ $("err2").textContent="Escreva o seu nome completo."; return; } const em=$("email").value.trim(); if(!emailOk(em)){ $("err2").textContent="Confira o e-mail."; return; } if(!cpfOk($("cpf").value)){ $("err2").textContent="Confira o CPF."; return; } if(!$("agree").checked){ $("err2").textContent="Para continuar, aceite os Termos e a Política de privacidade."; return; }
+ $("err2").textContent=""; S.email=em.toLowerCase(); if(REAL) return pixReal(); pixMake(); show(3); };
 let pixT=0;
 function pixMake(){ const p=PROD[S.item]; S.payId="pay_"+Math.random().toString(36).slice(2,12);
  $("sum").innerHTML='<div class="kv"><span>'+p.em+' '+p.name+'</span><b>'+money(p.site)+'</b></div>'+(S.for==="gift"?'<div class="kv"><span>Presente para</span><b>'+esc(clean($("toName").value,24))+'</b></div>':'')+'<div class="kv"><span>Você economiza</span><b class="okt">'+money(p.app-p.site)+'</b></div><div class="kv"><span><b>Total no Pix</b></span><b>'+money(p.site)+'</b></div>';
@@ -703,14 +707,14 @@ function pixMake(){ const p=PROD[S.item]; S.payId="pay_"+Math.random().toString(
  $("pst").textContent="Aguardando pagamento"; let left=1800; clearInterval(pixT); pixT=setInterval(()=>{ left--; $("pcd").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); if(left<=0) clearInterval(pixT); },1000); }
 $("copy").onclick=async()=>{ try{ await navigator.clipboard.writeText($("cc").textContent); $("copy").textContent="✓ Código copiado"; }catch(e){ $("copy").textContent="Selecione e copie o código acima"; } setTimeout(()=>$("copy").textContent="📋 Copiar código Pix",2200); };
 $("back3").onclick=()=>{ clearInterval(pixT); show(2); };
-function gameUrl(params){ const u=new URL("index.html",location.href); Object.entries(params).forEach(([k,v])=>{ if(v) u.searchParams.set(k,v); }); return u.toString(); }
+function gameUrl(params){ if(REAL&&params.login) return "mahjongfamily://login?email="+encodeURIComponent(params.login); const u=new URL("index.html",location.href); Object.entries(params).forEach(([k,v])=>{ if(v) u.searchParams.set(k,v); }); return u.toString(); }
 function claimUrl(code,fr,msg,to,theme){ const u=new URL("loja.html",location.href); u.search=new URLSearchParams(Object.fromEntries(Object.entries({resgatar:code,de:fr,para:to,msg,tema:theme}).filter(([k,v])=>v))).toString(); return u.toString(); }
 async function shareCard(cv){ try{ const blob=await new Promise(r=>cv.toBlob(r,"image/png")); const file=new File([blob],"presente-mahjong-family.png",{type:"image/png"}); if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file]}); return "share"; } }catch(e){ if(e&&e.name==="AbortError") return "abort"; } const a=document.createElement("a"); a.href=cv.toDataURL("image/png"); a.download="presente-mahjong-family.png"; document.body.appendChild(a); a.click(); a.remove(); return "download"; }
-$("pay").onclick=()=>{ clearInterval(pixT); const p=PROD[S.item]; $("pst").textContent="Pago";
- // versão final: webhook PAYMENT_RECEIVED do Asaas grava a compra no servidor
- if(S.for==="me"){ accAdd(S.email,{id:S.payId,k:S.item,src:"site"}); const url=gameUrl({login:S.email}); window.__gameUrl=url;
+$("pay").onclick=()=>{ clearInterval(pixT); if(S.for==="me") accAdd(S.email,{id:S.payId,k:S.item,src:"site"}); finishPaid(S.for==="me"?null:makeCode(S.item)); };
+function finishPaid(serverCode){ clearInterval(pixT); const p=PROD[S.item]; $("pst").textContent="Pago";
+ if(S.for==="me"){ const url=gameUrl({login:S.email}); window.__gameUrl=url;
   $("done").innerHTML='<p><b>'+p.em+' '+p.name+'</b> está na sua conta:</p><div class="emailbox" id="doneEmail">'+esc(S.email)+'</div><p>Agora abra o jogo e entre com esse e-mail em <b>Ajustes › Conta</b>.</p><a class="cta full" id="open" href="'+url+'">Abrir o jogo e entrar <span class="ar">→</span></a><p class="hint">Jogo em outro celular? Abra o Mahjong Family lá, toque em Ajustes › Conta e use o mesmo e-mail.</p>'; }
- else { const to=clean($("toName").value,24), fr=clean($("fromName").value,24), msg=clean($("msg").value,140); S.code=makeCode(S.item); window.__code=S.code;
+ else { const to=clean($("toName").value,24), fr=clean($("fromName").value,24), msg=clean($("msg").value,140); S.code=serverCode; window.__code=S.code;
   const url=claimUrl(S.code,fr,msg,to,S.theme); window.__claimUrl=url;
   const txt="🎁 "+to+", "+(fr||"alguém especial")+" te deu de presente: "+p.name+" no jogo Mahjong Family!\n\nToque para receber: "+url; window.__shareTxt=txt;
   $("done").innerHTML='<p>O presente para <b>'+esc(to)+'</b> está pronto. Envie em 2 passos:</p>';
@@ -720,7 +724,7 @@ $("pay").onclick=()=>{ clearInterval(pixT); const p=PROD[S.item]; $("pst").textC
   const h=document.createElement("p"); h.className="hint"; h.innerHTML="O WhatsApp no iPhone não junta imagem e texto numa mensagem só, por isso são 2 envios. Quem recebe toca no link, escolhe o e-mail e entra no jogo com ele. O link vale uma vez.<br>Comprovante enviado para "+esc(S.email)+"."; $("done").appendChild(h);
   b1.onclick=async()=>{ window.__sent1=await shareCard(cv); };
   b2.onclick=()=>{ window.__shared=txt; window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }; }
- show(4); burst(innerWidth/2,innerHeight/2,40); };
+ show(4); burst(innerWidth/2,innerHeight/2,40); }
 // ---------- conta (entrar com e-mail, sem senha) ----------
 function ovOpen(id){ $(id).hidden=false; document.body.style.overflow="hidden"; }
 function ovClose(id){ $(id).hidden=true; document.body.style.overflow=""; }
@@ -740,7 +744,7 @@ function openAcc(step,pre){ const B=$("acBody");
   B.innerHTML='<h3>Digite o código</h3><p class="muted">Enviamos para <b>'+esc(em)+'</b>.</p><div class="proto">🧪 Protótipo: o código é 123456 (já preenchido).</div><input id="acCode" inputmode="numeric" maxlength="6" value="123456" style="text-align:center;letter-spacing:8px;font-size:24px"><button class="cta full" id="acGo" style="margin-top:12px">Entrar <span class="ar">→</span></button><div class="err" id="acErr"></div>';
   $("acGo").onclick=()=>{ if($("acCode").value.replace(/\D/g,"")!=="123456"){ $("acErr").textContent="Código errado."; return; } accMail=em; try{ sessionStorage.setItem("mfSiteMail",em); }catch(e){} openAcc(); }; };
  ovOpen("ovAcc"); }
-$("hAcc").onclick=()=>openAcc();
+$("hAcc").onclick=()=>REAL?openAccReal():openAcc();
 // ---------- resgatar presente ----------
 function openClaim(code,fr,to,msg,theme){ const c=parseCode(code), B=$("clBody");
  if(!c){ B.innerHTML='<h3 id="clT">Link de presente inválido</h3><p class="muted">Peça para quem te deu mandar o link de novo.</p>'; ovOpen("ovClaim"); return; }
@@ -756,11 +760,59 @@ function openClaim(code,fr,to,msg,theme){ const c=parseCode(code), B=$("clBody")
     const url=gameUrl({login:em}); window.__gameUrl=url; accMail=em; try{ sessionStorage.setItem("mfSiteMail",em); }catch(e){}
     In.innerHTML='<h3 class="okt center">✅ Presente guardado!</h3><p class="center"><b>'+p.em+' '+p.name+'</b> está no e-mail</p><div class="emailbox">'+esc(em)+'</div><p>Abra o Mahjong Family e entre com esse e-mail em <b>Ajustes › Conta</b>.</p><a class="cta full" id="clOpen" href="'+url+'">Abrir o jogo e entrar <span class="ar">→</span></a><p class="hint">Ainda não tem o jogo? Baixe na App Store ou no Google Play e entre com o mesmo e-mail.</p>'; burst(innerWidth/2,innerHeight/3,30); }; },RM?0:550); };
  $("clBox").onclick=openIt; $("clBox").onkeydown=e=>{ if(e.key==="Enter"||e.key===" ") openIt(); }; }
+
+// ---------- modo real: Pix do Asaas pelo servidor, conta e presentes no Supabase ----------
+let pollT=0;
+async function pixReal(){ const btn=$("go2"); btn.disabled=true; $("err2").textContent="Gerando o Pix…";
+ try{
+  const body={product:S.item,forGift:S.for==="gift",email:S.email,name:clean($("buyerName").value,80),cpf:$("cpf").value,acceptTerms:true,toName:clean($("toName").value,24),fromName:clean($("fromName").value,24),message:clean($("msg").value,140),theme:S.theme};
+  const r=await fetch(fnUrl("pix-create"),{method:"POST",headers:{"content-type":"application/json",apikey:CFG.supabaseAnonKey,authorization:"Bearer "+CFG.supabaseAnonKey},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));
+  if(r.status!==200){ $("err2").textContent={cpf_invalido:"Confira o CPF.",email_invalido:"Confira o e-mail.",nome_invalido:"Confira o seu nome.",falta_destinatario:"Falta o nome de quem vai receber."}[j.error]||"Não deu para gerar o Pix agora. Tente de novo em instantes."; return; }
+  $("err2").textContent=""; S.order=j; const p=PROD[S.item];
+  $("sum").innerHTML='<div class="kv"><span>'+p.em+' '+p.name+'</span><b>'+money(j.value)+'</b></div>'+(S.for==="gift"?'<div class="kv"><span>Presente para</span><b>'+esc(clean($("toName").value,24))+'</b></div>':'')+'<div class="kv"><span><b>Total no Pix</b></span><b>'+money(j.value)+'</b></div>';
+  $("qr").outerHTML='<img id="qr" alt="QR Code Pix" style="width:180px;height:180px;background:#fff;border-radius:14px;padding:6px;flex:none" src="data:image/png;base64,'+j.qr.image+'">';
+  $("cc").textContent=j.qr.payload; $("pay").hidden=true; $("pst").textContent="Aguardando pagamento";
+  let left=1800; clearInterval(pixT); pixT=setInterval(()=>{ left--; $("pcd").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0"); if(left<=0) clearInterval(pixT); },1000);
+  show(3); clearInterval(pollT); pollT=setInterval(pollPix,4000);
+ }catch(e){ $("err2").textContent="Sem conexão. Tente de novo."; } finally{ btn.disabled=false; } }
+async function pollPix(){ if(!S.order) return; try{
+  const u=fnUrl("pix-status")+"?"+new URLSearchParams({order:S.order.orderId,token:S.order.pollToken});
+  const j=await (await fetch(u,{headers:{apikey:CFG.supabaseAnonKey,authorization:"Bearer "+CFG.supabaseAnonKey}})).json();
+  if(j.status==="paid"&&(!j.for_gift||j.gift_code)){ clearInterval(pollT); finishPaid(j.gift_code||null); }
+ }catch(e){} }
+function openAccReal(){ const B=$("acBody");
+ MFX.auth.user().then(u=>{
+  if(u){ B.innerHTML='<h3 id="acT">👤 Minha conta</h3><div class="emailbox">'+esc(u.email)+'</div><h4>Suas compras</h4><div id="acL"><p class="muted">Carregando…</p></div><a class="cta full" style="margin-top:16px" href="mahjongfamily://login?email='+encodeURIComponent(u.email)+'">Abrir o jogo <span class="ar">→</span></a><button class="ghost full" id="acRef" style="margin-top:8px">↩︎ Pedir devolução (7 dias)</button><button class="ghost full" id="acOut" style="margin-top:8px">Sair</button><p class="hint" id="acMsg"></p>';
+   MFX.account.link().then(()=>MFX.account.list()).then(l=>{ $("acL").innerHTML=l.length?l.map(e=>'<div class="kv"><span>'+PROD[e.product_id].em+' '+PROD[e.product_id].short+(e.source==="gift"?' <small class="muted">(presente)</small>':'')+'</span><small class="muted">'+(e.expires_at?'até '+new Date(e.expires_at).toLocaleDateString("pt-BR"):'para sempre')+'</small></div>').join(""):'<p class="muted">Nenhuma compra neste e-mail ainda.</p>'; });
+   $("acOut").onclick=()=>MFX.auth.signOut().then(openAccReal);
+   $("acRef").onclick=()=>{ $("acMsg").innerHTML='Para desistir em até 7 dias, escreva para <b>'+esc(CFG.supportEmail||"o suporte")+'</b> com o e-mail da compra. O valor volta no mesmo Pix e o item sai da conta.'; };
+   ovOpen("ovAcc"); return; }
+  otpForm(B,"👤 Entrar na minha conta","",()=>openAccReal()); ovOpen("ovAcc"); }); }
+function otpForm(B,title,pre,after){
+ B.innerHTML='<h3>'+title+'</h3><p class="muted">Sem senha. Mandamos um código de 6 números para o seu e-mail.</p><label for="oEm">E-mail</label><input id="oEm" type="email" inputmode="email" autocomplete="email" value="'+esc(pre||"")+'"><button class="cta full" id="oSend" style="margin-top:12px">Enviar código <span class="ar">→</span></button><div class="err" id="oErr"></div>';
+ $("oSend").onclick=async()=>{ const em=$("oEm").value.trim().toLowerCase(); if(!emailOk(em)){ $("oErr").textContent="Confira o e-mail."; return; } $("oSend").disabled=true;
+  const r=await MFX.auth.sendCode(em); if(!r.ok){ $("oSend").disabled=false; $("oErr").textContent="Não deu para enviar agora. Tente de novo em instantes."; return; }
+  B.innerHTML='<h3>Digite o código</h3><p class="muted">Enviamos para <b>'+esc(em)+'</b>. Confira também a caixa de spam.</p><input id="oCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" style="text-align:center;letter-spacing:8px;font-size:24px"><button class="cta full" id="oGo" style="margin-top:12px">Entrar <span class="ar">→</span></button><div class="err" id="oErr"></div>';
+  $("oGo").onclick=async()=>{ const c=$("oCode").value.replace(/\D/g,""); if(c.length!==6){ $("oErr").textContent="O código tem 6 números."; return; } $("oGo").disabled=true;
+   const v=await MFX.auth.verify(em,c); if(!v.ok){ $("oGo").disabled=false; $("oErr").textContent="Código errado ou vencido."; return; } after(v.user); }; }; }
+async function openClaimReal(code,fr,to,msg,theme){ const B=$("clBody"); const pv=await MFX.account.giftPreview(code).catch(()=>null);
+ if(!pv||pv.status==="not_found"){ B.innerHTML='<h3 id="clT">Link de presente inválido</h3><p class="muted">Peça para quem te deu mandar o link de novo.</p>'; ovOpen("ovClaim"); return; }
+ if(pv.status!=="ready"){ B.innerHTML='<h3 id="clT">Este presente já foi recebido</h3><p class="muted">Se foi você, abra o jogo e entre com o seu e-mail em Ajustes › Conta.</p>'; ovOpen("ovClaim"); return; }
+ const p=PROD[pv.product]; fr=pv.from||fr; to=pv.to||to; msg=pv.message||msg; theme=pv.theme||theme;
+ B.innerHTML='<h3 id="clT" class="center">'+(fr?esc(fr)+' te mandou um presente':'Você ganhou um presente')+'</h3><div class="box3d" id="clBox" role="button" tabindex="0" aria-label="Abrir presente">🎁</div><p class="center muted" id="clTap">Toque no presente para abrir</p><div id="clIn" hidden></div>'; ovOpen("ovClaim");
+ const openIt=()=>{ $("clBox").classList.add("open"); burst(innerWidth/2,innerHeight/2,40); setTimeout(()=>{ $("clBox").remove(); $("clTap").remove(); const cv=document.createElement("canvas"); cv.width=1080; cv.height=1350; cv.className="card"; cv.style.maxWidth="240px"; draw(cv,{to,fr,msg,item:pv.product,theme:TH[theme]?theme:"geral"});
+   const In=$("clIn"); In.hidden=false; In.appendChild(cv); const box=document.createElement("div"); In.appendChild(box);
+   const done=async(u)=>{ const r=await MFX.account.claimGift(code); if(r.result==="claimed"||r.result==="already_yours"){ box.innerHTML='<h3 class="okt center">✅ Presente guardado!</h3><p class="center"><b>'+p.em+' '+p.name+'</b> está no e-mail</p><div class="emailbox">'+esc(u.email)+'</div><p>Abra o Mahjong Family e entre com esse e-mail em <b>Ajustes › Conta</b>.</p><a class="cta full" href="mahjongfamily://login?email='+encodeURIComponent(u.email)+'">Abrir o jogo <span class="ar">→</span></a><p class="hint">Ainda não tem o jogo? Baixe na App Store ou no Google Play e entre com o mesmo e-mail.</p>'; burst(innerWidth/2,innerHeight/3,30); }
+     else box.innerHTML='<p class="err">Este presente já foi recebido por outra conta.</p>'; };
+   MFX.auth.user().then(u=>u?done(u):otpForm(box,"Guarde o presente no seu e-mail","",done)); },550); };
+ $("clBox").onclick=openIt; $("clBox").onkeydown=e=>{ if(e.key==="Enter"||e.key===" ") openIt(); }; }
 // ---------- bastidores ----------
 $("hBts").onclick=()=>ovOpen("bts");
 // ---------- entrada direta ----------
 setFor(S.for);
-if(q.get("resgatar")) openClaim(q.get("resgatar"),clean(q.get("de"),24),clean(q.get("para"),24),clean(q.get("msg"),140),q.get("tema"));
+if(q.get("resgatar")&&REAL) openClaimReal(q.get("resgatar"),clean(q.get("de"),24),clean(q.get("para"),24),clean(q.get("msg"),140),q.get("tema"));
+else if(q.get("resgatar")) openClaim(q.get("resgatar"),clean(q.get("de"),24),clean(q.get("para"),24),clean(q.get("msg"),140),q.get("tema"));
 else if(q.get("conta")) openAcc(null,clean(q.get("conta"),190).includes("@")?q.get("conta"):"");
 else if(q.get("for")){ setTimeout(()=>document.getElementById(S.for==="gift"?"cartao":"comprar").scrollIntoView(),60); }
 Object.assign(window.__loja,{openClaim,openAcc,show,setFor,draw,gameNew});
