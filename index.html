@@ -972,7 +972,7 @@ h+='<p style="text-align:left;margin:4px 0 0"><b>'+t("passWhat")+'</b></p><ul cl
 h+=row("pYear",t("year"),t("yearS")+" "+P("year")+" ("+t("tourEq").replace("{v}",money(numP("year")/12))+")",'<small>'+P("year")+'</small>',t("tryFree"),{best:1,tag:t("popular")});
 h+=row("pMonth",t("month"),t("monthS"),P("month"),t("subscribe"));
 h+=row("pLife",t("life"),t("lifeS"),P("life"),t("buy"));
-h+=row("pFam",t("pfamT"),t("pfamS"),'<small>'+P("fam")+'</small>',t("subscribe"));
+if(!(LIVE&&MFX.platform==="android")) h+=row("pFam",t("pfamT"),t("pfamS"),'<small>'+P("fam")+'</small>',t("subscribe"));
 if(S.sub.st!=="none") h+='<button class="sec" id="spOpen">'+t("spBtn")+'</button>';
 }
 if(siteOn()){ const sr=(k,name,app)=>'<div class="plan"><div class="pn"><b>'+name+'</b><small><span class="oldp">'+P(app).split("/")[0]+' no app</span></small></div><div class="price">'+P("site"+k)+'</div><button data-site="'+k+'">'+t("siteBuy")+'</button></div>';
